@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="shopAccent">#84ceca</color>
+    <color name="shopSecondary">#727272</color>
+    <color name="shopRatedStar">#ffeb5a</color>
+    <color name="shopFabRipple">#51b2ac</color>
+
+    <array name="palette">
+        <item>#D65353</item>
+        <item>#FD8B64</item>
+        <item>#FCD353</item>
+        <item>#99D45D</item>
+        <item>#0181BB</item>
+        <item>#234257</item>
+        <item>#9979C1</item>
+        <item>#FFFFFF</item>
+        <item>#6D7172</item>
+        <item>#FB050505</item>
+    </array>
+</resources>

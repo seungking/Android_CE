@@ -1,0 +1,19 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/shopSecondary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ShopTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@android:color/white</item>
+        <item name="colorAccent">@color/shopAccent</item>
+    </style>
+
+    <style name="ClickableImageView">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+</resources>

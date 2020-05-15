@@ -1,0 +1,52 @@
+
+Ê
+9
+android*http://schemas.android.com/apk/res/android
+2
+app'http://schemas.android.com/apk/res-auto3androidx.coordinatorlayout.widget.CoordinatorLayout"T
+*http://schemas.android.com/apk/res/android
+background#E8E9EB"(Ô„2:PëÓ£ÿ"g
+*http://schemas.android.com/apk/res/androidid@+id/linearLayout"(Ğ„2
+£¤øid/linearLayout"a
+*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ*
+
+
+    !*
+    *
+    .*
+    /*
+    0*
+    2*
+
+    =*½
+´	ImageView"
+'http://schemas.android.com/apk/res-auto	srcCompat"@mipmap/ic_launcher_new_foreground"(áƒŒø2+
+)‚€¸ø!mipmap/ic_launcher_new_foreground"U
+*http://schemas.android.com/apk/res/android
+background	#00FFFFFF"(Ô„2:Hÿÿÿ"e
+*http://schemas.android.com/apk/res/androidid@+id/splash_logo"(Ğ„2
+÷¤øid/splash_logo"S
+*http://schemas.android.com/apk/res/androidlayout_gravitycenter"(³„2:8"S
+*http://schemas.android.com/apk/res/androidlayout_height357dp"(õ„2:hÊ"Y
+*http://schemas.android.com/apk/res/androidlayout_marginBottom100dp"(ú„2:hÈ"R
+*http://schemas.android.com/apk/res/androidlayout_width295dp"(ô„2:hÎ*
+
+    =*Ç
+¾TextView"n
+*http://schemas.android.com/apk/res/android
+fontFamily@font/font2_bold"(¬‡„2
+€ øfont/font2_bold"a
+*http://schemas.android.com/apk/res/androidid@+id/textView2"(Ğ„2
+‚¤øid/textView2"S
+*http://schemas.android.com/apk/res/androidlayout_gravitycenter"(³„2:8"a
+*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ"V
+*http://schemas.android.com/apk/res/androidlayout_marginTop100dp"(ø„2:hÈ"`
+*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"(ô„2:0şÿÿÿÿÿÿÿÿ"J
+*http://schemas.android.com/apk/res/androidtextContour Extractor(Ï‚„"S
+*http://schemas.android.com/apk/res/android	textColor#5F5B4C"(˜„2:PÌ¶ıú"L
+*http://schemas.android.com/apk/res/androidtextSize35dp"(•„2:hF*
+
+
+    $"*	
+'1

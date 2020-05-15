@@ -1,0 +1,2 @@
+rootProject.name='ContourExtractor'
+include ':app', ':opencv'
