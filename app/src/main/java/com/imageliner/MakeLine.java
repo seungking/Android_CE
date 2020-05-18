@@ -16,6 +16,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 
@@ -117,13 +118,14 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
         final TextView textView1 = (TextView)findViewById(R.id.textView_threshold1);
         SeekBar seekBar1=(SeekBar)findViewById(R.id.seekBar_threshold1);
         seekBar1.setProgress(threshold1);
-        seekBar1.setMax(200);
+        seekBar1.setMax(7);
 //        seekBar1.setMin(0);
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+                Log.d("LOG1", String.valueOf(progress));
                 threshold1 = progress;
                 textView1.setText(threshold1+"");
                 imageprocess_and_showResult(threshold1, threshold2);
@@ -145,12 +147,14 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
         final TextView textView2 = (TextView)findViewById(R.id.textView_threshold2);
         SeekBar seekBar2=(SeekBar)findViewById(R.id.seekBar_threshold2);
         seekBar2.setProgress(threshold2);
-        seekBar2.setMax(200);
+        seekBar2.setMax(7);
 //        seekBar2.setMin(0);
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                Log.d("LOG1", String.valueOf(progress));
                 threshold2 = progress;
                 textView2.setText(threshold2+"");
                 imageprocess_and_showResult(threshold1, threshold2);
@@ -182,7 +186,7 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 //                    BitmapDrawable d = (BitmapDrawable)((ImageView) findViewById(R.id.imageViewOutput)).getDrawable();
 //                    image_out = d.getBitmap();
 
-                    imagebalckwhite(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
+                    imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
                     bitmapOutput = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(img_output, bitmapOutput);
                     ((ImageView) findViewById(R.id.imageViewOutput)).setImageBitmap(bitmapOutput);
@@ -194,6 +198,13 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
                 }
                 else if(next == true){
+
+//                    new SweetAlertDialog(MakeLine.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+//                            .setTitleText("Sweet!")
+//                            .setContentText("Here's a custom image.")
+//                            .setCustomImage(R.drawable.blue_button_background)
+//                            .show();
+
                     ArrayList<Item> data =  new ArrayList<Item>();
                     ArrayList<String> titles = getStringArrayPref(MakeLine.this,"titles");
                     ArrayList<String> dates = getStringArrayPref(MakeLine.this,"dates");
@@ -245,9 +256,17 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
         isReady = true;
     }
 
-    public native void imageprocessing(long inputImage, long outputImage, int th1, int th2);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        imageprocess_and_showResult(threshold1, threshold2);
+    }
 
-    public native void imagebalckwhite(long inputImage, long outputImage, int th1, int th2);
+    public native void imageprocessing1(long inputImage, long outputImage, int th1, int th2);
+    public native void imagebalckwhite1(long inputImage, long outputImage, int th1, int th2);
+
+//    public native void imageprocessing2(long inputImage, long outputImage, int th1, int th2);
+//    public native void imagebalckwhite2(long inputImage, long outputImage, int th1, int th2);
 
     private void imageprocess_and_showResult(int th1, int th2) {
 
@@ -258,12 +277,12 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
         if (img_input == null)
             img_input = new Mat();
 
-        imageprocessing(img_input.getNativeObjAddr(), img_output.getNativeObjAddr(), th1, th2);
+        imageprocessing1(img_input.getNativeObjAddr(), img_output.getNativeObjAddr(), th1, th2);
 
 
-        bitmapOutput = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(img_output, bitmapOutput);
-        imageVIewOuput.setImageBitmap(bitmapOutput);
+        Bitmap bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img_output, bitmapOutput1);
+        imageVIewOuput.setImageBitmap(bitmapOutput1);
     }
 
 

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -63,7 +65,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         mStrokeImageView.setOnClickListener(this);
         mUndoImageView.setOnClickListener(this);
         mRedoImageView.setOnClickListener(this);
-
+		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
+		mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
 
 //        mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
 //        mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
@@ -115,6 +118,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 //		mDrawingView.setBackgroundColor(mCurrentBackgroundColor);
 //		mDrawingView.setPaintColor(mCurrentColor);
 //		mDrawingView.setPaintStrokeWidth(mCurrentStroke);
+		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
 	}
 
 	private void startFillBackgroundDialog()

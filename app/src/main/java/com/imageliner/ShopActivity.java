@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,12 +49,19 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         View.OnClickListener {
 
     private ArrayList<Item> data = new ArrayList<Item>();
+    ArrayList<String> check = new ArrayList<String>();
+    ArrayList<String> titles = new ArrayList<String>();
+    ArrayList<String> dates = new ArrayList<String>();
+    ArrayList<String> images = new ArrayList<String>();
+    ArrayList<String> simages = new ArrayList<String>();
 
     TextView currentItemName;
     TextView currentItemPrice;
     ImageView rateItemButton;
+    ImageView itemdelete;
     DiscreteScrollView itemPicker;
-    InfiniteScrollAdapter infiniteAdapter;
+    static InfiniteScrollAdapter infiniteAdapter;
+    ShopAdapter shopAdapter;
 
     Animation FabClose;
     Animation FabOpen;
@@ -61,9 +69,6 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     Animation FabRanticlockwise;
 
     Boolean isOpen = false;
-
-    int currentposition=0;
-    boolean start = false;
 
     Context context;
     PermissionListener permissionlistener = new PermissionListener() {
@@ -88,6 +93,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         currentItemName = (TextView) findViewById(R.id.item_name);
         currentItemPrice = (TextView) findViewById(R.id.item_price);
         rateItemButton = (ImageView) findViewById(R.id.painting);
+        itemdelete = (ImageView)findViewById(R.id.item_delete);
 
         findViewById(R.id.photo).setOnClickListener(this);
         findViewById(R.id.album).setOnClickListener(this);
@@ -95,11 +101,12 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
         findViewById(R.id.painting).setOnClickListener(this);
         findViewById(R.id.download).setOnClickListener(this);
-        findViewById(R.id.item_btn_comment).setOnClickListener(this);
+        findViewById(R.id.item_delete).setOnClickListener(this);
 
         findViewById(R.id.menu).setOnClickListener(this);
         findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
         findViewById(R.id.btn_transition_time).setOnClickListener(this);
+
     }
 
     @Override
@@ -113,11 +120,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 .setPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA")).check();
 
         data = new ArrayList<Item>();
-        ArrayList<String> check = getStringArrayPref(this,"check");
-        ArrayList<String> titles = getStringArrayPref(this,"titles");
-        ArrayList<String> dates = getStringArrayPref(this,"dates");
-        ArrayList<String> images = getStringArrayPref(this,"images");
-        ArrayList<String> simages = getStringArrayPref(this,"simages");
+        check = getStringArrayPref(this,"check");
+        titles = getStringArrayPref(this,"titles");
+        dates = getStringArrayPref(this,"dates");
+        images = getStringArrayPref(this,"images");
+        simages = getStringArrayPref(this,"simages");
         if(check.size()==0){
 
             Log.d("LOG1","onstart");
@@ -144,7 +151,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         itemPicker = (DiscreteScrollView) findViewById(R.id.item_picker);
         itemPicker.setOrientation(DSVOrientation.HORIZONTAL);
         itemPicker.addOnItemChangedListener(this);
-        ShopAdapter shopAdapter = new ShopAdapter(data);
+        shopAdapter = new ShopAdapter(data);
         infiniteAdapter = InfiniteScrollAdapter.wrap(shopAdapter);
         itemPicker.setAdapter(infiniteAdapter);
         itemPicker.setSlideOnFling(true);
@@ -162,6 +169,40 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.item_delete:
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setContentText("Won't be able to recover this file!")
+                        .setCancelText("Cancel")
+                        .setConfirmText("Delete")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                titles.remove(infiniteAdapter.getRealCurrentPosition());
+                                dates.remove(infiniteAdapter.getRealCurrentPosition());
+                                images.remove(infiniteAdapter.getRealCurrentPosition());
+                                simages.remove(infiniteAdapter.getRealCurrentPosition());
+
+                                shopAdapter.removeItem(infiniteAdapter.getRealCurrentPosition());
+
+                                setStringArrayPref(ShopActivity.this,"titles",titles);
+                                setStringArrayPref(ShopActivity.this,"dates",dates);
+                                setStringArrayPref(ShopActivity.this,"images",images);
+                                setStringArrayPref(ShopActivity.this,"simages",simages);
+
+
+                                sweetAlertDialog.dismiss();
+                            }
+                        })
+                        .show();
+                break;
             case R.id.download:
                 showUnsupportedSnackBar();
                 break;
@@ -198,29 +239,12 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                                 CookieBar.dismiss(ShopActivity.this);
                             }
                         })
-                        .setAction("Close1", new OnActionClickListener() {
-                            @Override
-                            public void onClick() {
-                                CookieBar.dismiss(ShopActivity.this);
-                                CookieBar.dismiss(ShopActivity.this);
-                            }
-                        })
                         .setEnableAutoDismiss(false) // Cookie will stay on display until manually dismissed
                         .setSwipeToDismiss(false)    // Deny dismiss by swiping off the view
                         .setCookiePosition(CookieBar.TOP)
                         .show();
                 break;
             case R.id.btn_transition_time:
-//                Log.d("LOG1", "transition time");
-//                Image tempimage = data.get(currentposition).getImage();
-//                ByteBuffer buffer = data.get(currentposition).getImage().getPlanes()[0].getBuffer();
-//                byte[] bytes = new byte[buffer.remaining()];
-//                buffer.get(bytes);
-//                Bitmap myBitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
-//                Bitmap bitmapImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
-
-//                Uri uri = FileManager.saveBitmap(this, R.id.);
-//                startShareDialog(uri);
                 break;
             case R.id.btn_smooth_scroll:
                 Log.d("LOG1", "scroll");
@@ -294,10 +318,12 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         currentItemPrice.setText(item.getDate());
     }
 
+    public static int getCurrentIndex(){
+        return infiniteAdapter.getRealCurrentPosition();
+    }
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int position) {
-        currentposition = position;
         int positionInDataSet = infiniteAdapter.getRealPosition(position);
         onItemChanged(data.get(positionInDataSet));
     }
@@ -377,4 +403,5 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         }
         edit.apply();
     }
+
 }

@@ -29,7 +29,6 @@ android {
 
         ndk {
             abiFilters "armeabi-v7a", "x86"
-//            , "armeabi", "mips"
         }
     }
 
@@ -40,18 +39,13 @@ android {
         }
     }
 
-//    splits{
-//        abi{
-//            enable true
-//            reset()
-//            include 'armeabi'
-//        }
-//    }
-
     allprojects {
         repositories {
             maven { url 'https://jitpack.io' }
         }
+    }
+    repositories {
+        mavenCentral()
     }
 }
 
@@ -72,4 +66,6 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.0.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'org.xdty.preference:color-picker:0.0.4'
+    implementation 'com.yashoid:instacropper:1.0.7'
+    implementation 'com.pnikosis:materialish-progress:1.0'
 }

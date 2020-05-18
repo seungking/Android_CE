@@ -11,7 +11,8 @@
         android:id="@+id/main_drawing_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.85" />
+        android:layout_weight="0.85"
+        android:foreground="@color/c1" />
 
     <LinearLayout
         android:layout_width="match_parent"
