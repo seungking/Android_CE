@@ -32,8 +32,6 @@ import java.util.ArrayList;
 
 public class ViewImage extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-
     private InstaCropperView mInstaCropper;
 
     int position=0;

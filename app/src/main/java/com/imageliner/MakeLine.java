@@ -1,6 +1,7 @@
 package com.imageliner;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,11 +29,31 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.RequestConfiguration.Builder;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.skydoves.colorpickerview.ActionMode;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.view.UCropView;
 
 import org.aviran.cookiebar2.CookieBar;
 import org.aviran.cookiebar2.OnActionClickListener;
@@ -48,10 +69,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import top.defaults.colorpicker.ColorPickerPopup;
+
 import static com.imageliner.ShopActivity.BitmapToString;
+import static com.imageliner.ShopActivity.getCurrentIndex;
 
 
-public class MakeLine extends AppCompatActivity implements View.OnClickListener {
+public class MakeLine extends AppCompatActivity  implements View.OnClickListener {
 
     static {
         System.loadLibrary("opencv_java4");
@@ -60,6 +84,8 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
     int line = Color.BLACK;
     int background = Color.WHITE;
+    int function = 0;
+    int prasecolor = 0;
 
     Bitmap bitmapOutput;
     ImageView imageVIewOuput;
@@ -80,33 +106,53 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
     boolean next = false;
 
+    private RewardedVideoAd mRewardedVideoAd;
+
+    public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
+        Intent intent = new Intent(context, MakeLine.class);
+        intent.setData(uri);
+        intent.putExtra("type",1);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_makeline);
 
-        Log.d("LOG1", "start");
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+        this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        this.mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        loadRewardedVideoAd();
+
         imageVIewOuput = (ImageView)findViewById(R.id.imageViewOutput);
 
         int type = getIntent().getIntExtra("type",-1);
-        Log.d("LOG1", "type" + String.valueOf(type));
         if(type == 1) {
-            Log.d("LOG1", "image");
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.setType("image/*");
-            startActivityForResult(intent, GET_GALLERY_IMAGE);
+            Uri uri = getIntent().getData();
+            if (uri != null) {
+                try {
+                    imageVIewOuput.setImageURI(uri);
+                } catch (Exception e) {
+                    Log.e(TAG, "setImageUri", e);
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+//            Intent intent = new Intent(Intent.ACTION_PICK);
+//            intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            intent.setType("image/*");
+//            startActivityForResult(intent, GET_GALLERY_IMAGE);
         }
         if(type == 2) {
-            Log.d("LOG1", "camera");
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             if (intent.resolveActivity(getPackageManager()) != null) {
                 File file = null;
-                try {
-                    file = createImageFile();
-                } catch (IOException unused) {
-                }
+//                try {
+//                    file = createImageFile();
+//                } catch (IOException unused) {
+//                }
                 if (file != null) {
                     this.photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), file);
                     intent.putExtra("output", this.photoUri);
@@ -183,8 +229,6 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
             public void onClick(View v) {
 
                 if(next == false){
-//                    BitmapDrawable d = (BitmapDrawable)((ImageView) findViewById(R.id.imageViewOutput)).getDrawable();
-//                    image_out = d.getBitmap();
 
                     imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
                     bitmapOutput = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
@@ -198,12 +242,6 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
                 }
                 else if(next == true){
-
-//                    new SweetAlertDialog(MakeLine.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-//                            .setTitleText("Sweet!")
-//                            .setContentText("Here's a custom image.")
-//                            .setCustomImage(R.drawable.blue_button_background)
-//                            .show();
 
                     ArrayList<Item> data =  new ArrayList<Item>();
                     ArrayList<String> titles = getStringArrayPref(MakeLine.this,"titles");
@@ -221,32 +259,20 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
                     setStringArrayPref(MakeLine.this,"images",images);
                     setStringArrayPref(MakeLine.this,"simages",simages);
 
+                    if (mRewardedVideoAd.isLoaded()) mRewardedVideoAd.show();
+
                     finish();
                 }
             }
         });
 
-        findViewById(R.id.background_1).setOnClickListener(this);
-        findViewById(R.id.background_2).setOnClickListener(this);
-        findViewById(R.id.background_3).setOnClickListener(this);
-        findViewById(R.id.background_4).setOnClickListener(this);
-        findViewById(R.id.background_5).setOnClickListener(this);
-        findViewById(R.id.background_6).setOnClickListener(this);
-        findViewById(R.id.background_7).setOnClickListener(this);
-        findViewById(R.id.background_8).setOnClickListener(this);
-        findViewById(R.id.background_9).setOnClickListener(this);
-        findViewById(R.id.background_10).setOnClickListener(this);
+//        findViewById(R.id.line_1).setOnClickListener(this);
 
-        findViewById(R.id.line_1).setOnClickListener(this);
-        findViewById(R.id.line_2).setOnClickListener(this);
-        findViewById(R.id.line_3).setOnClickListener(this);
-        findViewById(R.id.line_4).setOnClickListener(this);
-        findViewById(R.id.line_5).setOnClickListener(this);
-        findViewById(R.id.line_6).setOnClickListener(this);
-        findViewById(R.id.line_7).setOnClickListener(this);
-        findViewById(R.id.line_8).setOnClickListener(this);
-        findViewById(R.id.line_9).setOnClickListener(this);
-        findViewById(R.id.line_10).setOnClickListener(this);
+    }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+                new AdRequest.Builder().build());
     }
 
     @Override
@@ -294,6 +320,7 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
             if (data.getData() != null) {
                 Uri uri = data.getData();
+                Uri destinationUri = data.getData();
 
                 try {
                     String path = getRealPathFromURI(uri);
@@ -329,6 +356,7 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
             this.img_input = new Mat();
             Utils.bitmapToMat(decodeFile, this.img_input);
         }
+
     }
 
     private int exifOrientationToDegress(int i) {
@@ -379,6 +407,34 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
         return 0;
     }
 
+    public int getPrasecolor(){
+        return prasecolor;
+    }
+
+    public void setPraseColor(int color){
+        prasecolor = color;
+    }
+
+    public int getFunction(){
+        return function;
+    }
+
+    public void setFunction(int color){
+        function = color;
+    }
+
+    public void setBackground(int color){
+        bitmapOutput = replaceColor(bitmapOutput, background, getPrasecolor());
+        background = getPrasecolor();
+        imageVIewOuput.setImageBitmap(bitmapOutput);
+    }
+
+    public void setLine(int color){
+        bitmapOutput = replaceColor(bitmapOutput, line, getPrasecolor());
+        line = getPrasecolor();
+        imageVIewOuput.setImageBitmap(bitmapOutput);
+    }
+
     public Bitmap getRotatedBitmap(Bitmap bitmap, int degrees) throws Exception {
         if(bitmap == null) return null;
         if (degrees == 0) return bitmap;
@@ -398,102 +454,30 @@ public class MakeLine extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-                int function = 0;
-        int parseColor = 0;
         switch (v.getId()) {
-            case R.id.background_1:
-                parseColor = Color.parseColor("#D65353");
-                function=1;
-                break;
-            case R.id.background_2:
-                parseColor = Color.parseColor("#FD8B64");
-                function=1;
-                break;
-            case R.id.background_3:
-                parseColor = Color.parseColor("#FCD353");
-                function=1;
-                break;
-            case R.id.background_4:
-                parseColor = Color.parseColor("#99D45D");
-                function=1;
-                break;
-            case R.id.background_5:
-                parseColor = Color.parseColor("#0181BB");
-                function=1;
-                break;
-            case R.id.background_6:
-                parseColor = Color.parseColor("#234257");
-                function=1;
-                break;
-            case R.id.background_7:
-                parseColor = Color.parseColor("#9979C1");
-                function=1;
-                break;
-            case R.id.background_8:
-                parseColor = Color.parseColor("#FFFFFF");
-                function=1;
-                break;
-            case R.id.background_9:
-                parseColor = Color.parseColor("#6D7172");
-                function=1;
-                break;
-            case R.id.background_10:
-                parseColor = Color.parseColor("#FB050505");
-                function=1;
-                break;
-            case R.id.line_1:
-                parseColor = Color.parseColor("#D65353");
-                function=2;
-                break;
-            case R.id.line_2:
-                parseColor = Color.parseColor("#FD8B64");
-                function=2;
-                break;
-            case R.id.line_3:
-                parseColor = Color.parseColor("#FCD353");
-                function=2;
-                break;
-            case R.id.line_4:
-                parseColor = Color.parseColor("#99D45D");
-                function=2;
-                break;
-            case R.id.line_5:
-                parseColor = Color.parseColor("#0181BB");
-                function=2;
-                break;
-            case R.id.line_6:
-                parseColor = Color.parseColor("#234257");
-                function=2;
-                break;
-            case R.id.line_7:
-                parseColor = Color.parseColor("#9979C1");
-                function=2;
-                break;
-            case R.id.line_8:
-                parseColor = Color.parseColor("#FFFFFF");
-                function=2;
-                break;
-            case R.id.line_9:
-                parseColor = Color.parseColor("#6D7172");
-                function=2;
-                break;
-            case R.id.line_10:
-                parseColor = Color.parseColor("#FB050505");
-                function=2;
-                break;
+//            case R.id.line_1:
+//                new ColorPickerPopup.Builder(this)
+//                        .initialColor(Color.RED) // Set initial color
+//                        .enableBrightness(true) // Enable brightness slider or not
+//                        .enableAlpha(false) // Enable alpha slider or not
+//                        .okTitle("Choose")
+//                        .cancelTitle("Cancel")
+//                        .showIndicator(true)
+//                        .showIndicator(true)
+//                        .showValue(false)
+//                        .build()
+//                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
+//                            @Override
+//                            public void onColorPicked(int color) {
+////                                v.setBackgroundColor(color);
+//                                setPraseColor(color);
+//                                setFunction(2);
+//                                setBackground(color);
+//                            }
+//                        });
+//                break;
             default:
                 break;
-        }
-
-        if (function==1 && parseColor != background && parseColor != line) {
-            bitmapOutput = replaceColor(bitmapOutput, background, parseColor);
-            background = parseColor;
-            imageVIewOuput.setImageBitmap(bitmapOutput);
-        }
-        if (function==2 && parseColor != background && parseColor != line) {
-            bitmapOutput = replaceColor(bitmapOutput, line, parseColor);
-            line = parseColor;
-            imageVIewOuput.setImageBitmap(bitmapOutput);
         }
     }
 
