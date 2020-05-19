@@ -42,7 +42,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private FrameLayout mErrorFrame;
     private FrameLayout mSuccessFrame;
     private FrameLayout mProgressFrame;
-    private com.imageliner.SuccessTickView mSuccessTick;
+    private SuccessTickView mSuccessTick;
     private ImageView mErrorX;
     private View mSuccessLeftMask;
     private View mSuccessRightMask;
@@ -50,7 +50,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private ImageView mCustomImage;
     private Button mConfirmButton;
     private Button mCancelButton;
-    private com.imageliner.ProgressHelper mProgressHelper;
+    private ProgressHelper mProgressHelper;
     private FrameLayout mWarningFrame;
     private OnSweetClickListener mCancelClickListener;
     private OnSweetClickListener mConfirmClickListener;
@@ -72,10 +72,10 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     }
 
     public SweetAlertDialog(Context context, int alertType) {
-        super(context, com.imageliner.R.style.alert_dialog);
+        super(context, R.style.alert_dialog);
         setCancelable(true);
         setCanceledOnTouchOutside(false);
-        mProgressHelper = new com.imageliner.ProgressHelper(context);
+        mProgressHelper = new ProgressHelper(context);
         mAlertType = alertType;
         mErrorInAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.error_frame_in);
         mErrorXInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.error_x_in);
@@ -93,10 +93,10 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
                 childAnims.remove(idx);
             }
         }
-        mSuccessBowAnim = com.imageliner.OptAnimationLoader.loadAnimation(getContext(), com.imageliner.R.anim.success_bow_roate);
-        mSuccessLayoutAnimSet = (AnimationSet) com.imageliner.OptAnimationLoader.loadAnimation(getContext(), com.imageliner.R.anim.success_mask_layout);
-        mModalInAnim = (AnimationSet) com.imageliner.OptAnimationLoader.loadAnimation(getContext(), com.imageliner.R.anim.modal_in);
-        mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), com.imageliner.R.anim.modal_out);
+        mSuccessBowAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.success_bow_roate);
+        mSuccessLayoutAnimSet = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.success_mask_layout);
+        mModalInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_in);
+        mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_out);
         mModalOutAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -140,20 +140,20 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.alert_dialog);
 
         mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
-        mTitleTextView = (TextView)findViewById(com.imageliner.R.id.title_text);
-        mContentTextView = (TextView)findViewById(com.imageliner.R.id.content_text);
-        mErrorFrame = (FrameLayout)findViewById(com.imageliner.R.id.error_frame);
-        mErrorX = (ImageView)mErrorFrame.findViewById(com.imageliner.R.id.error_x);
-        mSuccessFrame = (FrameLayout)findViewById(com.imageliner.R.id.success_frame);
-        mProgressFrame = (FrameLayout)findViewById(com.imageliner.R.id.progress_dialog);
+        mTitleTextView = (TextView)findViewById(R.id.title_text);
+        mContentTextView = (TextView)findViewById(R.id.content_text);
+        mErrorFrame = (FrameLayout)findViewById(R.id.error_frame);
+        mErrorX = (ImageView)mErrorFrame.findViewById(R.id.error_x);
+        mSuccessFrame = (FrameLayout)findViewById(R.id.success_frame);
+        mProgressFrame = (FrameLayout)findViewById(R.id.progress_dialog);
         mSuccessTick = (SuccessTickView)mSuccessFrame.findViewById(R.id.success_tick);
-        mSuccessLeftMask = mSuccessFrame.findViewById(com.imageliner.R.id.mask_left);
-        mSuccessRightMask = mSuccessFrame.findViewById(com.imageliner.R.id.mask_right);
-        mCustomImage = (ImageView)findViewById(com.imageliner.R.id.custom_image);
-        mWarningFrame = (FrameLayout)findViewById(com.imageliner.R.id.warning_frame);
-        mConfirmButton = (Button)findViewById(com.imageliner.R.id.confirm_button);
-        mCancelButton = (Button)findViewById(com.imageliner.R.id.cancel_button);
-        mProgressHelper.setProgressWheel((ProgressWheel)findViewById(com.imageliner.R.id.progressWheel));
+        mSuccessLeftMask = mSuccessFrame.findViewById(R.id.mask_left);
+        mSuccessRightMask = mSuccessFrame.findViewById(R.id.mask_right);
+        mCustomImage = (ImageView)findViewById(R.id.custom_image);
+        mWarningFrame = (FrameLayout)findViewById(R.id.warning_frame);
+        mConfirmButton = (Button)findViewById(R.id.confirm_button);
+        mCancelButton = (Button)findViewById(R.id.cancel_button);
+        mProgressHelper.setProgressWheel((ProgressWheel)findViewById(R.id.progressWheel));
         mConfirmButton.setOnClickListener(this);
         mCancelButton.setOnClickListener(this);
 
@@ -173,7 +173,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mProgressFrame.setVisibility(View.GONE);
         mConfirmButton.setVisibility(View.VISIBLE);
 
-        mConfirmButton.setBackgroundResource(com.imageliner.R.drawable.blue_button_background);
+        mConfirmButton.setBackgroundResource(R.drawable.blue_button_background);
         mErrorFrame.clearAnimation();
         mErrorX.clearAnimation();
         mSuccessTick.clearAnimation();
@@ -210,7 +210,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
                     mSuccessRightMask.startAnimation(mSuccessLayoutAnimSet.getAnimations().get(1));
                     break;
                 case WARNING_TYPE:
-                    mConfirmButton.setBackgroundResource(com.imageliner.R.drawable.red_button_background);
+                    mConfirmButton.setBackgroundResource(R.drawable.red_button_background);
                     mWarningFrame.setVisibility(View.VISIBLE);
                     break;
                 case CUSTOM_IMAGE_TYPE:
@@ -361,13 +361,13 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == com.imageliner.R.id.cancel_button) {
+        if (v.getId() == R.id.cancel_button) {
             if (mCancelClickListener != null) {
                 mCancelClickListener.onClick(SweetAlertDialog.this);
             } else {
                 dismissWithAnimation();
             }
-        } else if (v.getId() == com.imageliner.R.id.confirm_button) {
+        } else if (v.getId() == R.id.confirm_button) {
             if (mConfirmClickListener != null) {
                 mConfirmClickListener.onClick(SweetAlertDialog.this);
             } else {

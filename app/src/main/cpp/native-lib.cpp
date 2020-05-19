@@ -45,31 +45,31 @@ Java_com_imageliner_MakeLine_imageprocessing1(JNIEnv *env, jobject thiz, jlong i
 //        }
 //    }
 ///////////////////////////////////////////////////////////////////////////////
-    cv::Mat src, src_gray;
+    cv::Mat src, src_gray, src_result;
     src = *(Mat *) input_image;
     cv::Mat grad;
-    double scale = 7;
-//    double scale = th1 * 0.35;
+//    double scale = 7;
+    double scale = th1 * 0.35;
     double delta = 5;
 //    double delta = th2;
     int ddepth = CV_16S;
 
-    cv::GaussianBlur( src, src, Size(3,3), 0, 0, BORDER_DEFAULT );
+    cv::GaussianBlur( src, src_gray, Size(3,3), 0, 0, BORDER_DEFAULT );
 
     /// Convert it to gray
-    cv::cvtColor( src, src_gray, COLOR_RGB2GRAY );
+    cv::cvtColor( src_gray, src_result, COLOR_RGB2GRAY );
 
     /// Generate grad_x and grad_y
     cv::Mat grad_x, grad_y;
     cv::Mat abs_grad_x, abs_grad_y;
 
     /// Gradient X
-    cv::Sobel( src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT );
+    cv::Sobel( src_result, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT );
 
     cv::convertScaleAbs( grad_x, abs_grad_x );
 
     /// Gradient Y
-    cv::Sobel( src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT );
+    cv::Sobel( src_result, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT );
     cv::convertScaleAbs( grad_y, abs_grad_y );
     cv::addWeighted( abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad );
 
@@ -93,7 +93,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite1(JNIEnv *env, jobject thiz, jlong i
     {
         for (int y = 0; y < img_output.cols; y++)
         {
-            if (img_output.at<uchar>(x, y) > 100)
+            if (img_output.at<uchar>(x, y) > 50)
             {
                 img_output.at<uchar>(x,y) = 255;
             }
@@ -162,7 +162,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite2(JNIEnv *env, jobject thiz, jlong i
     {
         for (int y = 0; y < img_output.cols; y++)
         {
-            if (img_output.at<uchar>(x, y) > 60)
+            if (img_output.at<uchar>(x, y) > 80)
             {
                 img_output.at<uchar>(x,y) = 0;
             }

@@ -17,6 +17,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ViewImage"></activity>
         <activity android:name=".Painting" />
+        <activity android:name=".SampleActivity" />
+        <activity android:name=".ResultActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".MakeColor" /> <!-- <activity android:name=".MakeLine" /> -->
         <activity android:name=".ShopActivity">
             <intent-filter>
@@ -38,6 +45,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
     </application>
 
 </manifest>

@@ -25,9 +25,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.yalantis.ucrop.UCrop;
 import com.yarolegovich.discretescrollview.DSVOrientation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
@@ -83,12 +90,24 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         }
     };
 
+    private AdView mAdView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         context = this.getBaseContext();
         Log.d("LOG1", "start");
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
 
         currentItemName = (TextView) findViewById(R.id.item_name);
         currentItemPrice = (TextView) findViewById(R.id.item_price);
@@ -245,6 +264,9 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         .show();
                 break;
             case R.id.btn_transition_time:
+                Intent intentalbum1 = new Intent(ShopActivity.this, SampleActivity.class);
+                intentalbum1.putExtra("type",2);;
+                startActivity(intentalbum1);
                 break;
             case R.id.btn_smooth_scroll:
                 Log.d("LOG1", "scroll");
@@ -279,7 +301,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 }
                 break;
             case R.id.photo:
-                Intent intentphoto = new Intent(ShopActivity.this, MakeLine.class);
+                Intent intentphoto = new Intent(ShopActivity.this, SampleActivity.class);
                 intentphoto.putExtra("type",2);;
                 startActivity(intentphoto);
                 break;
