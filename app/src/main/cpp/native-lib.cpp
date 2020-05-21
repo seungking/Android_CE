@@ -48,8 +48,8 @@ Java_com_imageliner_MakeLine_imageprocessing1(JNIEnv *env, jobject thiz, jlong i
     cv::Mat src, src_gray, src_result;
     src = *(Mat *) input_image;
     cv::Mat grad;
-//    double scale = 7;
-    double scale = th1 * 0.35;
+    double scale = 7;
+//    double scale = th1 * 0.35;
     double delta = 5;
 //    double delta = th2;
     int ddepth = CV_16S;
@@ -125,10 +125,10 @@ Java_com_imageliner_MakeLine_imageprocessing2(JNIEnv *env, jobject thiz, jlong i
     src = img_input;
 
 //    /// Remove noise by blurring with a Gaussian filter
-    cv::GaussianBlur( src, src, Size(7,7), 0, 0, BORDER_DEFAULT );
+    cv::GaussianBlur( src, src_gray, Size(7,7), 0, 0, BORDER_DEFAULT );
 
     /// Convert the image to grayscale
-    cv::cvtColor( src, src_gray, COLOR_RGB2GRAY );
+    cv::cvtColor( src_gray, src_gray, COLOR_RGB2GRAY );
 
     /// Apply Laplace function
     cv::Mat abs_dst;

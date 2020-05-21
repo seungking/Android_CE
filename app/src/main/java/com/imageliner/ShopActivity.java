@@ -255,7 +255,6 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                             @Override
                             public void onClick() {
                                 CookieBar.dismiss(ShopActivity.this);
-                                CookieBar.dismiss(ShopActivity.this);
                             }
                         })
                         .setEnableAutoDismiss(false) // Cookie will stay on display until manually dismissed
@@ -301,18 +300,17 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 }
                 break;
             case R.id.photo:
-                Intent intentphoto = new Intent(ShopActivity.this, SampleActivity.class);
+                Intent intentphoto = new Intent(ShopActivity.this, MakeLine.class);
                 intentphoto.putExtra("type",2);;
                 startActivity(intentphoto);
                 break;
             case R.id.album:
-                Intent intentalbum = new Intent(ShopActivity.this, MakeLine.class);
+                Intent intentalbum = new Intent(ShopActivity.this, SampleActivity.class);
                 intentalbum.putExtra("type",1);
                 startActivity(intentalbum);
                 break;
             case R.id.painting:
                 Intent intentpainting= new Intent(ShopActivity.this, Painting.class);
-                intentpainting.putExtra("type",1);
                 startActivity(intentpainting);
                 break;
             default:

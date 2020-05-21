@@ -20,7 +20,7 @@
             android:layout_gravity="start"
             android:layout_margin="8dp"
             android:padding="8dp"
-            android:src="@drawable/ic_more_horiz_black_24dp" />
+            android:src="@drawable/ic_arrow_back_black_24dp" />
 
         <ImageView
             android:id="@+id/line_next"
@@ -34,7 +34,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
-            android:src="@drawable/ic_add_black_27dp" />
+            android:src="@drawable/ic_arrow_forward_black_24dp" />
 
     </RelativeLayout>
 
@@ -64,23 +64,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:layout_width="match_parent"
-                android:orientation="horizontal">
-                <SeekBar
-                    android:id="@+id/seekBar_threshold1"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.9"
-                    android:layout_height="match_parent"/>
-                <TextView
-                    android:id="@+id/textView_threshold1"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.1"
-                    android:layout_height="match_parent" />
+<!--            <LinearLayout-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1.5"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:orientation="horizontal">-->
+<!--                <SeekBar-->
+<!--                    android:id="@+id/seekBar_threshold1"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="0.9"-->
+<!--                    android:layout_height="match_parent"/>-->
+<!--                <TextView-->
+<!--                    android:id="@+id/textView_threshold1"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="0.1"-->
+<!--                    android:layout_height="match_parent" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_height="0dp"
@@ -99,33 +99,37 @@
 <!--                    android:layout_height="match_parent" />-->
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/candidate1"
-                    android:padding="8dp" />
+                    style="@style/ClickableImageView"
+                    android:padding="8dp"
+                    android:id="@+id/candidate1" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/ClickableImageView"
+                    android:padding="8dp"
+                    android:id="@+id/candidate2" />
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/candidate2"
-                    android:padding="8dp" />
+                    style="@style/ClickableImageView"
+                    android:padding="8dp"
+                    android:id="@+id/candidate3" />
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/candidate3"
-                    android:padding="8dp" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/candidate4"
-                    android:padding="8dp" />
+                    style="@style/ClickableImageView"
+                    android:padding="8dp"
+                    android:id="@+id/candidate4" />
 
             </LinearLayout>
-
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/makeline_color"
@@ -141,6 +145,7 @@
                 android:src="@drawable/ic_file_download_black_24dp"
                 android:tint="@android:color/white"
                 app:backgroundTint="#FF9800"
+                android:id="@+id/changebackground"
                 app:rippleColor="@color/shopFabRipple" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -150,6 +155,7 @@
                 android:tint="@android:color/white"
                 android:layout_weight="1"
                 app:backgroundTint="#FF9800"
+                android:id="@+id/changecolor"
                 app:rippleColor="@color/shopFabRipple" />
 
         </LinearLayout>

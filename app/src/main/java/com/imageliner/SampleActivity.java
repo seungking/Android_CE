@@ -2,6 +2,7 @@ package com.imageliner;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -78,14 +79,32 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     private int mStatusBarColor;
     private int mToolbarWidgetColor;
 
+    public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
+        Log.d("LOG1", "smapleactivity startwithuri");
+        Intent intent = new Intent(context, SampleActivity.class);
+        intent.setData(uri);
+        intent.putExtra("type",2);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         setupUI();
-        pickFromGallery();
+
+        Log.d("LOG1", "sampleactivity");
+        Intent intent = getIntent();
+        int check = intent.getIntExtra("type", -1);
+        if(check==2){
+            Log.d("LOG1", "sample check 1 " + String.valueOf(check));
+            Uri uri = getIntent().getData();
+            startCrop(uri);
+        }
+        else pickFromGallery();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
