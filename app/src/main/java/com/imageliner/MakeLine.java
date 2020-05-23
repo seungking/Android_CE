@@ -89,14 +89,18 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     int function = 0;
     int prasecolor = 0;
 
-    Bitmap bitmapOutput;
-    Bitmap bitmapOutput2;
+    private Bitmap cbitmapOutput;
+    private Bitmap bitmapOutput1;
+    private Bitmap bitmapOutput2;
+    private Bitmap bitmapOutput3;
+    private Bitmap bitmapOutput4;
     ImageView imageVIewOuput;
     ImageView can1;
     ImageView can2;
     ImageView can3;
     ImageView can4;
     private Mat img_input;
+    private Mat cmat;
     private Mat img_output;
     private Mat img_output2;
     private Mat img_output3;
@@ -154,17 +158,19 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
         int type = getIntent().getIntExtra("type",-1);
         if(type == 1) {
+            Log.d("LOG1", "type1");
             Uri uri = getIntent().getData();
             if (uri != null) {
                 try {
+                    Log.d("LOG1", "type1 1");
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-
+                    Log.d("LOG1", "type1 2");
                     img_input = new Mat();
                     Bitmap bmp32 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                     Utils.bitmapToMat(bmp32, img_input);
-
+                    Log.d("LOG1", "type1 3");
                     imageVIewOuput.setImageURI(uri);
-
+                    Log.d("LOG1", "type1 4");
                 } catch (Exception e) {
                     Log.e(TAG, "setImageUri", e);
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -195,10 +201,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
                 if(next == false){
 
-                    imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
-                    bitmapOutput = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(img_output, bitmapOutput);
-                    ((ImageView) findViewById(R.id.imageViewOutput)).setImageBitmap(bitmapOutput);
+                    ((ImageView) findViewById(R.id.imageViewOutput)).setImageBitmap(cbitmapOutput);
 
                     findViewById(R.id.makeline_seekbar).setVisibility(View.INVISIBLE);
                     findViewById(R.id.makeline_color).setVisibility(View.VISIBLE);
@@ -218,8 +221,8 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
                     titles.add("Untitled");
                     dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
-                    images.add(BitmapToString(bitmapOutput));
-                    simages.add(BitmapToString(Bitmap.createScaledBitmap(bitmapOutput, (int) bitmapOutput.getWidth()/2, (int) bitmapOutput.getHeight()/2, true)));
+                    images.add(BitmapToString(cbitmapOutput));
+                    simages.add(BitmapToString(Bitmap.createScaledBitmap(cbitmapOutput, (int) cbitmapOutput.getWidth()/2, (int) cbitmapOutput.getHeight()/2, true)));
 
                     setStringArrayPref(MakeLine.this,"titles",titles);
                     setStringArrayPref(MakeLine.this,"dates",dates);
@@ -243,13 +246,14 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("LOG1", "RESUME");
         isReady = true;
         imageprocess_and_showResult(5, 5);
     }
 
     @Override
     protected void onStart() {
+        Log.d("LOG1", "START");
         super.onStart();
     }
 
@@ -259,8 +263,15 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     public native void imageprocessing2(long inputImage, long outputImage, int th1, int th2);
     public native void imagebalckwhite2(long inputImage, long outputImage, int th1, int th2);
 
+    public native void imageprocessing3(long inputImage, long outputImage, int th1, int th2);
+    public native void imagebalckwhite3(long inputImage, long outputImage, int th1, int th2);
+
+    public native void imageprocessing4(long inputImage, long outputImage, int th1, int th2);
+    public native void imagebalckwhite4(long inputImage, long outputImage, int th1, int th2);
+
     private void imageprocess_and_showResult(int th1, int th2) {
 
+        Log.d("LOG1", "imageprocess_and_showResult");
         if (isReady==false) return;
 
         if (img_output == null)
@@ -277,23 +288,27 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         imageprocessing1(img_input.getNativeObjAddr(), img_output.getNativeObjAddr(), th1, th2);
         imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
         imageprocessing2(img_input.getNativeObjAddr(), img_output2.getNativeObjAddr(), th1, th2);
-        imagebalckwhite1(img_output2.getNativeObjAddr(), img_output2.getNativeObjAddr(), 0, 0);
+        imagebalckwhite2(img_output2.getNativeObjAddr(), img_output2.getNativeObjAddr(), 0, 0);
+        imageprocessing3(img_input.getNativeObjAddr(), img_output3.getNativeObjAddr(), th1, th2);
+        imagebalckwhite3(img_output3.getNativeObjAddr(), img_output3.getNativeObjAddr(), 0, 0);
+        imageprocessing4(img_input.getNativeObjAddr(), img_output4.getNativeObjAddr(), th1, th2);
+        imagebalckwhite4(img_output4.getNativeObjAddr(), img_output4.getNativeObjAddr(), 0, 0);
 
-        Bitmap bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
+        bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output, bitmapOutput1);
         imageVIewOuput.setImageBitmap(bitmapOutput1);
         can1.setImageBitmap(bitmapOutput1);
 
-        Bitmap bitmapOutput2 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
+        bitmapOutput2 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output2, bitmapOutput2);
         can2.setImageBitmap(bitmapOutput2);
 
-        Bitmap bitmapOutput3 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(img_output, bitmapOutput3);
+        bitmapOutput3 = Bitmap.createBitmap(img_output3.cols(), img_output3.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img_output3, bitmapOutput3);
         can3.setImageBitmap(bitmapOutput3);
 
-        Bitmap bitmapOutput4 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(img_output2, bitmapOutput4);
+        bitmapOutput4 = Bitmap.createBitmap(img_output4.cols(), img_output4.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img_output4, bitmapOutput4);
         can4.setImageBitmap(bitmapOutput4);
 
     }
@@ -340,7 +355,6 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
             }
             decodeFile = rotate(decodeFile, -270.0f);
             SampleActivity.startWithUri(MakeLine.this, getImageUri(MakeLine.this, decodeFile));
-            finish();
 //            ((ImageView) findViewById(R.id.imageViewOutput)).setImageBitmap(decodeFile);
 //            this.img_input = new Mat();
 //            Utils.bitmapToMat(decodeFile, this.img_input);
@@ -356,7 +370,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         Matrix matrix = new Matrix();
         matrix.postRotate(f);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-}
+    }
 
     private String getRealPathFromURI(Uri contentUri) {
 
@@ -413,21 +427,21 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     }
 
     public void setBackground(int color){
-        bitmapOutput = replaceColor(bitmapOutput, background, getPrasecolor());
+        cbitmapOutput = replaceColor(cbitmapOutput, background, getPrasecolor());
         background = getPrasecolor();
-        imageVIewOuput.setImageBitmap(bitmapOutput);
+        imageVIewOuput.setImageBitmap(cbitmapOutput);
     }
 
     public void setColor(int color){
-        bitmapOutput = replaceColor(bitmapOutput, line, getPrasecolor());
+        cbitmapOutput = replaceColor(cbitmapOutput, line, getPrasecolor());
         line = getPrasecolor();
-        imageVIewOuput.setImageBitmap(bitmapOutput);
+        imageVIewOuput.setImageBitmap(cbitmapOutput);
     }
 
     public void setLine(int color){
-        bitmapOutput = replaceColor(bitmapOutput, line, getPrasecolor());
+        cbitmapOutput = replaceColor(cbitmapOutput, line, getPrasecolor());
         line = getPrasecolor();
-        imageVIewOuput.setImageBitmap(bitmapOutput);
+        imageVIewOuput.setImageBitmap(cbitmapOutput);
     }
 
     public Bitmap getRotatedBitmap(Bitmap bitmap, int degrees) throws Exception {
@@ -450,49 +464,31 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.line_1:
-//                new ColorPickerPopup.Builder(this)
-//                        .initialColor(Color.RED) // Set initial color
-//                        .enableBrightness(true) // Enable brightness slider or not
-//                        .enableAlpha(false) // Enable alpha slider or not
-//                        .okTitle("Choose")
-//                        .cancelTitle("Cancel")
-//                        .showIndicator(true)
-//                        .showIndicator(true)
-//                        .showValue(false)
-//                        .build()
-//                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
-//                            @Override
-//                            public void onColorPicked(int color) {
-////                                v.setBackgroundColor(color);
-//                                setPraseColor(color);
-//                                setFunction(2);
-//                                setBackground(color);
-//                            }
-//                        });
-//                break;
+            case R.id.line_back:
+                finish();
+                break;
             case R.id.candidate1 :
                 Log.d("LOG1", "can1");
-                Bitmap bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(img_output, bitmapOutput1);
+                cmat = img_output;
+                cbitmapOutput = bitmapOutput1;
                 imageVIewOuput.setImageBitmap(bitmapOutput1);
                 break;
             case R.id.candidate2 :
                 Log.d("LOG1", "can2");
-                Bitmap bitmapOutput2 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(img_output2, bitmapOutput2);
+                cmat = img_output2;
+                cbitmapOutput = bitmapOutput2;
                 imageVIewOuput.setImageBitmap(bitmapOutput2);
                 break;
             case R.id.candidate3 :
                 Log.d("LOG1", "can3");
-                Bitmap bitmapOutput3 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(img_output, bitmapOutput3);
+                cmat = img_output3;
+                cbitmapOutput = bitmapOutput3;
                 imageVIewOuput.setImageBitmap(bitmapOutput3);
                 break;
             case R.id.candidate4 :
                 Log.d("LOG1", "can4");
-                Bitmap bitmapOutput4 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(img_output2, bitmapOutput4);
+                cmat = img_output4;
+                cbitmapOutput = bitmapOutput4;
                 imageVIewOuput.setImageBitmap(bitmapOutput4);
                 break;
             case R.id.changebackground :
@@ -542,7 +538,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         }
     }
 
-        public Bitmap replaceColor(Bitmap bitmap, int i, int i2) {
+    public Bitmap replaceColor(Bitmap bitmap, int i, int i2) {
         if (bitmap == null) {
             return null;
         }
@@ -560,7 +556,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         return bitmap;
     }
 
-        private ArrayList<String> getStringArrayPref(Context context, String str) {
+    private ArrayList<String> getStringArrayPref(Context context, String str) {
         String string = PreferenceManager.getDefaultSharedPreferences(context).getString(str, null);
         ArrayList arrayList = new ArrayList();
         if (string != null) {

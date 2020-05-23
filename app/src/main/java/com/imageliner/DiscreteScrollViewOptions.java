@@ -2,6 +2,7 @@ package com.imageliner;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class DiscreteScrollViewOptions extends AppCompatActivity {
     private static DiscreteScrollViewOptions instance;
@@ -35,13 +40,14 @@ public class DiscreteScrollViewOptions extends AppCompatActivity {
         int itemCount = (adapter instanceof InfiniteScrollAdapter) ?
                 ((InfiniteScrollAdapter) adapter).getRealItemCount() :
                 adapter.getItemCount();
+        final ArrayList<String>titles = getStringArrayPref(scrollView.getContext(),"titles");
         for (int i = 0; i < itemCount; i++) {
-            menu.add(String.valueOf(i + 1));
+            menu.add(titles.get(i));
         }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                int destination = Integer.parseInt(String.valueOf(item.getTitle())) - 1;
+                int destination = titles.indexOf(item.getTitle());
                 if (adapter instanceof InfiniteScrollAdapter) {
                     destination = ((InfiniteScrollAdapter) adapter).getClosestPosition(destination);
                 }
@@ -71,5 +77,21 @@ public class DiscreteScrollViewOptions extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public static ArrayList<String> getStringArrayPref(Context context, String str) {
+        String string = PreferenceManager.getDefaultSharedPreferences(context).getString(str, null);
+        ArrayList arrayList = new ArrayList();
+        if (string != null) {
+            try {
+                JSONArray jSONArray = new JSONArray(string);
+                for (int i = 0; i < jSONArray.length(); i++) {
+                    arrayList.add(jSONArray.optString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayList;
     }
 }

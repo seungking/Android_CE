@@ -107,12 +107,17 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     @SuppressLint("MissingSuperCall")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("LOG1", "activity1");
         if (resultCode == RESULT_OK) {
+            Log.d("LOG1", "activity2");
             if (requestCode == requestMode) {
+                Log.d("LOG1", "activity3");
                 final Uri selectedUri = data.getData();
                 if (selectedUri != null) {
+                    Log.d("LOG1", "activity4");
                     startCrop(selectedUri);
                 } else {
+                    Log.d("LOG1", "out of album");
                     Toast.makeText(SampleActivity.this, "11111111", Toast.LENGTH_SHORT).show();
                 }
             } else if (requestCode == UCrop.REQUEST_CROP) {
@@ -228,19 +233,21 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     }
 
     private void pickFromGallery() {
+        Log.d("LOG1", "pick from gallery1");
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
                 .setType("image/*")
                 .addCategory(Intent.CATEGORY_OPENABLE);
-
+        Log.d("LOG1", "pick from gallery2");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             String[] mimeTypes = {"image/jpeg", "image/png"};
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         }
-
+        Log.d("LOG1", "pick from gallery3");
         startActivityForResult(Intent.createChooser(intent, getString(R.string.LOADING)), requestMode);
     }
 
     private void startCrop(@NonNull Uri uri) {
+        Log.d("LOG1", "startcrop1");
         String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
         switch (mRadioGroupCompressionSettings.getCheckedRadioButtonId()) {
             case R.id.radio_png:
@@ -250,12 +257,12 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
                 destinationFileName += ".jpg";
                 break;
         }
-
+        Log.d("LOG1", "startcrop2");
         UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
-
+        Log.d("LOG1", "startcrop3");
         uCrop = basisConfig(uCrop);
         uCrop = advancedConfig(uCrop);
-
+        Log.d("LOG1", "startcrop4");
         if (requestMode == REQUEST_SELECT_PICTURE_FOR_FRAGMENT) {       //if build variant = fragment
             setupFragment(uCrop);
         } else {                                                        // else start uCrop Activity
@@ -332,53 +339,6 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
         options.setHideBottomControls(mCheckBoxHideBottomControls.isChecked());
         options.setFreeStyleCropEnabled(mCheckBoxFreeStyleCrop.isChecked());
 
-        /*
-        If you want to configure how gestures work for all UCropActivity tabs
-
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL);
-        * */
-
-        /*
-        This sets max size for bitmap that will be decoded from source Uri.
-        More size - more memory allocation, default implementation uses screen diagonal.
-
-        options.setMaxBitmapSize(640);
-        * */
-
-
-       /*
-
-        Tune everything (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
-
-        options.setMaxScaleMultiplier(5);
-        options.setImageToCropBoundsAnimDuration(666);
-        options.setDimmedLayerColor(Color.CYAN);
-        options.setCircleDimmedLayer(true);
-        options.setShowCropFrame(false);
-        options.setCropGridStrokeWidth(20);
-        options.setCropGridColor(Color.GREEN);
-        options.setCropGridColumnCount(2);
-        options.setCropGridRowCount(1);
-        options.setToolbarCropDrawable(R.drawable.your_crop_icon);
-        options.setToolbarCancelDrawable(R.drawable.your_cancel_icon);
-
-        // Color palette
-        options.setToolbarColor(ContextCompat.getColor(this, R.color.your_color_res));
-        options.setStatusBarColor(ContextCompat.getColor(this, R.color.your_color_res));
-        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
-        options.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.your_color_res));
-        options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
-
-        // Aspect ratio options
-        options.setAspectRatioOptions(1,
-            new AspectRatio("WOW", 1, 2),
-            new AspectRatio("MUCH", 3, 4),
-            new AspectRatio("RATIO", CropImageView.DEFAULT_ASPECT_RATIO, CropImageView.DEFAULT_ASPECT_RATIO),
-            new AspectRatio("SO", 16, 9),
-            new AspectRatio("ASPECT", 1, 1));
-
-       */
-
         return uCrop.withOptions(options);
     }
 
@@ -386,7 +346,6 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
         final Uri resultUri = UCrop.getOutput(result);
         if (resultUri != null) {
             MakeLine.startWithUri(SampleActivity.this, resultUri);
-            finish();
         } else {
         }
     }

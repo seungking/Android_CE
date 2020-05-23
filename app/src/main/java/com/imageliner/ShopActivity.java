@@ -14,26 +14,35 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewManager;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.vansuita.materialabout.builder.AboutBuilder;
+import com.vansuita.materialabout.views.AboutView;
 import com.yalantis.ucrop.UCrop;
 import com.yarolegovich.discretescrollview.DSVOrientation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -61,6 +70,10 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     ArrayList<String> dates = new ArrayList<String>();
     ArrayList<String> images = new ArrayList<String>();
     ArrayList<String> simages = new ArrayList<String>();
+
+    LinearLayout linearLayout;
+    AboutView view;
+    private InterstitialAd mInterstitialAd;
 
     TextView currentItemName;
     TextView currentItemPrice;
@@ -107,7 +120,46 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                showUnsupportedSnackBar();
+                // Code to be executed when the interstitial ad is closed.
+            }
+        });
+
+        linearLayout = (LinearLayout)findViewById(R.id.mliner);
+        linearLayout.setOnClickListener(this);
+        linearLayout.setClickable(false);
 
         currentItemName = (TextView) findViewById(R.id.item_name);
         currentItemPrice = (TextView) findViewById(R.id.item_price);
@@ -125,6 +177,19 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         findViewById(R.id.menu).setOnClickListener(this);
         findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
         findViewById(R.id.btn_transition_time).setOnClickListener(this);
+
+        view = AboutBuilder.with(this)
+                .setCover(R.mipmap.ic_launcher_round)
+                .setAppIcon(R.mipmap.ic_launcher_foreground)
+                .setAppName(R.string.app_name)
+                .addFiveStarsAction()
+                .addFeedbackAction("ahnseungkl@gmail.com")
+                .setWrapScrollView(true)
+                .setLinksAnimated(true)
+                .addDonateAction((Intent)null)
+                .setVersionNameAsAppSubTitle()
+                .addRemoveAdsAction(new Intent(ShopActivity.this, Painting.class))
+                .build();
 
     }
 
@@ -188,6 +253,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mliner :
+                ((ViewManager) view.getParent()).removeView(view);
+                linearLayout.setClickable(false);
+                Log.d("LOG1", "layout clicked");
+                break;
             case R.id.item_delete:
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Are you sure?")
@@ -223,44 +293,22 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         .show();
                 break;
             case R.id.download:
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
                 showUnsupportedSnackBar();
                 break;
             case R.id.menu:
                 Log.d("LOG1", "menu");
-                CookieBar.build(ShopActivity.this)
-                        .setCustomView(R.layout.custom_cooki)
-//                        .setCustomViewInitializer(new CookieBar.CustomViewInitializer() {
-//                            @Override
-//                            public void initView(View view) {
-//
-////                                Button btnNew = view.findViewById(R.id.custom_cookie_btn_new);
-////                                Button btnOpen = view.findViewById(R.id.custom_cookie_btn_open);
-////                                Button btnSave = view.findViewById(R.id.custom_cookie_btn_save);
-//
-////                                View.OnClickListener btnListener = new View.OnClickListener() {
-////
-////                                    @Override
-////                                    public void onClick(View view) {
-////                                        Button button = (Button) view;
-////                                        button.setText("R.string.clicked");
-////                                    }
-////                                };
-////
-////                                btnNew.setOnClickListener(btnListener);
-////                                btnOpen.setOnClickListener(btnListener);
-////                                btnSave.setOnClickListener(btnListener);
-//                            }
-//                        })
-                        .setAction("Close", new OnActionClickListener() {
-                            @Override
-                            public void onClick() {
-                                CookieBar.dismiss(ShopActivity.this);
-                            }
-                        })
-                        .setEnableAutoDismiss(false) // Cookie will stay on display until manually dismissed
-                        .setSwipeToDismiss(false)    // Deny dismiss by swiping off the view
-                        .setCookiePosition(CookieBar.TOP)
-                        .show();
+
+                Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+                addContentView(view, new LinearLayout.LayoutParams(display.getWidth()-10, display.getHeight()*2/5));
+                linearLayout.setClickable(true);
+
                 break;
             case R.id.btn_transition_time:
                 Intent intentalbum1 = new Intent(ShopActivity.this, SampleActivity.class);
