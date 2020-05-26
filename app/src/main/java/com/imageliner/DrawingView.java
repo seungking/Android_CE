@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,16 +17,18 @@ import java.util.ArrayList;
 
 public class DrawingView extends View
 {
-	private Path mDrawPath;
-	private Paint mBackgroundPaint;
-	private Paint mDrawPaint;
-	private Canvas mDrawCanvas;
-	private Bitmap mCanvasBitmap;
+	Path mDrawPath;
+	Paint mBackgroundPaint;
+	Bitmap mBitmapBackground;
+	Paint mDrawPaint;
+	Canvas mDrawCanvas;
+	Bitmap mCanvasBitmap;
+	Bitmap temp;
 
-	private ArrayList<Path> mPaths = new ArrayList<>();
-	private ArrayList<Paint> mPaints = new ArrayList<>();
-	private ArrayList<Path> mUndonePaths = new ArrayList<>();
-	private ArrayList<Paint> mUndonePaints = new ArrayList<>();
+	ArrayList<Path> mPaths = new ArrayList<>();
+	ArrayList<Paint> mPaints = new ArrayList<>();
+	ArrayList<Path> mUndonePaths = new ArrayList<>();
+	ArrayList<Paint> mUndonePaints = new ArrayList<>();
 
 	// Set default values
 	private int mBackgroundColor = 0xFFFFFFFF;
@@ -42,7 +45,9 @@ public class DrawingView extends View
 	{
 		mDrawPath = new Path();
 		mBackgroundPaint = new Paint();
+		temp = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 		initPaint();
+		Log.d("LOG1", "drawingview 1");
 	}
 
 	private void initPaint()
@@ -57,14 +62,37 @@ public class DrawingView extends View
 
 		mDrawCanvas = new Canvas();
 
+		mBitmapBackground = temp;
 
+		Log.d("LOG1", "drawingview 2");
 	}
+
+	public void initPaintwithbitmap(Bitmap bitmap)
+	{
+		mDrawPaint = new Paint();
+		mDrawPaint.setColor(mPaintColor);
+		mDrawPaint.setAntiAlias(true);
+		mDrawPaint.setStrokeWidth(mStrokeWidth);
+		mDrawPaint.setStyle(Paint.Style.STROKE);
+		mDrawPaint.setStrokeJoin(Paint.Join.ROUND);
+		mDrawPaint.setStrokeCap(Paint.Cap.ROUND);
+
+		mDrawCanvas = new Canvas();
+
+		temp  = bitmap;
+		mBitmapBackground = temp;
+		mDrawCanvas.drawBitmap( mBitmapBackground, 0, 0, new Paint() );;
+		Log.d("LOG1", "drawingview 3");
+
+}
 
 	private void drawBackground(Canvas canvas)
 	{
 		mBackgroundPaint.setColor(mBackgroundColor);
 		mBackgroundPaint.setStyle(Paint.Style.FILL);
 		canvas.drawRect(0, 0, this.getWidth(), this.getHeight(), mBackgroundPaint);
+		canvas.drawBitmap( mBitmapBackground, 0, 0, new Paint() );
+		Log.d("LOG1", "drawingview 4");
 	}
 
 	private void drawPaths(Canvas canvas)
@@ -75,6 +103,7 @@ public class DrawingView extends View
 			canvas.drawPath(p, mPaints.get(i));
 			i++;
 		}
+		Log.d("LOG1", "drawingview 5");
 	}
 
 	@Override
@@ -84,6 +113,7 @@ public class DrawingView extends View
 		drawPaths(canvas);
 
 		canvas.drawPath(mDrawPath, mDrawPaint);
+		Log.d("LOG1", "drawingview 6");
 	}
 
 	@Override
@@ -93,9 +123,9 @@ public class DrawingView extends View
 
 		mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
-
+		Log.d("LOG1", "drawingview 7");
 //		mDrawCanvas = new Canvas(mCanvasBitmap);
-		mDrawCanvas = new Canvas(BitmapFactory.decodeResource(getResources(), R.drawable.welcom).copy(Bitmap.Config.ARGB_8888, true));
+//		mDrawCanvas = new Canvas(BitmapFactory.decodeResource(getResources(), R.drawable.welcom).copy(Bitmap.Config.ARGB_8888, true));
 	}
 
 	@Override
@@ -182,5 +212,9 @@ public class DrawingView extends View
 			mPaints.add(mUndonePaints.remove(mUndonePaints.size() - 1));
 			invalidate();
 		}
+	}
+
+	public void aaa(){
+		mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.drawable.welcom);
 	}
 }

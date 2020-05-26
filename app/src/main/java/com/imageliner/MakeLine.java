@@ -39,6 +39,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.RequestConfiguration.Builder;
@@ -71,6 +73,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import info.hoang8f.widget.FButton;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 import static com.imageliner.ShopActivity.BitmapToString;
@@ -108,6 +111,8 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     private int threshold1=50;
     private int threshold2=150;
 
+    FButton cb;
+    FButton cc;
     private static final String TAG = "opencv";
     private final int GET_GALLERY_IMAGE = 200;
 
@@ -121,6 +126,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     boolean next = false;
 
     private RewardedVideoAd mRewardedVideoAd;
+    private AdView mAdView;
 
     public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
         Intent intent = new Intent(context, MakeLine.class);
@@ -128,6 +134,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         intent.putExtra("type",1);
         context.startActivity(intent);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +147,10 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         this.mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
         loadRewardedVideoAd();
 
+        mAdView = findViewById(R.id.adView1);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         imageVIewOuput = (ImageView)findViewById(R.id.imageViewOutput);
         can1 = (ImageView)findViewById(R.id.candidate1);
         can2 = (ImageView)findViewById(R.id.candidate2);
@@ -151,10 +162,14 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         can3.setOnClickListener(this);
         can4.setOnClickListener(this);
 
-        FloatingActionButton cb = (FloatingActionButton)findViewById(R.id.changebackground);
+        cb = (FButton)findViewById(R.id.changebackground);
         cb.setOnClickListener(this);
-        FloatingActionButton cc = (FloatingActionButton)findViewById(R.id.changecolor);
+        cb.setButtonColor(Color.WHITE);
+        cc = (FButton)findViewById(R.id.changecolor);
         cc.setOnClickListener(this);
+        cc.setButtonColor(Color.BLACK);
+        cc.setTextColor(Color.WHITE);
+
 
         int type = getIntent().getIntExtra("type",-1);
         if(type == 1) {
@@ -205,6 +220,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
                     findViewById(R.id.makeline_seekbar).setVisibility(View.INVISIBLE);
                     findViewById(R.id.makeline_color).setVisibility(View.VISIBLE);
+                    findViewById(R.id.makeline_color_layout).setVisibility(View.VISIBLE);
                     next = true;
 
                     ImageView line_done = (ImageView)findViewById(R.id.line_next);
@@ -509,6 +525,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                                 setPraseColor(color);
                                 setFunction(2);
                                 setBackground(color);
+                                cb.setButtonColor(color);
                             }
                         });
                 break;
@@ -530,6 +547,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                                 setPraseColor(color);
                                 setFunction(1);
                                 setColor(color);
+                                cc.setButtonColor(color);
                             }
                         });
                 break;

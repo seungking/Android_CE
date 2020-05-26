@@ -18,6 +18,7 @@
         <activity android:name=".ViewImage"></activity>
         <activity android:name=".Painting" />
         <activity android:name=".SampleActivity" />
+        <activity android:name=".EasyPaint" />
         <activity android:name=".ResultActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

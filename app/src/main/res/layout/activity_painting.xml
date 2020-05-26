@@ -1,71 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Painting">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/line_back"
+            style="@style/ClickableImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back_black_24dp" />
+
+        <ImageView
+            android:id="@+id/line_next"
+            style="@style/ClickableImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_forward_black_24dp" />
+
+    </RelativeLayout>
 
     <com.imageliner.DrawingView
         android:id="@+id/main_drawing_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.85"
+        android:padding="15dp"
         android:foreground="@color/c1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.15"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/colorPrimary">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/main_fill_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_black_27dp"
-            android:padding="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_add_black_27dp" />
 
         <ImageView
             android:id="@+id/main_color_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_black_27dp"
-            android:padding="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_add_black_27dp" />
 
         <ImageView
             android:id="@+id/main_stroke_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_photo_black_24dp"
-            android:padding="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_photo_black_24dp" />
 
         <ImageView
             android:id="@+id/main_undo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_black_24dp"
-            android:padding="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_add_black_24dp" />
 
         <ImageView
             android:id="@+id/main_redo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_more_horiz_black_24dp"
-            android:padding="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_more_horiz_black_24dp" />
 
     </LinearLayout>
 

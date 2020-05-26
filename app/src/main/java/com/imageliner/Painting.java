@@ -1,6 +1,7 @@
 package com.imageliner;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +22,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
+import java.io.ByteArrayOutputStream;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import top.defaults.colorpicker.ColorPickerPopup;
 
 public class Painting extends AppCompatActivity implements View.OnClickListener
 {
@@ -46,11 +52,30 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	Bitmap image_out;
 	ImageView BigImage;
 
+	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
+		Intent intent = new Intent(context, Painting.class);
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+		intent.setData(Uri.parse(path));
+		context.startActivity(intent);
+	}
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
+
+		Uri uri = getIntent().getData();
+		if (uri != null) {
+			try {
+				Log.d("LOG1", "type1 1");
+				image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+			} catch (Exception e) {
+
+			}
+		}
 
         mDrawingView = (DrawingView) findViewById(R.id.main_drawing_view);
         mFillBackgroundImageView = (ImageView)findViewById(R.id.main_fill_iv);
@@ -65,8 +90,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         mStrokeImageView.setOnClickListener(this);
         mUndoImageView.setOnClickListener(this);
         mRedoImageView.setOnClickListener(this);
-		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
-		mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
+//		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
+//		mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
 
 //        mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
 //        mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
@@ -115,10 +140,12 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		mCurrentColor = ContextCompat.getColor(this, android.R.color.black);
 		mCurrentStroke = 10;
 
+		mDrawingView.initPaintwithbitmap(image_out);
+
 //		mDrawingView.setBackgroundColor(mCurrentBackgroundColor);
 //		mDrawingView.setPaintColor(mCurrentColor);
 //		mDrawingView.setPaintStrokeWidth(mCurrentStroke);
-		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
+//		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
 	}
 
 	private void startFillBackgroundDialog()
@@ -239,7 +266,24 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				break;
 			case R.id.main_color_iv:
 				Log.d("LOG1", "color");
-				startColorPickerDialog();
+//				startColorPickerDialog();
+				new ColorPickerPopup.Builder(this)
+						.initialColor(Color.RED) // Set initial color
+						.enableBrightness(true) // Enable brightness slider or not
+						.enableAlpha(false) // Enable alpha slider or not
+						.okTitle("Choose")
+						.cancelTitle("Cancel")
+						.showIndicator(true)
+						.showIndicator(true)
+						.showValue(false)
+						.build()
+						.show(v, new ColorPickerPopup.ColorPickerObserver() {
+							@Override
+							public void onColorPicked(int color) {
+								mCurrentColor = color;
+								mDrawingView.setPaintColor(mCurrentColor);
+							}
+						});
 				break;
 			case R.id.main_stroke_iv:
 				Log.d("LOG1", "stroke");
@@ -258,5 +302,11 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		}
 	}
 
+	private Uri getImageUri(Context context, Bitmap inImage) {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+		return Uri.parse(path);
+	}
 
 }

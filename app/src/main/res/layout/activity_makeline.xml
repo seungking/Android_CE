@@ -49,7 +49,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            android:padding="8dp"
+            android:padding="15dp"
             android:id="@+id/imageViewOutput"/>
     </RelativeLayout>
 
@@ -64,39 +64,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-<!--            <LinearLayout-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1.5"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:orientation="horizontal">-->
-<!--                <SeekBar-->
-<!--                    android:id="@+id/seekBar_threshold1"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_weight="0.9"-->
-<!--                    android:layout_height="match_parent"/>-->
-<!--                <TextView-->
-<!--                    android:id="@+id/textView_threshold1"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_weight="0.1"-->
-<!--                    android:layout_height="match_parent" />-->
-
-<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_height="0dp"
                 android:layout_weight="1.5"
                 android:layout_width="match_parent"
                 android:orientation="horizontal">
-<!--                <SeekBar-->
-<!--                    android:id="@+id/seekBar_threshold2"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_weight="0.9"-->
-<!--                    android:layout_height="match_parent"/>-->
-<!--                <TextView-->
-<!--                    android:id="@+id/textView_threshold2"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_weight="0.1"-->
-<!--                    android:layout_height="match_parent" />-->
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -128,36 +101,84 @@
                     android:id="@+id/candidate4" />
 
             </LinearLayout>
+
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/makeline_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:visibility="invisible"
-            android:orientation="horizontal">
+            android:id="@+id/makeline_color_layout">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/ic_file_download_black_24dp"
-                android:tint="@android:color/white"
-                app:backgroundTint="#FF9800"
-                android:id="@+id/changebackground"
-                app:rippleColor="@color/shopFabRipple" />
+<!--            <LinearLayout-->
+<!--                android:id="@+id/makeline_color"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_weight="3"-->
+<!--                android:visibility="invisible">-->
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_file_download_black_24dp"
-                android:tint="@android:color/white"
-                android:layout_weight="1"
-                app:backgroundTint="#FF9800"
-                android:id="@+id/changecolor"
-                app:rippleColor="@color/shopFabRipple" />
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:layout_width="80dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:tint="@android:color/white"-->
+<!--                    app:backgroundTint="#FF9800"-->
+<!--                    android:padding="10dp"-->
+<!--                    app:fabSize="normal"-->
+<!--                    android:id="@+id/changebackground"-->
+<!--                    app:rippleColor="@color/shopFabRipple" />-->
+
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:layout_width="80dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:tint="@android:color/white"-->
+<!--                    app:backgroundTint="#FF9800"-->
+<!--                    android:padding="10dp"-->
+<!--                    app:fabSize="auto"-->
+<!--                    android:id="@+id/changecolor"-->
+<!--                    app:rippleColor="@color/shopFabRipple" />-->
+
+<!--            </LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:id="@+id/makeline_color"
+                android:orientation="horizontal">
+
+                <info.hoang8f.widget.FButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/changebackground"
+                    android:text="Background Color"/>
+
+                <info.hoang8f.widget.FButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/changecolor"
+                    android:layout_marginStart="50dp"
+                    android:text="Line Color"/>
+
+            </LinearLayout>
+
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                ads:adSize="BANNER"
+                android:layout_weight="1.2"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            </com.google.android.gms.ads.AdView>
 
         </LinearLayout>
+
     </RelativeLayout>
+
 </LinearLayout>

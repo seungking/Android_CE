@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.net.wifi.WifiEnterpriseConfig;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -358,8 +359,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 startActivity(intentalbum);
                 break;
             case R.id.painting:
-                Intent intentpainting= new Intent(ShopActivity.this, Painting.class);
-                startActivity(intentpainting);
+                Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
                 break;
             default:
 //                showUnsupportedSnackBar();
