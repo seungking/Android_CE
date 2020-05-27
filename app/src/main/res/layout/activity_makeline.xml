@@ -20,7 +20,7 @@
             android:layout_gravity="start"
             android:layout_margin="8dp"
             android:padding="8dp"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            android:background="@color/red_light"/>
 
         <ImageView
             android:id="@+id/line_next"

@@ -85,6 +85,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private boolean waitingForBackgroundColor = false; //If true and colorChanged() is called, fill the background, else mPaint.setColor()
 	private boolean extractingColor = false; //If this is true, the next touch event should extract a color rather than drawing a line.
 
+	@SuppressLint("SourceLockedOrientationActivity")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

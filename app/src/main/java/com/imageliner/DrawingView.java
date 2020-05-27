@@ -4,14 +4,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,9 +38,11 @@ public class DrawingView extends View
 	ArrayList<Path> mUndonePaths = new ArrayList<>();
 	ArrayList<Paint> mUndonePaints = new ArrayList<>();
 
+	private boolean extractingColor = false;
+
 	// Set default values
 	private int mBackgroundColor = 0xFFFFFFFF;
-	private int mPaintColor = 0xFF660000;
+	private int mPaintColor = Color.parseColor("#ff4444");
 	private int mStrokeWidth = 10;
 
 	public DrawingView(Context context, AttributeSet attrs)
@@ -134,11 +144,25 @@ public class DrawingView extends View
 		float touchX = event.getX();
 		float touchY = event.getY();
 
+		int index=0;
+		int id=0;
 		switch (event.getAction())
 		{
 			case MotionEvent.ACTION_DOWN:
 				mDrawPath.moveTo(touchX, touchY);
 				//mDrawPath.addCircle(touchX, touchY, mStrokeWidth/10, Path.Direction.CW);
+			case MotionEvent.ACTION_POINTER_DOWN:
+
+				index = event.getActionIndex();
+				id = event.getPointerId(index);
+
+				if (extractingColor) { //If the user chose the 'extract color' menu option, the touch event indicates where they want to extract the color from.
+					extractingColor = false;
+
+					Painting.aaa(touchX,touchY);
+
+				}
+
 				break;
 			case MotionEvent.ACTION_MOVE:
 				mDrawPath.lineTo(touchX, touchY);
@@ -214,7 +238,7 @@ public class DrawingView extends View
 		}
 	}
 
-	public void aaa(){
-		mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.drawable.welcom);
+	public void extractingColor(){
+		extractingColor = true;
 	}
 }

@@ -346,6 +346,7 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
         final Uri resultUri = UCrop.getOutput(result);
         if (resultUri != null) {
             MakeLine.startWithUri(SampleActivity.this, resultUri);
+            finish();
         } else {
         }
     }

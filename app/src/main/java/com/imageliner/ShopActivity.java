@@ -312,8 +312,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
                 break;
             case R.id.btn_transition_time:
-                Intent intentalbum1 = new Intent(ShopActivity.this, SampleActivity.class);
-                intentalbum1.putExtra("type",2);;
+                Intent intentalbum1 = new Intent(ShopActivity.this, EasyPaint.class);
                 startActivity(intentalbum1);
                 break;
             case R.id.btn_smooth_scroll:

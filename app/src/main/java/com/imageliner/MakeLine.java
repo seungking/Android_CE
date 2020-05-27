@@ -102,6 +102,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     ImageView can2;
     ImageView can3;
     ImageView can4;
+    ImageView back;
     private Mat img_input;
     private Mat cmat;
     private Mat img_output;
@@ -170,6 +171,8 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         cc.setButtonColor(Color.BLACK);
         cc.setTextColor(Color.WHITE);
 
+        back = (ImageView)findViewById(R.id.line_back);
+        back.setOnClickListener(this);
 
         int type = getIntent().getIntExtra("type",-1);
         if(type == 1) {

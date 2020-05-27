@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -25,6 +27,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
@@ -37,20 +42,25 @@ import top.defaults.colorpicker.ColorPickerPopup;
 
 public class Painting extends AppCompatActivity implements View.OnClickListener
 {
-    DrawingView mDrawingView;
-	ImageView mFillBackgroundImageView;
-	ImageView mColorImageView;
-	ImageView mStrokeImageView;
-	ImageView mUndoImageView;
-	ImageView mRedoImageView;
+    static DrawingView mDrawingView;
+	static ImageView mFillBackgroundImageView;
+	static ImageView mColorImageView;
+	static ImageView mStrokeImageView;
+	static ImageView mUndoImageView;
+	static ImageView mRedoImageView;
+	static ImageView back;
+	static ImageView next;
 
-    private int mCurrentBackgroundColor;
-    private int mCurrentColor;
-    private int mCurrentStroke;
+    private static int mCurrentBackgroundColor;
+    private static int mCurrentColor;
+    private static int mCurrentStroke;
     private static final int MAX_STROKE_WIDTH = 50;
+	private boolean extractingColor = false;
 
 	Bitmap image_out;
 	ImageView BigImage;
+
+	private InterstitialAd mInterstitialAd;
 
 	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
 		Intent intent = new Intent(context, Painting.class);
@@ -66,6 +76,10 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
+
+		mInterstitialAd = new InterstitialAd(this);
+		mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+		mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 		Uri uri = getIntent().getData();
 		if (uri != null) {
@@ -83,6 +97,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         mStrokeImageView = (ImageView)findViewById(R.id.main_stroke_iv);
         mUndoImageView = (ImageView)findViewById(R.id.main_undo_iv);
         mRedoImageView = (ImageView)findViewById(R.id.main_redo_iv);
+		back = (ImageView)findViewById(R.id.painting_back);
+		next = (ImageView)findViewById(R.id.painting_next);
 
         mDrawingView.setOnClickListener(this);
         mFillBackgroundImageView.setOnClickListener(this);
@@ -90,6 +106,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         mStrokeImageView.setOnClickListener(this);
         mUndoImageView.setOnClickListener(this);
         mRedoImageView.setOnClickListener(this);
+        back.setOnClickListener(this);
+        next.setOnClickListener(this);
 //		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
 //		mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
 
@@ -100,6 +118,14 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
 		initDrawingView();
     }
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (!mInterstitialAd.isLoaded()) {
+			mInterstitialAd.show();
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,61 +167,9 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		mCurrentStroke = 10;
 
 		mDrawingView.initPaintwithbitmap(image_out);
-
-//		mDrawingView.setBackgroundColor(mCurrentBackgroundColor);
-//		mDrawingView.setPaintColor(mCurrentColor);
-//		mDrawingView.setPaintStrokeWidth(mCurrentStroke);
-//		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
-	}
-
-	private void startFillBackgroundDialog()
-	{
-		int[] colors = getResources().getIntArray(R.array.palette);
-
-		ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-				colors,
-				mCurrentBackgroundColor,
-				5,
-				ColorPickerDialog.SIZE_SMALL);
-
-		dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener()
-		{
-
-			@Override
-			public void onColorSelected(int color)
-			{
-				mCurrentBackgroundColor = color;
-				mDrawingView.setBackgroundColor(mCurrentBackgroundColor);
-			}
-
-		});
-
-		dialog.show(getFragmentManager(), "ColorPickerDialog");
-	}
-
-	private void startColorPickerDialog()
-	{
-		int[] colors = getResources().getIntArray(R.array.palette);
-
-		ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-				colors,
-				mCurrentColor,
-				5,
-				ColorPickerDialog.SIZE_SMALL);
-
-		dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener()
-		{
-
-			@Override
-			public void onColorSelected(int color)
-			{
-				mCurrentColor = color;
-				mDrawingView.setPaintColor(mCurrentColor);
-			}
-
-		});
-
-		dialog.show(getFragmentManager(), "ColorPickerDialog");
+		if (!mInterstitialAd.isLoaded()) {
+			mInterstitialAd.show();
+		}
 	}
 
 	private void startStrokeSelectorDialog()
@@ -260,13 +234,20 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+			case R.id.painting_back:
+				finish();
+				break;
+			case R.id.painting_next:
+
+				if (mInterstitialAd.isLoaded()) {
+					mInterstitialAd.show();
+				} else {
+					Log.d("TAG", "The interstitial wasn't loaded yet.");
+				}
+				finish();
+				break;
 			case R.id.main_fill_iv:
 				Log.d("LOG1", "fill");
-				startFillBackgroundDialog();
-				break;
-			case R.id.main_color_iv:
-				Log.d("LOG1", "color");
-//				startColorPickerDialog();
 				new ColorPickerPopup.Builder(this)
 						.initialColor(Color.RED) // Set initial color
 						.enableBrightness(true) // Enable brightness slider or not
@@ -282,8 +263,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 							public void onColorPicked(int color) {
 								mCurrentColor = color;
 								mDrawingView.setPaintColor(mCurrentColor);
+								mFillBackgroundImageView.setBackgroundColor(color);
 							}
 						});
+				break;
+			case R.id.main_color_iv:
+				Toast.makeText(getApplicationContext(),
+						R.string.tap_to_extract_color,
+						Toast.LENGTH_LONG).show();
+				mDrawingView.extractingColor();
 				break;
 			case R.id.main_stroke_iv:
 				Log.d("LOG1", "stroke");
@@ -302,6 +290,56 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		}
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+//		LinePath linePath;
+		Log.d("LOG1", "extractingcolor1");
+		int index;
+		int id;
+		int eventMasked = event.getActionMasked();
+		switch (eventMasked) {
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_POINTER_DOWN: {
+				index = event.getActionIndex();
+				id = event.getPointerId(index);
+
+				if (extractingColor) { //If the user chose the 'extract color' menu option, the touch event indicates where they want to extract the color from.
+					extractingColor = false;
+
+					Log.d("LOG1", "extractingcolor");
+
+					View v = findViewById(R.id.main_drawing_view);
+					v.setDrawingCacheEnabled(true);
+					Bitmap cachedBitmap = v.getDrawingCache();
+
+					int newColor = cachedBitmap.getPixel(Math.round(event.getX(index)), Math.round(event.getY(index)));
+
+					v.destroyDrawingCache();
+//					colorChanged( newColor );
+					mCurrentColor = newColor;
+					mDrawingView.setPaintColor(mCurrentColor);
+					mFillBackgroundImageView.setBackgroundColor(newColor);
+
+					Toast.makeText(getApplicationContext(),
+							R.string.color_extracted,
+							Toast.LENGTH_SHORT).show();
+
+				} else {
+
+//					linePath = multiLinePathManager.addLinePathWithPointer( id );
+//					if( linePath != null ) {
+//						linePath.touchStart( event.getX( index ), event.getY( index ) );
+//					} else {
+//						Log.e( "anupam", "Too many fingers!" );
+//					}
+				}
+
+				break;
+			}
+		}
+		return true;
+	}
+
 	private Uri getImageUri(Context context, Bitmap inImage) {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -309,4 +347,18 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		return Uri.parse(path);
 	}
 
+	public static void aaa(float x, float y){
+			Log.d("LOG1", "extractingcolor2");
+
+			View v = mDrawingView.findViewById(R.id.main_drawing_view);
+			v.setDrawingCacheEnabled(true);
+			Bitmap cachedBitmap = v.getDrawingCache();
+
+			int newColor = cachedBitmap.getPixel(Math.round(x), Math.round(y));
+
+			v.destroyDrawingCache();
+			mCurrentColor = newColor;
+			mDrawingView.setPaintColor(mCurrentColor);
+			mFillBackgroundImageView.setBackgroundColor(newColor);
+	}
 }
