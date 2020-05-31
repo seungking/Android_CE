@@ -16,28 +16,28 @@ public class FileManager
 {
 	public static Uri saveBitmap(Context context, Bitmap bitmap)
 	{
-		String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DrawingCanvas";
-		File dir = new File(file_path);
-
-		if(!dir.exists())
-		{
-			dir.mkdirs();
-		}
-
-		String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()).concat(".png");
-		File file = new File(dir, name);
-
-		FileOutputStream fOut;
-		try {
-			fOut = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-			fOut.flush();
-			fOut.close();
-			return FileProvider.getUriForFile(context,
-					context.getApplicationContext().getPackageName() + ".provider", file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DrawingCanvas";
+//		File dir = new File(file_path);
+//
+//		if(!dir.exists())
+//		{
+//			dir.mkdirs();
+//		}
+//
+//		String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()).concat(".png");
+//		File file = new File(dir, name);
+//
+//		FileOutputStream fOut;
+//		try {
+//			fOut = new FileOutputStream(file);
+//			bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+//			fOut.flush();
+//			fOut.close();
+//			return FileProvider.getUriForFile(context,
+//					context.getApplicationContext().getPackageName() + ".provider", file);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 		return null;
 	}

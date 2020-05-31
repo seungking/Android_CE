@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
@@ -56,6 +57,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -177,7 +180,6 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
         findViewById(R.id.menu).setOnClickListener(this);
         findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
-        findViewById(R.id.btn_transition_time).setOnClickListener(this);
 
         view = AboutBuilder.with(this)
                 .setCover(R.mipmap.ic_launcher_round)
@@ -187,9 +189,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 .addFeedbackAction("ahnseungkl@gmail.com")
                 .setWrapScrollView(true)
                 .setLinksAnimated(true)
-                .addDonateAction((Intent)null)
                 .setVersionNameAsAppSubTitle()
-                .addRemoveAdsAction(new Intent(ShopActivity.this, Painting.class))
                 .build();
 
     }
@@ -257,6 +257,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             case R.id.mliner :
                 ((ViewManager) view.getParent()).removeView(view);
                 linearLayout.setClickable(false);
+                findViewById(R.id.download).setClickable(true);
+                findViewById(R.id.item_delete).setClickable(true);
+                findViewById(R.id.painting).setClickable(true);
+                findViewById(R.id.btn_transition_time).setClickable(true);
+                findViewById(R.id.btn_smooth_scroll).setClickable(true);
                 Log.d("LOG1", "layout clicked");
                 break;
             case R.id.item_delete:
@@ -275,18 +280,20 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                Log.d("LOG1","CURRENT INDEX : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
+
                                 titles.remove(infiniteAdapter.getRealCurrentPosition());
                                 dates.remove(infiniteAdapter.getRealCurrentPosition());
                                 images.remove(infiniteAdapter.getRealCurrentPosition());
                                 simages.remove(infiniteAdapter.getRealCurrentPosition());
+                                data.remove(infiniteAdapter.getRealCurrentPosition());
 
                                 shopAdapter.removeItem(infiniteAdapter.getRealCurrentPosition());
 
-                                setStringArrayPref(ShopActivity.this,"titles",titles);
-                                setStringArrayPref(ShopActivity.this,"dates",dates);
-                                setStringArrayPref(ShopActivity.this,"images",images);
-                                setStringArrayPref(ShopActivity.this,"simages",simages);
-
+                                setStringArrayPref(ShopActivity.this, "titles", titles);
+                                setStringArrayPref(ShopActivity.this, "dates", dates);
+                                setStringArrayPref(ShopActivity.this, "images", images);
+                                setStringArrayPref(ShopActivity.this, "simages", simages);
 
                                 sweetAlertDialog.dismiss();
                             }
@@ -294,6 +301,8 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         .show();
                 break;
             case R.id.download:
+
+                SaveImage(StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                     mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -309,11 +318,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
                 addContentView(view, new LinearLayout.LayoutParams(display.getWidth()-10, display.getHeight()*2/5));
                 linearLayout.setClickable(true);
-
-                break;
-            case R.id.btn_transition_time:
-                Intent intentalbum1 = new Intent(ShopActivity.this, EasyPaint.class);
-                startActivity(intentalbum1);
+                findViewById(R.id.download).setClickable(false);
+                findViewById(R.id.item_delete).setClickable(false);
+                findViewById(R.id.painting).setClickable(false);
+                findViewById(R.id.btn_transition_time).setClickable(false);
+                findViewById(R.id.btn_smooth_scroll).setClickable(false);
                 break;
             case R.id.btn_smooth_scroll:
                 Log.d("LOG1", "scroll");
@@ -379,6 +388,40 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         startActivity(Intent.createChooser(intent, "Share Image"));
     }
 
+    public void SaveImage(Bitmap bitmap) {
+        String str = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(str);
+        str = "/Contour_Extractor/";
+        stringBuilder.append(str);
+        File file = new File(stringBuilder.toString());
+        file.mkdirs();
+        String format = new SimpleDateFormat("yyyy_MM_dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        StringBuilder stringBuilder2 = new StringBuilder();
+        stringBuilder2.append(format);
+        stringBuilder2.append(".jpg");
+        format = stringBuilder2.toString();
+        File file2 = new File(file, format);
+        if (file2.exists()) {
+            file2.delete();
+        }
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file2);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StringBuilder stringBuilder3 = new StringBuilder();
+        stringBuilder3.append("content://");
+        stringBuilder3.append(Environment.getExternalStorageDirectory().toString());
+        stringBuilder3.append(str);
+        stringBuilder3.append(format);
+        String str2 = "android.intent.action.MEDIA_SCANNER_SCAN_FILE";
+        sendBroadcast(new Intent(str2, Uri.parse(stringBuilder3.toString())));
+        getApplicationContext().sendBroadcast(new Intent(str2, Uri.fromFile(file2)));
+    }
 
     private void onItemChanged(Item item) {
         currentItemName.setText(item.getTitle());

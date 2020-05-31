@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,15 +32,24 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import top.defaults.colorpicker.ColorPickerPopup;
+
+import static com.imageliner.ShopActivity.BitmapToString;
 
 public class Painting extends AppCompatActivity implements View.OnClickListener
 {
@@ -50,6 +61,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	static ImageView mRedoImageView;
 	static ImageView back;
 	static ImageView next;
+	static int weight =1;
+	static int height =1;
 
     private static int mCurrentBackgroundColor;
     private static int mCurrentColor;
@@ -60,6 +73,11 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	Bitmap image_out;
 	ImageView BigImage;
 
+	static float h=0;
+	static float w=0;
+	static int x=0;
+	static int y=0;
+
 	private InterstitialAd mInterstitialAd;
 
 	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
@@ -69,6 +87,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
 		intent.setData(Uri.parse(path));
 		context.startActivity(intent);
+		Log.d("LOG1", "startwithbitmap");
 	}
 
     @Override
@@ -77,9 +96,9 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
 
-		mInterstitialAd = new InterstitialAd(this);
-		mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-		mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 		Uri uri = getIntent().getData();
 		if (uri != null) {
@@ -108,11 +127,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         mRedoImageView.setOnClickListener(this);
         back.setOnClickListener(this);
         next.setOnClickListener(this);
-//		mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
-//		mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
-
-//        mDrawingView.setBackground(getResources().getDrawable(R.drawable.welcom));
-//        mDrawingView.setForeground(getResources().getDrawable(R.drawable.welcom));
 
 		ButterKnife.bind(this);
 
@@ -122,10 +136,22 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (!mInterstitialAd.isLoaded()) {
-			mInterstitialAd.show();
-		}
+		if(!mInterstitialAd.isLoaded()) mInterstitialAd.loadAd(new AdRequest.Builder().build());
+		showUnsupportedSnackBar();
 	}
+
+	private void showUnsupportedSnackBar() {
+		Snackbar.make(mDrawingView,"Tap anywhere to start", Snackbar.LENGTH_SHORT).show();
+	}
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+	    weight =  mDrawingView.getWidth();
+	    height = mDrawingView.getHeight();
+        Log.d("LOG1", String.valueOf(mDrawingView.getWidth()));
+        Log.d("LOG1", String.valueOf(mDrawingView.getHeight()));
+        mDrawingView.initPaintwithbitmap(image_out,weight,height);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,14 +188,10 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
 	private void initDrawingView()
 	{
+		mDrawingView.initPaintwithbitmap(image_out,weight,height);
 		mCurrentBackgroundColor = ContextCompat.getColor(this, android.R.color.white);
 		mCurrentColor = ContextCompat.getColor(this, android.R.color.black);
 		mCurrentStroke = 10;
-
-		mDrawingView.initPaintwithbitmap(image_out);
-		if (!mInterstitialAd.isLoaded()) {
-			mInterstitialAd.show();
-		}
 	}
 
 	private void startStrokeSelectorDialog()
@@ -210,7 +232,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 //			startShareDialog(uri);
 //		}
 //	}
-
+//
 //	@Override
 //	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
 //	{
@@ -225,7 +247,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 //					startShareDialog(uri);
 //				} else
 //				{
-//					Toast.makeText(this, "The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
 //				}
 //			}
 //		}
@@ -236,15 +257,41 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		switch (v.getId()) {
 			case R.id.painting_back:
 				finish();
+				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+					mInterstitialAd.show(); //보여준다
+				}
+				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
 				break;
 			case R.id.painting_next:
+//				requestPermissionsAndSaveBitmap();
+				mDrawingView.setDrawingCacheEnabled(true);
+				mDrawingView.buildDrawingCache();
+				Bitmap drawingCache = mDrawingView.getDrawingCache();
+				drawingCache = Bitmap.createBitmap(drawingCache,x,y,(int)w,(int)h);
 
-				if (mInterstitialAd.isLoaded()) {
-					mInterstitialAd.show();
-				} else {
-					Log.d("TAG", "The interstitial wasn't loaded yet.");
-				}
+				ArrayList<Item> data =  new ArrayList<Item>();
+				ArrayList<String> titles = getStringArrayPref(Painting.this,"titles");
+				ArrayList<String> dates = getStringArrayPref(Painting.this,"dates");
+				ArrayList<String> images = getStringArrayPref(Painting.this,"images");
+				ArrayList<String> simages = getStringArrayPref(Painting.this,"simages");
+
+				titles.add("Untitled");
+				dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+				images.add(BitmapToString(drawingCache));
+				simages.add(BitmapToString(Bitmap.createScaledBitmap(drawingCache, (int) drawingCache.getWidth()/2, (int) drawingCache.getHeight()/2, true)));
+
+				setStringArrayPref(Painting.this,"titles",titles);
+				setStringArrayPref(Painting.this,"dates",dates);
+				setStringArrayPref(Painting.this,"images",images);
+				setStringArrayPref(Painting.this,"simages",simages);
 				finish();
+
+				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+					mInterstitialAd.show(); //보여준다
+				}
+				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+//				SampleActivity.startWithBitmap(Painting.this,drawingCache);
 				break;
 			case R.id.main_fill_iv:
 				Log.d("LOG1", "fill");
@@ -268,9 +315,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 						});
 				break;
 			case R.id.main_color_iv:
-				Toast.makeText(getApplicationContext(),
-						R.string.tap_to_extract_color,
-						Toast.LENGTH_LONG).show();
+				Snackbar.make(mDrawingView,"Tap anywhere to extract a color", Snackbar.LENGTH_SHORT).show();
 				mDrawingView.extractingColor();
 				break;
 			case R.id.main_stroke_iv:
@@ -360,5 +405,42 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 			mCurrentColor = newColor;
 			mDrawingView.setPaintColor(mCurrentColor);
 			mFillBackgroundImageView.setBackgroundColor(newColor);
+	}
+
+	public static void setbitmapsize(float a, float b, int c, int d){
+		w = a;
+		h = b;
+		x = c;
+		y = d;
+	}
+
+	private ArrayList<String> getStringArrayPref(Context context, String str) {
+		String string = PreferenceManager.getDefaultSharedPreferences(context).getString(str, null);
+		ArrayList arrayList = new ArrayList();
+		if (string != null) {
+			try {
+				JSONArray jSONArray = new JSONArray(string);
+				for (int i = 0; i < jSONArray.length(); i++) {
+					arrayList.add(jSONArray.optString(i));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return arrayList;
+	}
+
+	public void setStringArrayPref(Context context, String str, ArrayList<String> arrayList) {
+		SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		JSONArray jSONArray = new JSONArray();
+		for (int i = 0; i < arrayList.size(); i++) {
+			jSONArray.put(arrayList.get(i));
+		}
+		if (arrayList.isEmpty()) {
+			edit.putString(str, null);
+		} else {
+			edit.putString(str, jSONArray.toString());
+		}
+		edit.apply();
 	}
 }

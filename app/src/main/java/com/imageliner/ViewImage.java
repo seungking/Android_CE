@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.yashoid.instacropper.InstaCropperActivity;
@@ -54,11 +56,14 @@ public class ViewImage extends AppCompatActivity {
         position = intent.getIntExtra("position",0);
         ArrayList<String> images = getStringArrayPref(ViewImage.this,"images");
 
-        mInstaCropper = (InstaCropperView) findViewById(R.id.instacropper);
+//        mInstaCropper = (InstaCropperView) findViewById(R.id.instacropper);
 
         Bitmap bitmap = StringToBitmap(images.get(position));
 
-        mInstaCropper.setImageUri(getImageUri(this,bitmap));
+        PhotoView photoView = (PhotoView) findViewById(R.id.photo_view);
+        photoView.setImageBitmap(bitmap);
+
+//        mInstaCropper.setImageUri(getImageUri(this,bitmap));
 
         ImageView viewback = (ImageView) findViewById(R.id.view_back);
         viewback.setOnClickListener(new View.OnClickListener() {

@@ -92,6 +92,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     int function = 0;
     int prasecolor = 0;
 
+    Bitmap decodeFile = null;
     private Bitmap cbitmapOutput;
     private Bitmap bitmapOutput1;
     private Bitmap bitmapOutput2;
@@ -119,6 +120,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
     boolean isReady = false;
 
+    int type;
     ////////////카메라//////////
     private String imageFilePath;
     private Uri photoUri;
@@ -174,7 +176,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         back = (ImageView)findViewById(R.id.line_back);
         back.setOnClickListener(this);
 
-        int type = getIntent().getIntExtra("type",-1);
+        type = getIntent().getIntExtra("type",-1);
         if(type == 1) {
             Log.d("LOG1", "type1");
             Uri uri = getIntent().getData();
@@ -238,7 +240,19 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                     ArrayList<String> images = getStringArrayPref(MakeLine.this,"images");
                     ArrayList<String> simages = getStringArrayPref(MakeLine.this,"simages");
 
-                    titles.add("Untitled");
+                    String imagetitle = "Untitled";
+                    int index=1;
+                    while(true){
+                        Log.d("LOG1",imagetitle+String.valueOf(index));
+                        if(titles.indexOf(imagetitle+String.valueOf(index))==-1) {
+                            imagetitle=imagetitle+String.valueOf(index);
+                            Log.d("LOG1","titles1");
+                            break;
+                        }
+                        else  index++;
+                        Log.d("LOG1","titles2");
+                    }
+                    titles.add(imagetitle);
                     dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
                     images.add(BitmapToString(cbitmapOutput));
                     simages.add(BitmapToString(Bitmap.createScaledBitmap(cbitmapOutput, (int) cbitmapOutput.getWidth()/2, (int) cbitmapOutput.getHeight()/2, true)));
@@ -267,13 +281,14 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         super.onResume();
         Log.d("LOG1", "RESUME");
         isReady = true;
-        imageprocess_and_showResult(5, 5);
+        if(type==1)imageprocess_and_showResult(5, 5);
     }
 
     @Override
     protected void onStart() {
         Log.d("LOG1", "START");
         super.onStart();
+//        if(decodeFile==null)finish();
     }
 
     public native void imageprocessing1(long inputImage, long outputImage, int th1, int th2);
@@ -292,7 +307,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
         Log.d("LOG1", "imageprocess_and_showResult");
         if (isReady==false) return;
-
+        Log.d("LOG1", "imageprocess_and_showResult1");
         if (img_output == null)
             img_output = new Mat();
         if (img_output2 == null)
@@ -303,40 +318,48 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
             img_output4 = new Mat();
         if (img_input == null)
             img_input = new Mat();
-
+        Log.d("LOG1", "imageprocess_and_showResult2");
         imageprocessing1(img_input.getNativeObjAddr(), img_output.getNativeObjAddr(), th1, th2);
         imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
+        Log.d("LOG1", "imageprocess_and_showResult3");
         imageprocessing2(img_input.getNativeObjAddr(), img_output2.getNativeObjAddr(), th1, th2);
         imagebalckwhite2(img_output2.getNativeObjAddr(), img_output2.getNativeObjAddr(), 0, 0);
+        Log.d("LOG1", "imageprocess_and_showResult4");
         imageprocessing3(img_input.getNativeObjAddr(), img_output3.getNativeObjAddr(), th1, th2);
         imagebalckwhite3(img_output3.getNativeObjAddr(), img_output3.getNativeObjAddr(), 0, 0);
+        Log.d("LOG1", "imageprocess_and_showResult5");
         imageprocessing4(img_input.getNativeObjAddr(), img_output4.getNativeObjAddr(), th1, th2);
         imagebalckwhite4(img_output4.getNativeObjAddr(), img_output4.getNativeObjAddr(), 0, 0);
+        Log.d("LOG1", "imageprocess_and_showResult6");
 
         bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output, bitmapOutput1);
         imageVIewOuput.setImageBitmap(bitmapOutput1);
         can1.setImageBitmap(bitmapOutput1);
+        cbitmapOutput = bitmapOutput1;
+        Log.d("LOG1", "imageprocess_and_showResult7");
 
         bitmapOutput2 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output2, bitmapOutput2);
         can2.setImageBitmap(bitmapOutput2);
+        Log.d("LOG1", "imageprocess_and_showResult8");
 
         bitmapOutput3 = Bitmap.createBitmap(img_output3.cols(), img_output3.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output3, bitmapOutput3);
         can3.setImageBitmap(bitmapOutput3);
+        Log.d("LOG1", "imageprocess_and_showResult9");
 
         bitmapOutput4 = Bitmap.createBitmap(img_output4.cols(), img_output4.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output4, bitmapOutput4);
         can4.setImageBitmap(bitmapOutput4);
-
+        Log.d("LOG1", "imageprocess_and_showResult10");
     }
 
 
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult( requestCode, resultCode, data );
         if ( requestCode == GET_GALLERY_IMAGE){
 
             if (data.getData() != null) {
@@ -362,18 +385,20 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
         }
         else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == -1) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(this.imageFilePath);
-            ExifInterface exifInterface = null;
-            try {
-                exifInterface = new ExifInterface(this.imageFilePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (exifInterface != null) {
-                exifOrientationToDegress(exifInterface.getAttributeInt("Orientation", 1));
-            }
+            decodeFile = BitmapFactory.decodeFile(this.imageFilePath);
+//            ExifInterface exifInterface = null;
+//            try {
+//                exifInterface = new ExifInterface(this.imageFilePath);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            if (exifInterface != null) {
+//                exifOrientationToDegress(exifInterface.getAttributeInt("Orientation", 1));
+//            }
             decodeFile = rotate(decodeFile, -270.0f);
             SampleActivity.startWithUri(MakeLine.this, getImageUri(MakeLine.this, decodeFile));
+//            SampleActivity.startWithUri(MakeLine.this, getImageUri(MakeLine.this, decodeFile));
+            finish();
 //            ((ImageView) findViewById(R.id.imageViewOutput)).setImageBitmap(decodeFile);
 //            this.img_input = new Mat();
 //            Utils.bitmapToMat(decodeFile, this.img_input);
@@ -390,6 +415,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         matrix.postRotate(f);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
+
 
     private String getRealPathFromURI(Uri contentUri) {
 

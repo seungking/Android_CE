@@ -44,6 +44,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.85"
         android:padding="15dp"
+        android:layout_gravity="center"
         android:foreground="@color/c1" />
 
     <LinearLayout

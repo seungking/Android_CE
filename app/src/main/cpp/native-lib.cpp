@@ -115,11 +115,15 @@ Java_com_imageliner_MakeLine_imageprocessing2(JNIEnv *env, jobject thiz, jlong i
 
     Mat &img_output = *(Mat *) output_image;
 
-    cvtColor( img_input, img_output, COLOR_RGB2GRAY);
+    cv::GaussianBlur( img_input, img_output, Size(7,7), 0, 0, BORDER_DEFAULT );
 
-    blur( img_output, img_output, Size(2,2) );
+    /// Convert it to gray
+    cv::cvtColor( img_output, img_output, COLOR_RGB2GRAY );
 
-    Canny( img_output, img_output, 100, 100,3,true);
+//    cvtColor( img_input, img_output, COLOR_RGB2GRAY);
+
+//    blur( img_output, img_output, Size(1,1) );
+    Canny( img_output, img_output, 5, 30, 3, true);
 }
 
 extern "C"
@@ -137,7 +141,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite2(JNIEnv *env, jobject thiz, jlong i
     {
         for (int y = 0; y < img_output.cols; y++)
         {
-            if (img_output.at<uchar>(x, y) > 80)
+            if (img_output.at<uchar>(x, y) > 100)
             {
                 img_output.at<uchar>(x,y) = 0;
             }
@@ -157,42 +161,10 @@ Java_com_imageliner_MakeLine_imageprocessing3(JNIEnv *env, jobject thiz, jlong i
 
     Mat &img_output = *(Mat *) output_image;
 
-
-
-//    cvtColor( img_input, img_output, COLOR_RGB2GRAY);
-
-
-//    blur( img_output, img_output, Size(2,2) );
-//    GaussianBlur(img_output, img_output, Size(2,2), 0);
-//    bilateralFilter(img_input,img_output,7,150,150);
-
-//    cvtColor( img_output, img_output, COLOR_RGB2GRAY);
-
-//    Canny( img_output, img_output, th1, th2,3,true);
-//    Sobel(img_output, img_output, -1, 0, 1, 3, 2.0, 127.0);
-//    Sobel(img_output, img_output, -1, 0, 1, 3, 1.0, 0.0, BORDER_DEFAULT);
-//      Scharr(img_output, img_output, );
-//      Laplacian(img_output, img_output)
-//      Scha
-//    for (int x = 0; x < img_output.rows; x++)
-//    {
-//        for (int y = 0; y < img_output.cols; y++)
-//        {
-//            if (img_output.at<uchar>(x, y) <20)
-//            {
-//                img_output.at<uchar>(x,y) = 255;
-//            }
-//            else
-//            {
-//                img_output.at<uchar>(x,y) = 0;
-//            }
-//        }
-//    }
-///////////////////////////////////////////////////////////////////////////////
     cv::Mat src, src_gray, src_result;
     src = *(Mat *) input_image;
     cv::Mat grad;
-    double scale = 5;
+    double scale = 3;
 //    double scale = th1 * 0.35;
     double delta = 5;
 //    double delta = th2;
@@ -234,7 +206,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite3(JNIEnv *env, jobject thiz, jlong i
     {
         for (int y = 0; y < img_output.cols; y++)
         {
-            if (img_output.at<uchar>(x, y) > 100)
+            if (img_output.at<uchar>(x, y) > 50)
             {
                 img_output.at<uchar>(x,y) = 0;
             }
@@ -256,13 +228,26 @@ Java_com_imageliner_MakeLine_imageprocessing4(JNIEnv *env, jobject thiz, jlong i
 
     Mat &img_output = *(Mat *) output_image;
 
-    cvtColor( img_input, img_output, COLOR_RGB2GRAY);
+    int kernel_size = 3;
+    int scale = 1;
+    int delta = 5;
+    int ddepth = CV_16S;
+
+    cv::Mat src, src_gray, dst;
+
+    /// Remove noise by blurring with a Gaussian filter
+    cv::GaussianBlur( img_input, src, Size(1,1), 0, 0, BORDER_DEFAULT );
+
+    /// Convert the image to grayscale
+    cv::cvtColor( src, src_gray, COLOR_RGB2GRAY );
+
+    /// Apply Laplace function
+    cv::Mat abs_dst;
+
+    cv::Laplacian( src_gray, dst, ddepth, kernel_size, scale, delta, BORDER_DEFAULT );
+    cv::convertScaleAbs( dst, img_output );
 
 
-    blur( img_output, img_output, Size(5,5) );
-
-
-    Canny( img_output, img_output, 50, 50,5,true);
 }extern "C"
 JNIEXPORT void JNICALL
 Java_com_imageliner_MakeLine_imagebalckwhite4(JNIEnv *env, jobject thiz, jlong input_image,
@@ -276,7 +261,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite4(JNIEnv *env, jobject thiz, jlong i
     {
         for (int y = 0; y < img_output.cols; y++)
         {
-            if (img_output.at<uchar>(x, y) > 50)
+            if (img_output.at<uchar>(x, y) > 40)
             {
                 img_output.at<uchar>(x,y) = 0;
             }
