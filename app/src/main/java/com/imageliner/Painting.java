@@ -9,13 +9,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,22 +77,30 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	Bitmap image_out;
 	ImageView BigImage;
 
-	static float h=0;
-	static float w=0;
-	static int x=0;
-	static int y=0;
+	public static float h=0;
+	public static float w=0;
+	public static int x=0;
+	public static int y=0;
 
 	private InterstitialAd mInterstitialAd;
 
-	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
-		Intent intent = new Intent(context, Painting.class);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
-		intent.setData(Uri.parse(path));
-		context.startActivity(intent);
-		Log.d("LOG1", "startwithbitmap");
-	}
+//	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
+//		Intent intent = new Intent(context, Painting.class);
+//		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+//		intent.setData(Uri.parse(path));
+////        intent.putExtra("bitmap",BitmapToString(bitmap));
+//		context.startActivity(intent);
+//		Log.d("LOG1", "startwithbitmap");
+//	}
+    public static void startWithBitmap(@NonNull Context context, @NonNull String bitmap) {
+        Intent intent = new Intent(context, Painting.class);
+//        intent.setData(Uri.parse(bitmap));
+        intent.putExtra("bitmap",bitmap);
+        context.startActivity(intent);
+        Log.d("LOG1", "startwithbitmap");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -96,20 +108,27 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
 
+        Log.d("LOG1", "Painting1");
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/3524605711");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
-		Uri uri = getIntent().getData();
-		if (uri != null) {
-			try {
-				Log.d("LOG1", "type1 1");
-				image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-			} catch (Exception e) {
+        if(getIntent().hasExtra("bitmap")) {
+            byte[] getByte = getIntent().getByteArrayExtra("bitmap");
+            image_out = BitmapFactory.decodeByteArray( getByte, 0, getByte.length ) ;
+            }
 
-			}
-		}
-
+//        image_out = StringToBitmap(getIntent().getStringExtra("bitmap"));
+//		Uri uri = getIntent().getData();
+//		if (uri != null) {
+//			try {
+//				Log.d("LOG1", "type1 1");
+//				image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+//			} catch (Exception e) {
+//
+//			}
+//		}
+        Log.d("LOG1", "Painting2");
         mDrawingView = (DrawingView) findViewById(R.id.main_drawing_view);
         mFillBackgroundImageView = (ImageView)findViewById(R.id.main_fill_iv);
         mColorImageView = (ImageView)findViewById(R.id.main_color_iv);
@@ -136,7 +155,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if(!mInterstitialAd.isLoaded()) mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//		if(!mInterstitialAd.isLoaded()) mInterstitialAd.loadAd(new AdRequest.Builder().build());
 		showUnsupportedSnackBar();
 	}
 
@@ -150,7 +169,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	    height = mDrawingView.getHeight();
         Log.d("LOG1", String.valueOf(mDrawingView.getWidth()));
         Log.d("LOG1", String.valueOf(mDrawingView.getHeight()));
-        mDrawingView.initPaintwithbitmap(image_out,weight,height);
+        mDrawingView.setwh(weight,height);
+        mDrawingView.initPaintwithbitmap(image_out);
     }
 
 	@Override
@@ -188,7 +208,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
 	private void initDrawingView()
 	{
-		mDrawingView.initPaintwithbitmap(image_out,weight,height);
+        Log.d("LOG1", "Painting initdrawingview");
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int wwidth = size.x;
+		int wheight = size.y;
+
+		mDrawingView.setwh(wwidth,(wheight*77)/100);
+		mDrawingView.initPaintwithbitmap(image_out);
 		mCurrentBackgroundColor = ContextCompat.getColor(this, android.R.color.white);
 		mCurrentColor = ContextCompat.getColor(this, android.R.color.black);
 		mCurrentStroke = 10;
@@ -257,13 +285,17 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		switch (v.getId()) {
 			case R.id.painting_back:
 				finish();
-				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
-					mInterstitialAd.show(); //보여준다
-				}
-				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+//					mInterstitialAd.show(); //보여준다
+//				}
+//				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
 				break;
 			case R.id.painting_next:
 //				requestPermissionsAndSaveBitmap();
+                Log.d("LOG1","W : " +String.valueOf(w));
+                Log.d("LOG1","H : " +String.valueOf(h));
+                Log.d("LOG1","X : " +String.valueOf(x));
+                Log.d("LOG1","Y : " +String.valueOf(y));
 				mDrawingView.setDrawingCacheEnabled(true);
 				mDrawingView.buildDrawingCache();
 				Bitmap drawingCache = mDrawingView.getDrawingCache();
@@ -275,7 +307,19 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				ArrayList<String> images = getStringArrayPref(Painting.this,"images");
 				ArrayList<String> simages = getStringArrayPref(Painting.this,"simages");
 
-				titles.add("Untitled");
+                String imagetitle = "Untitled";
+                int index=1;
+                while(true){
+                    Log.d("LOG1",imagetitle+String.valueOf(index));
+                    if(titles.indexOf(imagetitle+String.valueOf(index))==-1) {
+                        imagetitle=imagetitle+String.valueOf(index);
+                        Log.d("LOG1","titles1");
+                        break;
+                    }
+                    else  index++;
+                    Log.d("LOG1","titles2");
+                }
+                titles.add(imagetitle);
 				dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
 				images.add(BitmapToString(drawingCache));
 				simages.add(BitmapToString(Bitmap.createScaledBitmap(drawingCache, (int) drawingCache.getWidth()/2, (int) drawingCache.getHeight()/2, true)));
@@ -286,10 +330,10 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				setStringArrayPref(Painting.this,"simages",simages);
 				finish();
 
-				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
-					mInterstitialAd.show(); //보여준다
-				}
-				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+//					mInterstitialAd.show(); //보여준다
+//				}
+//				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 //				SampleActivity.startWithBitmap(Painting.this,drawingCache);
 				break;
@@ -408,10 +452,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	}
 
 	public static void setbitmapsize(float a, float b, int c, int d){
+        Log.d("LOG1", "setbitmapsize");
 		w = a;
 		h = b;
 		x = c;
 		y = d;
+        Log.d("LOG1",String.valueOf(w));
+        Log.d("LOG1",String.valueOf(h));
+        Log.d("LOG1",String.valueOf(x));
+        Log.d("LOG1",String.valueOf(y));
 	}
 
 	private ArrayList<String> getStringArrayPref(Context context, String str) {
@@ -443,4 +492,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		}
 		edit.apply();
 	}
+
+    public static Bitmap StringToBitmap(String str) {
+        try {
+            byte[] decode = Base64.decode(str, 0);
+            return BitmapFactory.decodeByteArray(decode, 0, decode.length);
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
 }

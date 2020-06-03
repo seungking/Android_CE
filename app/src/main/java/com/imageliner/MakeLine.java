@@ -144,10 +144,10 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_makeline);
 
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+//        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
         this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        this.mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        this.mRewardedVideoAd.loadAd("ca-app-pub-1992325656759505/8226553469", new AdRequest.Builder().build());
         loadRewardedVideoAd();
 
         mAdView = findViewById(R.id.adView1);

@@ -1,74 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    >
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="Crop"
-        />
-
-    <Button
-        android:id="@+id/bt_crop_capture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Capture from Camera &amp; Crop"
-        />
-
-    <Button
-        android:id="@+id/bt_crop_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose from Gallery &amp; Crop"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="None Crop"
-        />
-
-    <Button
-        android:id="@+id/bt_capture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Capture from Camera"
-        />
-
-    <Button
-        android:id="@+id/bt_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose from Gallery"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="Result"
-        />
 
     <ImageView
-        android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher"
-        android:background="#f7f8f9"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:id="@+id/imageViewInputc"
+        app:srcCompat="@drawable/ic_launcher"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:id="@+id/imageViewOutputc"/>
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <SeekBar
+            android:id="@+id/seekBar_threshold1c"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/textView_threshold1c"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <SeekBar
+            android:id="@+id/seekBar_threshold2c"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/textView_threshold2c"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:text="에지 검출하기" />
+
+
 </LinearLayout>

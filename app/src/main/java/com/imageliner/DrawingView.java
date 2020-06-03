@@ -32,6 +32,8 @@ public class DrawingView extends View
 	Canvas mDrawCanvas;
 	Bitmap mCanvasBitmap;
 	Bitmap temp;
+	int width;
+	int height;
 
 	ArrayList<Path> mPaths = new ArrayList<>();
 	ArrayList<Paint> mPaints = new ArrayList<>();
@@ -78,7 +80,12 @@ public class DrawingView extends View
 		Log.d("LOG1", "drawingview 2");
 	}
 
-	public void initPaintwithbitmap(Bitmap bitmap, int width, int height)
+	public void setwh(int width, int height){
+		this.width = width;
+		this.height = height;
+	}
+
+	public void initPaintwithbitmap(Bitmap bitmap)
 	{
 		mDrawPaint = new Paint();
 		mDrawPaint.setColor(mPaintColor);
@@ -98,36 +105,46 @@ public class DrawingView extends View
         Log.d("LOG1", "bmpwidth : " + String.valueOf(bmpWidth));
         Log.d("LOG1", "bmpHeight : " + String.valueOf(bmpHeight));
 
-        if (bmpWidth > width) {
+        if (bmpWidth >= width) {
             // 원하는 너비보다 클 경우의 설정
             float mWidth = bmpWidth / 100;
             float scale = width/ mWidth;
             bmpWidth *= (scale / 100);
             bmpHeight *= (scale / 100);
             Log.d("LOG1", "resize case1");
-        } else if (bmpHeight > height ) {
+        } else if (bmpHeight >= height ) {
             // 원하는 높이보다 클 경우의 설정
             float mHeight = bmpHeight / 100;
             float scale = height/ mHeight;
             bmpWidth *= (scale / 100);
             bmpHeight *= (scale / 100);
             Log.d("LOG1", "resize case2");
-        }
-        else if(bmpWidth>=bmpHeight)
-        {
+        } else if(bmpWidth>=bmpHeight) {
             float scale = (float)(width/bmpWidth);
             bmpWidth *= (scale);
             bmpHeight *= (scale);
             Log.d("LOG1", "resize case3");
-        }
-        else
-        {
+        } else if(bmpWidth<bmpHeight){
             float scale = (float)(height / bmpHeight);
             Log.d("LOG1", String.valueOf(scale));
             bmpWidth *= (scale);
             bmpHeight *= (scale);
             Log.d("LOG1", "resize case4");
-        }
+        }if (bmpWidth >= width) {
+			// 원하는 너비보다 클 경우의 설정
+			float mWidth = bmpWidth / 100;
+			float scale = width/ mWidth;
+			bmpWidth *= (scale / 100);
+			bmpHeight *= (scale / 100);
+			Log.d("LOG1", "resize case1");
+		} if (bmpHeight >= height ) {
+			// 원하는 높이보다 클 경우의 설정
+			float mHeight = bmpHeight / 100;
+			float scale = height / mHeight;
+			bmpWidth *= (scale / 100);
+			bmpHeight *= (scale / 100);
+			Log.d("LOG1", "resize case2");
+		}
 
 
         Log.d("LOG1", String.valueOf(bmpWidth));
@@ -136,7 +153,7 @@ public class DrawingView extends View
         temp = Bitmap.createScaledBitmap(bitmap, (int) bmpWidth, (int) bmpHeight, true);
 		mBitmapBackground = temp;
 
-		Painting.setbitmapsize(bmpWidth,bmpHeight,(this.getWidth()-mBitmapBackground.getWidth())/2,(this.getHeight()-mBitmapBackground.getHeight())/2);
+		Painting.setbitmapsize(bmpWidth,bmpHeight,Math.abs((this.getWidth()-mBitmapBackground.getWidth()))/2,Math.abs((this.getHeight()-mBitmapBackground.getHeight()))/2);
 		Log.d("LOG1", "drawingview 3");
 
 }

@@ -81,6 +81,7 @@
         android:layout_gravity="center"
         android:textColor="@android:color/black"
         android:textSize="16sp"
+        android:clickable="true"
         android:textStyle="bold"
         android:text="Stoneware + Porcelain Plate" />
 
@@ -195,7 +196,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        ads:adUnitId="ca-app-pub-1992325656759505/7909549845">
     </com.google.android.gms.ads.AdView>
 
 </LinearLayout>

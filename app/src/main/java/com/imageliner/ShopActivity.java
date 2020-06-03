@@ -3,6 +3,7 @@ package com.imageliner;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -14,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -22,6 +25,7 @@ import android.view.ViewManager;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,9 +33,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -116,16 +122,17 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         context = this.getBaseContext();
         Log.d("LOG1", "start");
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
+        MobileAds.initialize(this, "ca-app-pub-1992325656759505~6979611558");
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAd.setAdListener(new AdListener() {
@@ -170,6 +177,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         rateItemButton = (ImageView) findViewById(R.id.painting);
         itemdelete = (ImageView)findViewById(R.id.item_delete);
 
+        findViewById(R.id.item_name).setOnClickListener(this);
         findViewById(R.id.photo).setOnClickListener(this);
         findViewById(R.id.album).setOnClickListener(this);
         findViewById(R.id.add).setOnClickListener(this);
@@ -215,7 +223,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             Log.d("LOG1","onstart");
             check.add("started");
             titles.add("Welcome");
-            dates.add("Add it");
+            dates.add("Make Your Image!");
             images.add(BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom)));
             simages.add(BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getWidth()/2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getHeight()/2, true)));
 
@@ -225,7 +233,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             setStringArrayPref(this,"images",images);
             setStringArrayPref(this,"simages",simages);
 
-            data.add(new Item( "Welcome", "Add it", BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getWidth()/2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getHeight()/2, true)));
+            data.add(new Item( "Welcome", "Make Your Image!", BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getWidth()/2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getHeight()/2, true)));
         }
         else{
             for(int i=0; i<titles.size(); i++) {
@@ -254,6 +262,31 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.item_name :
+                if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
+                    Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    new MaterialDialog.Builder(this)
+                            .title("New Title")
+                            .content("Please enter a new title.")
+                            .positiveColor(Color.BLACK)
+                            .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                            .input(null, null, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                    titles.set(infiniteAdapter.getRealCurrentPosition(), input.toString());
+
+                                    setStringArrayPref(ShopActivity.this, "titles", titles);
+
+                                    Intent intent = getIntent();
+                                    intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    finish();
+                                    startActivity(intent);
+                                }
+                            }).show();
+                }
+                break;
             case R.id.mliner :
                 ((ViewManager) view.getParent()).removeView(view);
                 linearLayout.setClickable(false);
@@ -265,40 +298,95 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 Log.d("LOG1", "layout clicked");
                 break;
             case R.id.item_delete:
-                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Are you sure?")
-                        .setContentText("Won't be able to recover this file!")
-                        .setCancelText("Cancel")
-                        .setConfirmText("Delete")
-                        .showCancelButton(true)
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.cancel();
-                            }
-                        })
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                Log.d("LOG1","CURRENT INDEX : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
+                if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
+                    Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Are you sure?")
+                            .setContentText("Won't be able to recover this file!")
+                            .setCancelText("Cancel")
+                            .setConfirmText("Delete")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.cancel();
+                                }
+                            })
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    Log.d("LOG1", "CURRENT INDEX1 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
 
-                                titles.remove(infiniteAdapter.getRealCurrentPosition());
-                                dates.remove(infiniteAdapter.getRealCurrentPosition());
-                                images.remove(infiniteAdapter.getRealCurrentPosition());
-                                simages.remove(infiniteAdapter.getRealCurrentPosition());
-                                data.remove(infiniteAdapter.getRealCurrentPosition());
+                                    if (infiniteAdapter.getRealCurrentPosition() == 0) {
 
-                                shopAdapter.removeItem(infiniteAdapter.getRealCurrentPosition());
+                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
+                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
+                                        images.remove(infiniteAdapter.getRealCurrentPosition());
+                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
+                                        data.remove(infiniteAdapter.getRealCurrentPosition());
 
-                                setStringArrayPref(ShopActivity.this, "titles", titles);
-                                setStringArrayPref(ShopActivity.this, "dates", dates);
-                                setStringArrayPref(ShopActivity.this, "images", images);
-                                setStringArrayPref(ShopActivity.this, "simages", simages);
+                                        if (titles.size() == 0) {
+                                            titles.add("Press '+' Button");
+                                            dates.add("Contour Extractor");
+                                            images.add(BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
+                                            simages.add(BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
+                                        }
 
-                                sweetAlertDialog.dismiss();
-                            }
-                        })
-                        .show();
+                                        setStringArrayPref(ShopActivity.this, "titles", titles);
+                                        setStringArrayPref(ShopActivity.this, "dates", dates);
+                                        setStringArrayPref(ShopActivity.this, "images", images);
+                                        setStringArrayPref(ShopActivity.this, "simages", simages);
+
+                                        Intent intent = getIntent();
+                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        finish();
+                                        startActivity(intent);
+
+                                    } else if (titles.size()>1 && infiniteAdapter.getRealCurrentPosition()==titles.size()-1){
+                                        Log.d("LOG1", "CURRENT INDEX2 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
+                                        Log.d("LOG1", "title size : " + String.valueOf(titles.size()));
+                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
+                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
+                                        images.remove(infiniteAdapter.getRealCurrentPosition());
+                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
+                                        data.remove(infiniteAdapter.getRealCurrentPosition());
+
+                                        setStringArrayPref(ShopActivity.this, "titles", titles);
+                                        setStringArrayPref(ShopActivity.this, "dates", dates);
+                                        setStringArrayPref(ShopActivity.this, "images", images);
+                                        setStringArrayPref(ShopActivity.this, "simages", simages);
+
+                                        Intent intent = getIntent();
+                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                    else {
+                                        Log.d("LOG1", "CURRENT INDEX3 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
+                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
+                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
+                                        images.remove(infiniteAdapter.getRealCurrentPosition());
+                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
+                                        data.remove(infiniteAdapter.getRealCurrentPosition());
+
+
+                                        setStringArrayPref(ShopActivity.this, "titles", titles);
+                                        setStringArrayPref(ShopActivity.this, "dates", dates);
+                                        setStringArrayPref(ShopActivity.this, "images", images);
+                                        setStringArrayPref(ShopActivity.this, "simages", simages);
+
+                                        Intent intent = getIntent();
+                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        finish();
+                                        startActivity(intent);
+//                                        sweetAlertDialog.dismiss();
+                                    }
+                                }
+                            })
+                            .show();
+                }
                 break;
             case R.id.download:
 
@@ -358,7 +446,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 break;
             case R.id.photo:
                 Intent intentphoto = new Intent(ShopActivity.this, MakeLine.class);
-                intentphoto.putExtra("type",2);;
+                intentphoto.putExtra("type", 2);
                 startActivity(intentphoto);
                 break;
             case R.id.album:
@@ -367,12 +455,36 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 startActivity(intentalbum);
                 break;
             case R.id.painting:
-                Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
+                if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
+                    Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(ShopActivity.this, Painting.class);
+                    byte[] byteBitmap = bitmapToByteArray(StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
+                    intent.putExtra("bitmap", byteBitmap);
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+//                    Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
+//                    Painting.startWithBitmap(ShopActivity.this, images.get(infiniteAdapter.getRealCurrentPosition()));
+                }
+//                    Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
                 break;
             default:
 //                showUnsupportedSnackBar();
                 break;
         }
+    }
+
+    public byte[] bitmapToByteArray( Bitmap $bitmap ) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+        $bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+        byte[] byteArray = stream.toByteArray() ;
+        return byteArray ;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 
     private void startShareDialog(Uri uri)
