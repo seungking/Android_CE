@@ -82,7 +82,7 @@ public class ColorPickerDialog extends Dialog {
 
             mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mCenterPaint.setColor(color);
-            mCenterPaint.setStrokeWidth(EasyPaint.DEFAULT_BRUSH_SIZE);
+            mCenterPaint.setStrokeWidth(10);
         }
 
         @Override

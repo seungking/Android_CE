@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,6 @@
         <activity android:name=".ViewImage"></activity>
         <activity android:name=".Painting" />
         <activity android:name=".SampleActivity" />
-        <activity android:name=".EasyPaint" />
         <activity android:name=".ResultActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
