@@ -48,9 +48,12 @@ public class ViewImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
 
-        mAdView = findViewById(R.id.adView_view);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+        if (noad.size()==0) {
+            mAdView = findViewById(R.id.adView_view);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position",0);

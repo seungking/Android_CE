@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.Constants;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -133,50 +134,22 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 //            }
 //        });
         bp = new BillingProcessor(this, "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlzZvyf8fo8yzDEVD8xa3sfRBWgpfT9OuuXjhR+6efl/qDKKphqYFCOLOjYrkhG2bWGMBMLtN47szIEafw9tzJy9h57KZRkoRo8ZPDUfG1zG7UEstWh0MsVWTrf8Gd0H4ob5cmNqc/pGTSGeGjU+gtTUiAC2+8W9v5QroBp6W5UEMfp7m7GvTc+LocFCIQV3t43bResun/+p/SwuIOkYzF28uBicwxoLcltAHTY8Cn82kT7KMAex+JPgcESMw/hNUCTSaNLIMiWeIH2WSX1k2jmAE7uaM6Ygys+UrcmXxbaMUC5egnAkt7NOnsDtsqj9hgqj9KPyG6dBdLjpVKLIkUwIDAQAB", this);
-        bp.initialize();
-        storage = new AppStorage(this);
+//        bp.initialize();
+//        storage = new AppStorage(this);
 
-        MobileAds.initialize(this, "ca-app-pub-1992325656759505~6979611558");
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+        Log.d("LOG1", "noad size : "+String.valueOf(noad.size()));
+        if (noad.size()==0){
+            MobileAds.initialize(this, "ca-app-pub-1992325656759505~6979611558");
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
 
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                showUnsupportedSnackBar();
-                // Code to be executed when the interstitial ad is closed.
-            }
-        });
-
+        Log.d("LOG1", "AFTER DECLARE AD");
         linearLayout = (LinearLayout)findViewById(R.id.mliner);
         linearLayout.setOnClickListener(this);
         linearLayout.setClickable(false);
@@ -197,7 +170,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
         findViewById(R.id.menu).setOnClickListener(this);
         findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
-
+        Log.d("LOG1", "AFTER DECLARE AD1");
         view = AboutBuilder.with(this)
                 .setCover(R.mipmap.ic_launcher_round)
                 .setAppIcon(R.mipmap.ic_launcher_foreground)
@@ -206,35 +179,40 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 .addFeedbackAction("ahnseungkl@gmail.com")
                 .setWrapScrollView(true)
                 .setLinksAnimated(true)
-//                .addDonateAction(new View.OnClickListener() {
-////                    @Override
-////                    public void onClick(View v) {
-////                        if (storage.purchasedRemoveAds()) {
-////                            // TODO: 이미 구매하셨습니다. 메세지 띄우기!
-////                        } else {
-////                            bp.purchase(ShopActivity.this, "donate");
-////                        }
-////                    }
-////                })
-////                .addRemoveAdsAction(new View.OnClickListener() {
-////                    @Override
-////                    public void onClick(View v) {
-////                        ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
-////                        if (noad.size()>0) {
-////                            // TODO: 이미 구매하셨습니다. 메세지 띄우기!
-////                        } else {
-////                            bp.purchase(ShopActivity.this, "noad");
-////                        }
-////                    }
-////                })
+                .addDonateAction(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bp.purchase(ShopActivity.this, "ce_donate");
+                    }
+                })
+                .addRemoveAdsAction(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("LOG1", "NO AD");
+                        ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
+                        if (noad.size()>0) {
+                            Snackbar.make(itemPicker, "You've already purchased it.", Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            bp.purchase(ShopActivity.this, "ce_no_ad");
+                        Log.d("LOG1", "NO AD1");
+                            if(noad.size()>0){
+                                Intent intent = getIntent();
+                                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                finish();
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                })
                 .setVersionNameAsAppSubTitle()
                 .build();
-
+        Log.d("LOG1", "AFTER DECLARE AD2");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("LOG1", "onstart");
 //        checkPermissions();
         ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) TedPermission.with(getApplicationContext())
                 .setPermissionListener(this.permissionlistener))
@@ -287,6 +265,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 .build());
 
         onItemChanged(data.get(0));
+        Log.d("LOG1", "onstart end");
     }
 
     @Override
@@ -421,12 +400,15 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             case R.id.download:
 
                 SaveImage(StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                ArrayList<String> noad  = getStringArrayPref(this,"noad");
+                if (noad.size()==0) {
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    } else {
+                        Log.d("TAG", "The interstitial wasn't loaded yet.");
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    }
                 }
                 showUnsupportedSnackBar();
                 break;
@@ -510,24 +492,30 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
         // 이 메소드는 구매 '성공'시에만 호출된다.
-        if (productId.equals("noad")) {
+        if (productId.equals("ce_no_ad")) {
+            Log.d("LOG1", "NO AD3");
+            bp.isPurchased("ce_no_ad");
             // TODO: 구매 해 주셔서 감사합니다! 메세지 보내기
             ArrayList<String> noad = new ArrayList<String>();
             noad.add("ok");
             setStringArrayPref(this,"noad",noad);
-            bp.isPurchased("noad");
-
+            Snackbar.make(itemPicker, "THANK YOU!", Snackbar.LENGTH_SHORT).show();
             // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume하지 않지만,
             // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
             // bp.consumePurchase("noad");
+            Log.d("LOG1", "NO AD4");
+            Intent intent = getIntent();
+            intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            startActivity(intent);
         }
-        if (productId.equals("donate")) {
+        if (productId.equals("ce_donate")) {
             // TODO: 구매 해 주셔서 감사합니다! 메세지 보내기
-            bp.isPurchased("donate");
-
+            bp.isPurchased("ce_donate");
+            Snackbar.make(itemPicker, "I LOVE YOU!", Snackbar.LENGTH_SHORT).show();
             // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume하지 않지만,
             // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
-             bp.consumePurchase("donate");
+             bp.consumePurchase("ce_donate");
         }
     }
 
@@ -538,18 +526,26 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
     @Override
     public void onBillingError(int errorCode, @Nullable Throwable error) {
-        /*
-        TODO: 이런식으로 구매 오류시 오류가 발생했다고 알려주는 것도 좋다.
+
+        //TODO: 이런식으로 구매 오류시 오류가 발생했다고 알려주는 것도 좋다.
         if (errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED) {
-            Snackbar.make(tvRemoveAds, R.string.unknown_error, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(itemPicker, "Billing Error!", Snackbar.LENGTH_SHORT).show();
         }
-         */
+
     }
 
     @Override
     public void onBillingInitialized() {
         // storage에 구매여부 저장
 //        storage.setPurchasedRemoveAds(bp.isPurchased("noad"));
+
+//        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+//        if(noad.size()!=0){
+//            Intent intent = getIntent();
+//            intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//            finish();
+//            startActivity(intent);
+//        }
     }
 
     @Override
@@ -561,10 +557,10 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (bp != null) {
             bp.release();
         }
-        super.onDestroy();
     }
 
     public byte[] bitmapToByteArray( Bitmap $bitmap ) {

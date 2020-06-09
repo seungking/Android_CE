@@ -108,26 +108,19 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
 
-        Log.d("LOG1", "Painting1");
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/3524605711");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+        if (noad.size()==0) {
+            Log.d("LOG1", "Painting1");
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/3524605711");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
 
         if(getIntent().hasExtra("bitmap")) {
             byte[] getByte = getIntent().getByteArrayExtra("bitmap");
             image_out = BitmapFactory.decodeByteArray( getByte, 0, getByte.length ) ;
             }
 
-//        image_out = StringToBitmap(getIntent().getStringExtra("bitmap"));
-//		Uri uri = getIntent().getData();
-//		if (uri != null) {
-//			try {
-//				Log.d("LOG1", "type1 1");
-//				image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//			} catch (Exception e) {
-//
-//			}
-//		}
         Log.d("LOG1", "Painting2");
         mDrawingView = (DrawingView) findViewById(R.id.main_drawing_view);
         mFillBackgroundImageView = (ImageView)findViewById(R.id.main_fill_iv);
@@ -155,7 +148,10 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	@Override
 	protected void onStart() {
 		super.onStart();
-//		if(!mInterstitialAd.isLoaded()) mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+        if (noad.size()==0) {
+		if(!mInterstitialAd.isLoaded()) mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
 		showUnsupportedSnackBar();
 	}
 
@@ -285,10 +281,12 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		switch (v.getId()) {
 			case R.id.painting_back:
 				finish();
-//				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
-//					mInterstitialAd.show(); //보여준다
-//				}
-//				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                ArrayList<String> noad  = getStringArrayPref(this,"noad");
+                if (noad.size()==0) {
+                    if (mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+                        mInterstitialAd.show(); //보여준다
+                    } else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
 				break;
 			case R.id.painting_next:
 //				requestPermissionsAndSaveBitmap();
@@ -330,11 +328,12 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				setStringArrayPref(Painting.this,"simages",simages);
 				finish();
 
-//				if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
-//					mInterstitialAd.show(); //보여준다
-//				}
-//				else mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
+                noad  = getStringArrayPref(this,"noad");
+                if (noad.size()==0) {
+                    if (mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+                        mInterstitialAd.show(); //보여준다
+                    } else mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
 //				SampleActivity.startWithBitmap(Painting.this,drawingCache);
 				break;
 			case R.id.main_fill_iv:

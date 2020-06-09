@@ -146,13 +146,16 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
 //        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
-        this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        this.mRewardedVideoAd.loadAd("ca-app-pub-1992325656759505/8226553469", new AdRequest.Builder().build());
-        loadRewardedVideoAd();
+        ArrayList<String> noad  = getStringArrayPref(this,"noad");
+        if (noad.size()==0) {
+            this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+            this.mRewardedVideoAd.loadAd("ca-app-pub-1992325656759505/8226553469", new AdRequest.Builder().build());
+            loadRewardedVideoAd();
 
-        mAdView = findViewById(R.id.adView1);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+            mAdView = findViewById(R.id.adView1);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
         imageVIewOuput = (ImageView)findViewById(R.id.imageViewOutput);
         can1 = (ImageView)findViewById(R.id.candidate1);
@@ -262,8 +265,10 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                     setStringArrayPref(MakeLine.this,"images",images);
                     setStringArrayPref(MakeLine.this,"simages",simages);
 
-                    if (mRewardedVideoAd.isLoaded()) mRewardedVideoAd.show();
-
+                    ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
+                    if (noad.size()==0) {
+                        if (mRewardedVideoAd.isLoaded()) mRewardedVideoAd.show();
+                    }
                     finish();
                 }
             }
