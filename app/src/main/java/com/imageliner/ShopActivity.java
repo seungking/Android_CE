@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Base64;
@@ -467,18 +468,25 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 startActivity(intentalbum);
                 break;
             case R.id.painting:
+                Log.d("LOG1", "Painting");
                 if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
                     Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     Intent topaint = new Intent(ShopActivity.this, Painting.class);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())).compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                    byte[] byteBitmap = stream.toByteArray();
-                    topaint.putExtra("bitmap", byteBitmap);
-//                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                    startActivity(topaint);
-//                    Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    StringToBitmap(simages.get(infiniteAdapter.getRealCurrentPosition())).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                    Log.d("LOG1", "Painting  1");
+//                    byte[] byteBitmap = stream.toByteArray();
+//                    topaint.putExtra("bitmap", byteBitmap);
+////                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+//                    Log.d("LOG1", "Painting  2");
+
+//                    topaint.setData(getImageUri(this,StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition()))));
+//
+//                    startActivity(topaint);
+
+                    Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
 //                    Painting.startWithBitmap(ShopActivity.this, images.get(infiniteAdapter.getRealCurrentPosition()));
                 }
 //                    Painting.startWithBitmap(ShopActivity.this, StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
@@ -713,6 +721,13 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             edit.putString(str, jSONArray.toString());
         }
         edit.apply();
+    }
+
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }
 

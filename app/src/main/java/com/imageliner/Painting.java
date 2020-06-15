@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -44,6 +46,7 @@ import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,23 +87,27 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
 	private InterstitialAd mInterstitialAd;
 
-//	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
-//		Intent intent = new Intent(context, Painting.class);
-//		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
-//		intent.setData(Uri.parse(path));
-////        intent.putExtra("bitmap",BitmapToString(bitmap));
-//		context.startActivity(intent);
-//		Log.d("LOG1", "startwithbitmap");
-//	}
-    public static void startWithBitmap(@NonNull Context context, @NonNull String bitmap) {
-        Intent intent = new Intent(context, Painting.class);
-//        intent.setData(Uri.parse(bitmap));
-        intent.putExtra("bitmap",bitmap);
-        context.startActivity(intent);
-        Log.d("LOG1", "startwithbitmap");
-    }
+	public static void startWithBitmap(@NonNull Context context, @NonNull Bitmap bitmap) {
+		Intent intent = new Intent(context, Painting.class);
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+
+
+
+
+//        intent.putExtra("bitmap",BitmapToString(bitmap));
+		intent.setData(Uri.parse(path));
+		context.startActivity(intent);
+		Log.d("LOG1", "startwithbitmap");
+	}
+//    public static void startWithBitmap(@NonNull Context context, @NonNull String bitmap) {
+//        Intent intent = new Intent(context, Painting.class);
+////        intent.setData(Uri.parse(bitmap));
+//        intent.putExtra("bitmap",bitmap);
+//        context.startActivity(intent);
+//        Log.d("LOG1", "startwithbitmap");
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -116,12 +123,35 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
 
-        if(getIntent().hasExtra("bitmap")) {
-            byte[] getByte = getIntent().getByteArrayExtra("bitmap");
-            image_out = BitmapFactory.decodeByteArray( getByte, 0, getByte.length ) ;
-            }
+//        if(getIntent().hasExtra("bitmap")) {
+//            byte[] getByte = getIntent().getByteArrayExtra("bitmap");
+//            image_out = BitmapFactory.decodeByteArray( getByte, 0, getByte.length ) ;
+//            }
 
-        Log.d("LOG1", "Painting2");
+		Uri uri = getIntent().getData();
+
+
+		try {
+			image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Log.d("LOG1", "path : " + uri.getPath());
+		Log.d("LOG1", "path : " + getFilePath(uri));
+//		File file = new File(getFilePath(uri));
+		File file = new File(uri.getPath());
+		if(file.exists()) {
+			boolean isDelete = file.delete();
+			Log.d("LOG1", "path1");
+			if(isDelete) Log.e("file delete ?", String.valueOf(isDelete));
+		}
+		else{
+			Log.d("LOG1", "path2");
+		}
+
+
+		Log.d("LOG1", "Painting2");
         mDrawingView = (DrawingView) findViewById(R.id.main_drawing_view);
         mFillBackgroundImageView = (ImageView)findViewById(R.id.main_fill_iv);
         mColorImageView = (ImageView)findViewById(R.id.main_color_iv);
@@ -428,13 +458,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		return true;
 	}
 
-	private Uri getImageUri(Context context, Bitmap inImage) {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-		return Uri.parse(path);
-	}
-
 	public static void aaa(float x, float y){
 			Log.d("LOG1", "extractingcolor2");
 
@@ -501,5 +524,27 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
             return null;
         }
     }
+
+	private String getFilePath(Uri uri) {
+		String[] projection = {MediaStore.Images.Media.DATA};
+
+		Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(projection[0]);
+			String picturePath = cursor.getString(columnIndex); // returns null
+			cursor.close();
+			return picturePath;
+		}
+		return null;
+	}
+
+	private Uri getImageUri(Context context, Bitmap inImage) {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+		return Uri.parse(path);
+	}
 
 }

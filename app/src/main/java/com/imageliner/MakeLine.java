@@ -130,6 +130,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
     private RewardedVideoAd mRewardedVideoAd;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
         Intent intent = new Intent(context, MakeLine.class);
@@ -148,9 +149,9 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
         ArrayList<String> noad  = getStringArrayPref(this,"noad");
         if (noad.size()==0) {
-            this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-            this.mRewardedVideoAd.loadAd("ca-app-pub-1992325656759505/8226553469", new AdRequest.Builder().build());
-            loadRewardedVideoAd();
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/4132179608");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
             mAdView = findViewById(R.id.adView1);
             AdRequest adRequest = new AdRequest.Builder().build();
@@ -267,7 +268,11 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
                     ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
                     if (noad.size()==0) {
-                        if (mRewardedVideoAd.isLoaded()) mRewardedVideoAd.show();
+                        if (mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                        } else {
+                            Log.d("TAG", "The interstitial wasn't loaded yet.");
+                        }
                     }
                     finish();
                 }
@@ -277,8 +282,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     }
 
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                new AdRequest.Builder().build());
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override

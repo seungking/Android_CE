@@ -23,8 +23,8 @@ android {
         applicationId "com.imageliner"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 18
-        versionName "2.4"
+        versionCode 19
+        versionName "2.5"
         ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
