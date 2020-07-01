@@ -127,9 +127,6 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     private static final int REQUEST_IMAGE_CAPTURE = 672;
 
     boolean next = false;
-
-    private RewardedVideoAd mRewardedVideoAd;
-    private AdView mAdView;
     private InterstitialAd mInterstitialAd;
 
     public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
@@ -150,12 +147,8 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         ArrayList<String> noad  = getStringArrayPref(this,"noad");
         if (noad.size()==0) {
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/4132179608");
+            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-            mAdView = findViewById(R.id.adView1);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
         }
 
         imageVIewOuput = (ImageView)findViewById(R.id.imageViewOutput);

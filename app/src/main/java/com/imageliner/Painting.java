@@ -119,7 +119,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         if (noad.size()==0) {
             Log.d("LOG1", "Painting1");
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/3524605711");
+            mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
 

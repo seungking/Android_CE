@@ -164,19 +164,6 @@
 
             </LinearLayout>
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                ads:adSize="BANNER"
-                android:layout_weight="1.2"
-                ads:adUnitId="ca-app-pub-1992325656759505/9102806468">
-            </com.google.android.gms.ads.AdView>
-
         </LinearLayout>
 
     </RelativeLayout>
