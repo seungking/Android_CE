@@ -5,8 +5,8 @@ using namespace cv;
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imageprocessing1(JNIEnv *env, jobject thiz, jlong input_image,
-                                             jlong output_image, jint th1, jint th2) {
+Java_com_imageliner_activities_MakeLine_imageprocessing1(JNIEnv *env, jobject thiz, jlong input_image,
+                                              jlong output_image, jint th1, jint th2) {
     // TODO: implement imageprocessing()
 
     Mat &img_input = *(Mat *) input_image;
@@ -82,8 +82,8 @@ Java_com_imageliner_MakeLine_imageprocessing1(JNIEnv *env, jobject thiz, jlong i
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imagebalckwhite1(JNIEnv *env, jobject thiz, jlong input_image,
-                                             jlong output_image, jint th1, jint th2) {
+Java_com_imageliner_activities_MakeLine_imagebalckwhite1(JNIEnv *env, jobject thiz, jlong input_image,
+                                              jlong output_image, jint th1, jint th2) {
     // TODO: implement imagebalckwhite()
     Mat &img_input = *(Mat *) input_image;
 
@@ -107,7 +107,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite1(JNIEnv *env, jobject thiz, jlong i
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imageprocessing2(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imageprocessing2(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imageprocessing2()
 
@@ -128,7 +128,7 @@ Java_com_imageliner_MakeLine_imageprocessing2(JNIEnv *env, jobject thiz, jlong i
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imagebalckwhite2(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imagebalckwhite2(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imagebalckwhite2()
 
@@ -154,7 +154,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite2(JNIEnv *env, jobject thiz, jlong i
 
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imageprocessing3(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imageprocessing3(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imageprocessing3()
     Mat &img_input = *(Mat *) input_image;
@@ -195,7 +195,7 @@ Java_com_imageliner_MakeLine_imageprocessing3(JNIEnv *env, jobject thiz, jlong i
 
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imagebalckwhite3(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imagebalckwhite3(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imagebalckwhite3()
     Mat &img_input = *(Mat *) input_image;
@@ -220,7 +220,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite3(JNIEnv *env, jobject thiz, jlong i
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imageprocessing4(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imageprocessing4(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imageprocessing()
 
@@ -239,7 +239,7 @@ Java_com_imageliner_MakeLine_imageprocessing4(JNIEnv *env, jobject thiz, jlong i
     Canny( img_output, img_output, 57, 41, 3, false);
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeLine_imagebalckwhite4(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeLine_imagebalckwhite4(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imagebalckwhite4()
     Mat &img_input = *(Mat *) input_image;
@@ -262,7 +262,7 @@ Java_com_imageliner_MakeLine_imagebalckwhite4(JNIEnv *env, jobject thiz, jlong i
     }
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeColor_00024MainActivity_imageprocessing(JNIEnv *env, jobject thiz,
+Java_com_imageliner_activities_MakeColor_00024MainActivity_imageprocessing(JNIEnv *env, jobject thiz,
                                                                 jlong input_image,
                                                                 jlong output_image, jint th1,
                                                                 jint th2) {
@@ -283,7 +283,7 @@ Java_com_imageliner_MakeColor_00024MainActivity_imageprocessing(JNIEnv *env, job
     Canny( img_output, img_output, th1, th2);
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_imageliner_MakeColor_imageprocessing(JNIEnv *env, jobject thiz, jlong input_image,
+Java_com_imageliner_activities_MakeColor_imageprocessing(JNIEnv *env, jobject thiz, jlong input_image,
                                               jlong output_image, jint th1, jint th2) {
     // TODO: implement imageprocessing()
     Mat &img_input = *(Mat *) input_image;

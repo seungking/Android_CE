@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".Painting">
+    tools:context=".activities.Painting">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
 
     </RelativeLayout>
 
-    <com.imageliner.DrawingView
+    <com.imageliner.models.DrawingView
         android:id="@+id/main_drawing_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

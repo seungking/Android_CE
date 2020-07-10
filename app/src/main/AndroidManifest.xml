@@ -17,17 +17,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewImage"></activity>
-        <activity android:name=".Painting" />
-        <activity android:name=".SampleActivity" />
-        <activity android:name=".ResultActivity" />
+        <activity android:name=".activities.ViewImage"></activity>
+        <activity android:name=".activities.Painting" />
+        <activity android:name=".activities.SampleActivity" />
+        <activity android:name=".activities.ResultActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".MakeColor" /> <!-- <activity android:name=".MakeLine" /> -->
-        <activity android:name=".ShopActivity">
+        <activity android:name=".activities.MakeColor" /> <!-- <activity android:name=".MakeLine" /> -->
+        <activity android:name=".activities.ShopActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MakeLine"
+            android:name=".activities.MakeLine"
             android:label="@string/app_name" />
 
         <provider
