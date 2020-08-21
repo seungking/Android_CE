@@ -123,7 +123,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
 
             CameraTextureListener texListener = mView.getCameraTextureListener();
             if(texListener != null) {
-                //Log.d(LOGTAG, "haveUserCallback");
+                ////Log.d(LOGTAG, "haveUserCallback");
                 // texCamera(OES) -> texFBO
                 drawTex(texCamera[0], true, FBO[0]);
 
@@ -138,7 +138,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
                     drawTex(texFBO[0], false, 0);
                 }
             } else {
-                Log.d(LOGTAG, "texCamera(OES) -> screen");
+                //Log.d(LOGTAG, "texCamera(OES) -> screen");
                 // texCamera(OES) -> screen
                 drawTex(texCamera[0], true, 0);
             }
@@ -181,7 +181,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
     }
 
     private void initSurfaceTexture() {
-        Log.d(LOGTAG, "initSurfaceTexture");
+        //Log.d(LOGTAG, "initSurfaceTexture");
         deleteSurfaceTexture();
         initTexOES(texCamera);
         mSTexture = new SurfaceTexture(texCamera[0]);
@@ -189,7 +189,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
     }
 
     private void deleteSurfaceTexture() {
-        Log.d(LOGTAG, "deleteSurfaceTexture");
+        //Log.d(LOGTAG, "deleteSurfaceTexture");
         if(mSTexture != null) {
             mSTexture.release();
             mSTexture = null;
@@ -215,7 +215,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
     }
 
     private static int loadShader(String vss, String fss) {
-        Log.d("CameraGLRendererBase", "loadShader");
+        //Log.d("CameraGLRendererBase", "loadShader");
         int vshader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
         GLES20.glShaderSource(vshader, vss);
         GLES20.glCompileShader(vshader);
@@ -262,14 +262,14 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
             return 0;
         }
 
-        Log.d("CameraGLRendererBase", "Shader program is built OK");
+        //Log.d("CameraGLRendererBase", "Shader program is built OK");
 
         return program;
     }
 
     private void deleteFBO()
     {
-        Log.d(LOGTAG, "deleteFBO("+mFBOWidth+"x"+mFBOHeight+")");
+        //Log.d(LOGTAG, "deleteFBO("+mFBOWidth+"x"+mFBOHeight+")");
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
         GLES20.glDeleteFramebuffers(1, FBO, 0);
 
@@ -280,7 +280,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
 
     private void initFBO(int width, int height)
     {
-        Log.d(LOGTAG, "initFBO("+width+"x"+height+")");
+        //Log.d(LOGTAG, "initFBO("+width+"x"+height+")");
 
         deleteFBO();
 
@@ -304,7 +304,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
         GLES20.glGenFramebuffers(1, FBO, 0);
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, FBO[0]);
         GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, texFBO[0], 0);
-        Log.d(LOGTAG, "initFBO error status: " + GLES20.glGetError());
+        //Log.d(LOGTAG, "initFBO error status: " + GLES20.glGetError());
 
         int FBOstatus = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
         if (FBOstatus != GLES20.GL_FRAMEBUFFER_COMPLETE)
@@ -351,32 +351,32 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
     }
 
     public synchronized void enableView() {
-        Log.d(LOGTAG, "enableView");
+        //Log.d(LOGTAG, "enableView");
         mEnabled = true;
         updateState();
     }
 
     public synchronized void disableView() {
-        Log.d(LOGTAG, "disableView");
+        //Log.d(LOGTAG, "disableView");
         mEnabled = false;
         updateState();
     }
 
     protected void updateState() {
-        Log.d(LOGTAG, "updateState");
-        Log.d(LOGTAG, "mEnabled="+mEnabled+", mHaveSurface="+mHaveSurface);
+        //Log.d(LOGTAG, "updateState");
+        //Log.d(LOGTAG, "mEnabled="+mEnabled+", mHaveSurface="+mHaveSurface);
         boolean willStart = mEnabled && mHaveSurface && mView.getVisibility() == View.VISIBLE;
         if (willStart != mIsStarted) {
             if(willStart) doStart();
             else doStop();
         } else {
-            Log.d(LOGTAG, "keeping State unchanged");
+            //Log.d(LOGTAG, "keeping State unchanged");
         }
-        Log.d(LOGTAG, "updateState end");
+        //Log.d(LOGTAG, "updateState end");
     }
 
     protected synchronized void doStart() {
-        Log.d(LOGTAG, "doStart");
+        //Log.d(LOGTAG, "doStart");
         initSurfaceTexture();
         openCamera(mCameraIndex);
         mIsStarted = true;
@@ -386,7 +386,7 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
 
 
     protected void doStop() {
-        Log.d(LOGTAG, "doStop");
+        //Log.d(LOGTAG, "doStop");
         synchronized(this) {
             mUpdateST = false;
             mIsStarted = false;

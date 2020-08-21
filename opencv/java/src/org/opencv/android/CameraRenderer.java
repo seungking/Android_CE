@@ -38,7 +38,7 @@ public class CameraRenderer extends CameraGLRendererBase {
         Log.i(LOGTAG, "openCamera");
         closeCamera();
         if (id == CameraBridgeViewBase.CAMERA_ID_ANY) {
-            Log.d(LOGTAG, "Trying to open camera with old open()");
+            //Log.d(LOGTAG, "Trying to open camera with old open()");
             try {
                 mCamera = Camera.open();
             }
@@ -49,7 +49,7 @@ public class CameraRenderer extends CameraGLRendererBase {
             if(mCamera == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
                 boolean connected = false;
                 for (int camIdx = 0; camIdx < Camera.getNumberOfCameras(); ++camIdx) {
-                    Log.d(LOGTAG, "Trying to open camera with new open(" + camIdx + ")");
+                    //Log.d(LOGTAG, "Trying to open camera with new open(" + camIdx + ")");
                     try {
                         mCamera = Camera.open(camIdx);
                         connected = true;
@@ -88,7 +88,7 @@ public class CameraRenderer extends CameraGLRendererBase {
                 } else if (localCameraIndex == CameraBridgeViewBase.CAMERA_ID_FRONT) {
                     Log.e(LOGTAG, "Front camera not found!");
                 } else {
-                    Log.d(LOGTAG, "Trying to open camera with new open(" + localCameraIndex + ")");
+                    //Log.d(LOGTAG, "Trying to open camera with new open(" + localCameraIndex + ")");
                     try {
                         mCamera = Camera.open(localCameraIndex);
                     } catch (RuntimeException e) {
@@ -134,7 +134,7 @@ public class CameraRenderer extends CameraGLRendererBase {
             float aspect = (float)width / height;
             for (Size size : psize) {
                 int w = size.width, h = size.height;
-                Log.d(LOGTAG, "checking camera preview size: "+w+"x"+h);
+                //Log.d(LOGTAG, "checking camera preview size: "+w+"x"+h);
                 if ( w <= width && h <= height &&
                      w >= bestWidth && h >= bestHeight &&
                      Math.abs(aspect - (float)w/h) < 0.2 ) {

@@ -43,13 +43,13 @@ public abstract class BaseLoaderCallback implements LoaderCallbackInterface {
             /** Package installation has been canceled. **/
             case LoaderCallbackInterface.INSTALL_CANCELED:
             {
-                Log.d(TAG, "OpenCV library installation was canceled by user");
+                //Log.d(TAG, "OpenCV library installation was canceled by user");
                 finish();
             } break;
             /** Application is incompatible with this version of OpenCV Manager. Possibly, a service update is required. **/
             case LoaderCallbackInterface.INCOMPATIBLE_MANAGER_VERSION:
             {
-                Log.d(TAG, "OpenCV Manager Service is uncompatible with this app!");
+                //Log.d(TAG, "OpenCV Manager Service is uncompatible with this app!");
                 AlertDialog IncomatibilityMessage = new AlertDialog.Builder(mAppContext).create();
                 IncomatibilityMessage.setTitle("OpenCV Manager");
                 IncomatibilityMessage.setMessage("OpenCV Manager service is incompatible with this app. Try to update it via Google Play.");

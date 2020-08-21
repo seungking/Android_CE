@@ -212,7 +212,7 @@ public class MakeColor extends AppCompatActivity{
             try {
                 exif = new ExifInterface(filepath);
             } catch (IOException e) {
-                Log.d("@@@", e.toString());
+                //Log.d("@@@", e.toString());
                 return -1;
             }
 

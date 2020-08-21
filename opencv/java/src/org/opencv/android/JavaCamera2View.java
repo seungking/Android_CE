@@ -314,7 +314,7 @@ public class JavaCamera2View extends CameraBridgeViewBase {
 
             if (needReconfig) {
                 if (null != mCaptureSession) {
-                    Log.d(LOGTAG, "closing existing previewSession");
+                    //Log.d(LOGTAG, "closing existing previewSession");
                     mCaptureSession.close();
                     mCaptureSession = null;
                 }

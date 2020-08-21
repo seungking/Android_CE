@@ -52,7 +52,7 @@ public class DrawingView extends View
 		mBackgroundPaint = new Paint();
 		temp = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 //		initPaint();
-		Log.d("LOG1", "drawingview 1");
+		//Log.d("LOG1", "drawingview 1");
 
 	}
 
@@ -70,7 +70,7 @@ public class DrawingView extends View
 
 		mBitmapBackground = temp;
 
-		Log.d("LOG1", "drawingview 2");
+		//Log.d("LOG1", "drawingview 2");
 	}
 
 	public void setwh(int width, int height){
@@ -93,10 +93,10 @@ public class DrawingView extends View
         float bmpWidth = bitmap.getWidth();
         float bmpHeight = bitmap.getHeight();
 
-        Log.d("LOG1", "width : " + String.valueOf(width));
-        Log.d("LOG1", "height : " + String.valueOf(height));
-        Log.d("LOG1", "bmpwidth : " + String.valueOf(bmpWidth));
-        Log.d("LOG1", "bmpHeight : " + String.valueOf(bmpHeight));
+        //Log.d("LOG1", "width : " + String.valueOf(width));
+        //Log.d("LOG1", "height : " + String.valueOf(height));
+        //Log.d("LOG1", "bmpwidth : " + String.valueOf(bmpWidth));
+        //Log.d("LOG1", "bmpHeight : " + String.valueOf(bmpHeight));
 
         if (bmpWidth >= width) {
             // 원하는 너비보다 클 경우의 설정
@@ -104,50 +104,50 @@ public class DrawingView extends View
             float scale = width/ mWidth;
             bmpWidth *= (scale / 100);
             bmpHeight *= (scale / 100);
-            Log.d("LOG1", "resize case1");
+            //Log.d("LOG1", "resize case1");
         } else if (bmpHeight >= height ) {
             // 원하는 높이보다 클 경우의 설정
             float mHeight = bmpHeight / 100;
             float scale = height/ mHeight;
             bmpWidth *= (scale / 100);
             bmpHeight *= (scale / 100);
-            Log.d("LOG1", "resize case2");
+            //Log.d("LOG1", "resize case2");
         } else if(bmpWidth>=bmpHeight) {
             float scale = (float)(width/bmpWidth);
             bmpWidth *= (scale);
             bmpHeight *= (scale);
-            Log.d("LOG1", "resize case3");
+            //Log.d("LOG1", "resize case3");
         } else if(bmpWidth<bmpHeight){
             float scale = (float)(height / bmpHeight);
-            Log.d("LOG1", String.valueOf(scale));
+            //Log.d("LOG1", String.valueOf(scale));
             bmpWidth *= (scale);
             bmpHeight *= (scale);
-            Log.d("LOG1", "resize case4");
+            //Log.d("LOG1", "resize case4");
         }if (bmpWidth >= width) {
 			// 원하는 너비보다 클 경우의 설정
 			float mWidth = bmpWidth / 100;
 			float scale = width/ mWidth;
 			bmpWidth *= (scale / 100);
 			bmpHeight *= (scale / 100);
-			Log.d("LOG1", "resize case1");
+			//Log.d("LOG1", "resize case1");
 		} if (bmpHeight >= height ) {
 			// 원하는 높이보다 클 경우의 설정
 			float mHeight = bmpHeight / 100;
 			float scale = height / mHeight;
 			bmpWidth *= (scale / 100);
 			bmpHeight *= (scale / 100);
-			Log.d("LOG1", "resize case2");
+			//Log.d("LOG1", "resize case2");
 		}
 
 
-        Log.d("LOG1", String.valueOf(bmpWidth));
-        Log.d("LOG1", String.valueOf(bmpHeight));
+        //Log.d("LOG1", String.valueOf(bmpWidth));
+        //Log.d("LOG1", String.valueOf(bmpHeight));
 
         temp = Bitmap.createScaledBitmap(bitmap, (int) bmpWidth, (int) bmpHeight, true);
 		mBitmapBackground = temp;
 
 		Painting.setbitmapsize(bmpWidth,bmpHeight,Math.abs((this.getWidth()-mBitmapBackground.getWidth()))/2,Math.abs((this.getHeight()-mBitmapBackground.getHeight()))/2);
-		Log.d("LOG1", "drawingview 3");
+		//Log.d("LOG1", "drawingview 3");
 
 }
 
@@ -157,7 +157,7 @@ public class DrawingView extends View
 		mBackgroundPaint.setStyle(Paint.Style.FILL);
 		canvas.drawRect(0, 0, this.getWidth(), this.getHeight(), mBackgroundPaint);
 		canvas.drawBitmap( mBitmapBackground, (this.getWidth()-mBitmapBackground.getWidth())/2, (this.getHeight()-mBitmapBackground.getHeight())/2, new Paint() );
-		Log.d("LOG1", "drawingview 4");
+		//Log.d("LOG1", "drawingview 4");
 	}
 
 	private void drawPaths(Canvas canvas)
@@ -168,7 +168,7 @@ public class DrawingView extends View
 			canvas.drawPath(p, mPaints.get(i));
 			i++;
 		}
-		Log.d("LOG1", "drawingview 5");
+		//Log.d("LOG1", "drawingview 5");
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class DrawingView extends View
 		drawPaths(canvas);
 
 		canvas.drawPath(mDrawPath, mDrawPaint);
-		Log.d("LOG1", "drawingview 6");
+		//Log.d("LOG1", "drawingview 6");
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class DrawingView extends View
 
 		mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
-		Log.d("LOG1", "drawingview 7");
+		//Log.d("LOG1", "drawingview 7");
 		mDrawCanvas = new Canvas(mCanvasBitmap);
 	}
 

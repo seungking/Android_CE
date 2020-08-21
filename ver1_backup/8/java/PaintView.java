@@ -128,7 +128,7 @@ public class PaintView extends View {
 
     public void undo() {
         if (this.paths.size() > 0) {
-            Log.d("adsfa", "1111111111");
+            //Log.d("adsfa", "1111111111");
             ArrayList arrayList = this.undonePaths;
             ArrayList arrayList2 = this.paths;
             arrayList.add(arrayList2.remove(arrayList2.size() - 1));
@@ -138,7 +138,7 @@ public class PaintView extends View {
 
     public void redo() {
         if (this.undonePaths.size() > 0) {
-            Log.d("adsfa", "2222222222222");
+            //Log.d("adsfa", "2222222222222");
             ArrayList arrayList = this.paths;
             ArrayList arrayList2 = this.undonePaths;
             arrayList.add(arrayList2.remove(arrayList2.size() - 1));

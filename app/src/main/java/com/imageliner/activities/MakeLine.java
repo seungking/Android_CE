@@ -145,19 +145,19 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
         type = getIntent().getIntExtra("type",-1);
         if(type == 1) {
-            Log.d("LOG1", "type1");
+            //Log.d("LOG1", "type1");
             Uri uri = getIntent().getData();
             if (uri != null) {
                 try {
-                    Log.d("LOG1", "type1 1");
+                    //Log.d("LOG1", "type1 1");
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    Log.d("LOG1", "type1 2");
+                    //Log.d("LOG1", "type1 2");
                     img_input = new Mat();
                     Bitmap bmp32 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                     Utils.bitmapToMat(bmp32, img_input);
-                    Log.d("LOG1", "type1 3");
+                    //Log.d("LOG1", "type1 3");
                     imageVIewOuput.setImageURI(uri);
-                    Log.d("LOG1", "type1 4");
+                    //Log.d("LOG1", "type1 4");
                 } catch (Exception e) {
                     Log.e(TAG, "setImageUri", e);
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -165,7 +165,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
             }
         }
         if(type == 2) {
-            Log.d("LOG1", "type2");
+            //Log.d("LOG1", "type2");
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             if (intent.resolveActivity(getPackageManager()) != null) {
                 File file = null;
@@ -174,7 +174,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                 } catch (IOException unused) {
                 }
                 if (file != null) {
-                    Log.d("LOG1", "type2");
+                    //Log.d("LOG1", "type2");
                     this.photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), file);
                     intent.putExtra("output", this.photoUri);
                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
@@ -210,14 +210,14 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                     String imagetitle = "Untitled";
                     int index=1;
                     while(true){
-                        Log.d("LOG1",imagetitle+String.valueOf(index));
+                        //Log.d("LOG1",imagetitle+String.valueOf(index));
                         if(titles.indexOf(imagetitle+String.valueOf(index))==-1) {
                             imagetitle=imagetitle+String.valueOf(index);
-                            Log.d("LOG1","titles1");
+                            //Log.d("LOG1","titles1");
                             break;
                         }
                         else  index++;
-                        Log.d("LOG1","titles2");
+                        //Log.d("LOG1","titles2");
                     }
                     titles.add(imagetitle);
                     dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
@@ -234,7 +234,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                         if (mInterstitialAd.isLoaded()) {
                             mInterstitialAd.show();
                         } else {
-                            Log.d("TAG", "The interstitial wasn't loaded yet.");
+                            //Log.d("TAG", "The interstitial wasn't loaded yet.");
                         }
                     }
                     finish();
@@ -251,14 +251,14 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("LOG1", "RESUME");
+        //Log.d("LOG1", "RESUME");
         isReady = true;
         if(type==1)imageprocess_and_showResult(5, 5);
     }
 
     @Override
     protected void onStart() {
-        Log.d("LOG1", "START");
+        //Log.d("LOG1", "START");
         super.onStart();
 //        if(decodeFile==null)finish();
     }
@@ -277,9 +277,9 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
 
     private void imageprocess_and_showResult(int th1, int th2) {
 
-        Log.d("LOG1", "imageprocess_and_showResult");
+        //Log.d("LOG1", "imageprocess_and_showResult");
         if (isReady==false) return;
-        Log.d("LOG1", "imageprocess_and_showResult1");
+        //Log.d("LOG1", "imageprocess_and_showResult1");
         if (img_output == null)
             img_output = new Mat();
         if (img_output2 == null)
@@ -290,41 +290,41 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
             img_output4 = new Mat();
         if (img_input == null)
             img_input = new Mat();
-        Log.d("LOG1", "imageprocess_and_showResult2");
+        //Log.d("LOG1", "imageprocess_and_showResult2");
         imageprocessing1(img_input.getNativeObjAddr(), img_output.getNativeObjAddr(), th1, th2);
         imagebalckwhite1(img_output.getNativeObjAddr(), img_output.getNativeObjAddr(), 0, 0);
-        Log.d("LOG1", "imageprocess_and_showResult3");
+        //Log.d("LOG1", "imageprocess_and_showResult3");
         imageprocessing2(img_input.getNativeObjAddr(), img_output2.getNativeObjAddr(), th1, th2);
         imagebalckwhite2(img_output2.getNativeObjAddr(), img_output2.getNativeObjAddr(), 0, 0);
-        Log.d("LOG1", "imageprocess_and_showResult4");
+        //Log.d("LOG1", "imageprocess_and_showResult4");
         imageprocessing3(img_input.getNativeObjAddr(), img_output3.getNativeObjAddr(), th1, th2);
         imagebalckwhite3(img_output3.getNativeObjAddr(), img_output3.getNativeObjAddr(), 0, 0);
-        Log.d("LOG1", "imageprocess_and_showResult5");
+        //Log.d("LOG1", "imageprocess_and_showResult5");
         imageprocessing4(img_input.getNativeObjAddr(), img_output4.getNativeObjAddr(), th1, th2);
         imagebalckwhite4(img_output4.getNativeObjAddr(), img_output4.getNativeObjAddr(), 0, 0);
-        Log.d("LOG1", "imageprocess_and_showResult6");
+        //Log.d("LOG1", "imageprocess_and_showResult6");
 
         bitmapOutput1 = Bitmap.createBitmap(img_output.cols(), img_output.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output, bitmapOutput1);
         imageVIewOuput.setImageBitmap(bitmapOutput1);
         can1.setImageBitmap(bitmapOutput1);
         cbitmapOutput = bitmapOutput1;
-        Log.d("LOG1", "imageprocess_and_showResult7");
+        //Log.d("LOG1", "imageprocess_and_showResult7");
 
         bitmapOutput2 = Bitmap.createBitmap(img_output2.cols(), img_output2.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output2, bitmapOutput2);
         can2.setImageBitmap(bitmapOutput2);
-        Log.d("LOG1", "imageprocess_and_showResult8");
+        //Log.d("LOG1", "imageprocess_and_showResult8");
 
         bitmapOutput3 = Bitmap.createBitmap(img_output3.cols(), img_output3.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output3, bitmapOutput3);
         can3.setImageBitmap(bitmapOutput3);
-        Log.d("LOG1", "imageprocess_and_showResult9");
+        //Log.d("LOG1", "imageprocess_and_showResult9");
 
         bitmapOutput4 = Bitmap.createBitmap(img_output4.cols(), img_output4.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(img_output4, bitmapOutput4);
         can4.setImageBitmap(bitmapOutput4);
-        Log.d("LOG1", "imageprocess_and_showResult10");
+        //Log.d("LOG1", "imageprocess_and_showResult10");
     }
 
 
@@ -405,7 +405,7 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
         try {
             exif = new ExifInterface(filepath);
         } catch (IOException e) {
-            Log.d("@@@", e.toString());
+            //Log.d("@@@", e.toString());
             return -1;
         }
 
@@ -485,25 +485,25 @@ public class MakeLine extends AppCompatActivity  implements View.OnClickListener
                 finish();
                 break;
             case R.id.candidate1 :
-                Log.d("LOG1", "can1");
+                //Log.d("LOG1", "can1");
                 cmat = img_output;
                 cbitmapOutput = bitmapOutput1;
                 imageVIewOuput.setImageBitmap(bitmapOutput1);
                 break;
             case R.id.candidate2 :
-                Log.d("LOG1", "can2");
+                //Log.d("LOG1", "can2");
                 cmat = img_output2;
                 cbitmapOutput = bitmapOutput2;
                 imageVIewOuput.setImageBitmap(bitmapOutput2);
                 break;
             case R.id.candidate3 :
-                Log.d("LOG1", "can3");
+                //Log.d("LOG1", "can3");
                 cmat = img_output3;
                 cbitmapOutput = bitmapOutput3;
                 imageVIewOuput.setImageBitmap(bitmapOutput3);
                 break;
             case R.id.candidate4 :
-                Log.d("LOG1", "can4");
+                //Log.d("LOG1", "can4");
                 cmat = img_output4;
                 cbitmapOutput = bitmapOutput4;
                 imageVIewOuput.setImageBitmap(bitmapOutput4);

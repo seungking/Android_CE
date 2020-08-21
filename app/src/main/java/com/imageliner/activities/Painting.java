@@ -87,21 +87,9 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
 
-
-
-
-//        intent.putExtra("bitmap",BitmapToString(bitmap));
 		intent.setData(Uri.parse(path));
 		context.startActivity(intent);
-		Log.d("LOG1", "startwithbitmap");
 	}
-//    public static void startWithBitmap(@NonNull Context context, @NonNull String bitmap) {
-//        Intent intent = new Intent(context, Painting.class);
-////        intent.setData(Uri.parse(bitmap));
-//        intent.putExtra("bitmap",bitmap);
-//        context.startActivity(intent);
-//        Log.d("LOG1", "startwithbitmap");
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -112,19 +100,12 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
         ArrayList<String> noad  = getStringArrayPref(this,"noad");
         if (noad.size()==0) {
-            Log.d("LOG1", "Painting1");
             mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-1992325656759505/1090443323");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
 
-//        if(getIntent().hasExtra("bitmap")) {
-//            byte[] getByte = getIntent().getByteArrayExtra("bitmap");
-//            image_out = BitmapFactory.decodeByteArray( getByte, 0, getByte.length ) ;
-//            }
-
 		Uri uri = getIntent().getData();
-
 
 		try {
 			image_out = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -132,21 +113,14 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 			e.printStackTrace();
 		}
 
-		Log.d("LOG1", "path : " + uri.getPath());
-		Log.d("LOG1", "path : " + getFilePath(uri));
-//		File file = new File(getFilePath(uri));
 		File file = new File(uri.getPath());
 		if(file.exists()) {
 			boolean isDelete = file.delete();
-			Log.d("LOG1", "path1");
 			if(isDelete) Log.e("file delete ?", String.valueOf(isDelete));
 		}
 		else{
-			Log.d("LOG1", "path2");
 		}
 
-
-		Log.d("LOG1", "Painting2");
         mDrawingView = (DrawingView) findViewById(R.id.main_drawing_view);
         mFillBackgroundImageView = (ImageView)findViewById(R.id.main_fill_iv);
         mColorImageView = (ImageView)findViewById(R.id.main_color_iv);
@@ -188,8 +162,8 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
     public void onWindowFocusChanged(boolean hasFocus) {
 	    weight =  mDrawingView.getWidth();
 	    height = mDrawingView.getHeight();
-        Log.d("LOG1", String.valueOf(mDrawingView.getWidth()));
-        Log.d("LOG1", String.valueOf(mDrawingView.getHeight()));
+        //Log.d("LOG1", String.valueOf(mDrawingView.getWidth()));
+        //Log.d("LOG1", String.valueOf(mDrawingView.getHeight()));
         mDrawingView.setwh(weight,height);
         mDrawingView.initPaintwithbitmap(image_out);
     }
@@ -229,7 +203,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 
 	private void initDrawingView()
 	{
-        Log.d("LOG1", "Painting initdrawingview");
+        //Log.d("LOG1", "Painting initdrawingview");
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
@@ -273,34 +247,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
         startActivity(Intent.createChooser(intent, "Share Image"));
     }
 
-//	private void requestPermissionsAndSaveBitmap()
-//	{
-//		if (PermissionManager.checkWriteStoragePermissions(this))
-//		{
-//			Uri uri = FileManager.saveBitmap(this, mDrawingView.getBitmap());
-//			startShareDialog(uri);
-//		}
-//	}
-//
-//	@Override
-//	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-//	{
-//		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//		switch (requestCode)
-//		{
-//			case PermissionManager.REQUEST_WRITE_STORAGE:
-//			{
-//				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-//				{
-//					Uri uri = FileManager.saveBitmap(this, mDrawingView.getBitmap());
-//					startShareDialog(uri);
-//				} else
-//				{
-//				}
-//			}
-//		}
-//	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -314,11 +260,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
                 }
 				break;
 			case R.id.painting_next:
-//				requestPermissionsAndSaveBitmap();
-                Log.d("LOG1","W : " +String.valueOf(w));
-                Log.d("LOG1","H : " +String.valueOf(h));
-                Log.d("LOG1","X : " +String.valueOf(x));
-                Log.d("LOG1","Y : " +String.valueOf(y));
 				mDrawingView.setDrawingCacheEnabled(true);
 				mDrawingView.buildDrawingCache();
 				Bitmap drawingCache = mDrawingView.getDrawingCache();
@@ -333,14 +274,11 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
                 String imagetitle = "Untitled";
                 int index=1;
                 while(true){
-                    Log.d("LOG1",imagetitle+String.valueOf(index));
                     if(titles.indexOf(imagetitle+String.valueOf(index))==-1) {
                         imagetitle=imagetitle+String.valueOf(index);
-                        Log.d("LOG1","titles1");
                         break;
                     }
                     else  index++;
-                    Log.d("LOG1","titles2");
                 }
                 titles.add(imagetitle);
 				dates.add(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
@@ -362,7 +300,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 //				SampleActivity.startWithBitmap(Painting.this,drawingCache);
 				break;
 			case R.id.main_fill_iv:
-				Log.d("LOG1", "fill");
+				//Log.d("LOG1", "fill");
 				new ColorPickerPopup.Builder(this)
 						.initialColor(Color.RED) // Set initial color
 						.enableBrightness(true) // Enable brightness slider or not
@@ -387,15 +325,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				mDrawingView.extractingColor();
 				break;
 			case R.id.main_stroke_iv:
-				Log.d("LOG1", "stroke");
+				//Log.d("LOG1", "stroke");
 				startStrokeSelectorDialog();
 				break;
 			case R.id.main_undo_iv:
-				Log.d("LOG1", "undo");
+				//Log.d("LOG1", "undo");
 				mDrawingView.undo();
 				break;
 			case R.id.main_redo_iv:
-				Log.d("LOG1", "redo");
+				//Log.d("LOG1", "redo");
 				mDrawingView.redo();
 				break;
 			default:
@@ -406,7 +344,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 //		LinePath linePath;
-		Log.d("LOG1", "extractingcolor1");
+		//Log.d("LOG1", "extractingcolor1");
 		int index;
 		int id;
 		int eventMasked = event.getActionMasked();
@@ -419,7 +357,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 				if (extractingColor) { //If the user chose the 'extract color' menu option, the touch event indicates where they want to extract the color from.
 					extractingColor = false;
 
-					Log.d("LOG1", "extractingcolor");
+					//Log.d("LOG1", "extractingcolor");
 
 					View v = findViewById(R.id.main_drawing_view);
 					v.setDrawingCacheEnabled(true);
@@ -454,7 +392,7 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	}
 
 	public static void aaa(float x, float y){
-			Log.d("LOG1", "extractingcolor2");
+			//Log.d("LOG1", "extractingcolor2");
 
 			View v = mDrawingView.findViewById(R.id.main_drawing_view);
 			v.setDrawingCacheEnabled(true);
@@ -469,15 +407,15 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 	}
 
 	public static void setbitmapsize(float a, float b, int c, int d){
-        Log.d("LOG1", "setbitmapsize");
+        //Log.d("LOG1", "setbitmapsize");
 		w = a;
 		h = b;
 		x = c;
 		y = d;
-        Log.d("LOG1",String.valueOf(w));
-        Log.d("LOG1",String.valueOf(h));
-        Log.d("LOG1",String.valueOf(x));
-        Log.d("LOG1",String.valueOf(y));
+        //Log.d("LOG1",String.valueOf(w));
+        //Log.d("LOG1",String.valueOf(h));
+        //Log.d("LOG1",String.valueOf(x));
+        //Log.d("LOG1",String.valueOf(y));
 	}
 
 	private ArrayList<String> getStringArrayPref(Context context, String str) {
@@ -508,38 +446,6 @@ public class Painting extends AppCompatActivity implements View.OnClickListener
 			edit.putString(str, jSONArray.toString());
 		}
 		edit.apply();
-	}
-
-    public static Bitmap StringToBitmap(String str) {
-        try {
-            byte[] decode = Base64.decode(str, 0);
-            return BitmapFactory.decodeByteArray(decode, 0, decode.length);
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-	private String getFilePath(Uri uri) {
-		String[] projection = {MediaStore.Images.Media.DATA};
-
-		Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-		if (cursor != null) {
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(projection[0]);
-			String picturePath = cursor.getString(columnIndex); // returns null
-			cursor.close();
-			return picturePath;
-		}
-		return null;
-	}
-
-	private Uri getImageUri(Context context, Bitmap inImage) {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-		String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-		return Uri.parse(path);
 	}
 
 }

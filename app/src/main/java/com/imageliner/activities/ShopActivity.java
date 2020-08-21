@@ -120,7 +120,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_shop);
         context = this.getBaseContext();
-        Log.d("LOG1", "start");
+        //Log.d("LOG1", "start");
 
 //        MobileAds.initialize(this, new OnInitializationCompleteListener() {
 //            @Override
@@ -132,7 +132,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 //        storage = new AppStorage(this);
 
         ArrayList<String> noad  = getStringArrayPref(this,"noad");
-        Log.d("LOG1", "noad size : "+String.valueOf(noad.size()));
+        //Log.d("LOG1", "noad size : "+String.valueOf(noad.size()));
         if (noad.size()==0){
             MobileAds.initialize(this, "ca-app-pub-1992325656759505~6979611558");
             mAdView = findViewById(R.id.adView);
@@ -143,7 +143,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
 
-        Log.d("LOG1", "AFTER DECLARE AD");
+        //Log.d("LOG1", "AFTER DECLARE AD");
         linearLayout = (LinearLayout)findViewById(R.id.mliner);
         linearLayout.setOnClickListener(this);
         linearLayout.setClickable(false);
@@ -164,7 +164,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
 
         findViewById(R.id.menu).setOnClickListener(this);
         findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
-        Log.d("LOG1", "AFTER DECLARE AD1");
+        //Log.d("LOG1", "AFTER DECLARE AD1");
         view = AboutBuilder.with(this)
                 .setCover(R.mipmap.ic_launcher_round)
                 .setAppIcon(R.mipmap.ic_launcher_foreground)
@@ -179,34 +179,34 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         bp.purchase(ShopActivity.this, "ce_donate");
                     }
                 })
-                .addRemoveAdsAction(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("LOG1", "NO AD");
-                        ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
-                        if (noad.size()>0) {
-                            Snackbar.make(itemPicker, "You've already purchased it.", Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            bp.purchase(ShopActivity.this, "ce_no_ad");
-                        Log.d("LOG1", "NO AD1");
-                            if(noad.size()>0){
-                                Intent intent = getIntent();
-                                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                finish();
-                                startActivity(intent);
-                            }
-                        }
-                    }
-                })
+//                .addRemoveAdsAction(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //Log.d("LOG1", "NO AD");
+//                        ArrayList<String> noad  = getStringArrayPref(v.getContext(),"noad");
+//                        if (noad.size()>0) {
+//                            Snackbar.make(itemPicker, "You've already purchased it.", Snackbar.LENGTH_SHORT).show();
+//                        } else {
+//                            bp.purchase(ShopActivity.this, "ce_no_ad");
+//                        //Log.d("LOG1", "NO AD1");
+//                            if(noad.size()>0){
+//                                Intent intent = getIntent();
+//                                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                                finish();
+//                                startActivity(intent);
+//                            }
+//                        }
+//                    }
+//                })
                 .setVersionNameAsAppSubTitle()
                 .build();
-        Log.d("LOG1", "AFTER DECLARE AD2");
+        //Log.d("LOG1", "AFTER DECLARE AD2");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("LOG1", "onstart");
+        //Log.d("LOG1", "onstart");
 //        checkPermissions();
         ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) TedPermission.with(getApplicationContext())
                 .setPermissionListener(this.permissionlistener))
@@ -222,7 +222,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
         simages = getStringArrayPref(this,"simages");
         if(check.size()==0){
 
-            Log.d("LOG1","onstart");
+            //Log.d("LOG1","onstart");
             check.add("started");
             titles.add("Welcome");
             dates.add("Make Your Image!");
@@ -259,7 +259,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 .build());
 
         onItemChanged(data.get(0));
-        Log.d("LOG1", "onstart end");
+        //Log.d("LOG1", "onstart end");
     }
 
     @Override
@@ -298,7 +298,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 findViewById(R.id.painting).setClickable(true);
                 findViewById(R.id.btn_transition_time).setClickable(true);
                 findViewById(R.id.btn_smooth_scroll).setClickable(true);
-                Log.d("LOG1", "layout clicked");
+                //Log.d("LOG1", "layout clicked");
                 break;
             case R.id.item_delete:
                 if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
@@ -320,72 +320,38 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    Log.d("LOG1", "CURRENT INDEX1 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
+                                    //Log.d("LOG1", "CURRENT INDEX1 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
 
-                                    if (infiniteAdapter.getRealCurrentPosition() == 0) {
+                                    if (titles.size()==1) {
 
-                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
-                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
-                                        images.remove(infiniteAdapter.getRealCurrentPosition());
-                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
-                                        data.remove(infiniteAdapter.getRealCurrentPosition());
-
-                                        if (titles.size() == 0) {
-                                            titles.add("Press '+' Button");
-                                            dates.add("Contour Extractor");
-                                            images.add(BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
-                                            simages.add(BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
-                                        }
-
-                                        setStringArrayPref(ShopActivity.this, "titles", titles);
-                                        setStringArrayPref(ShopActivity.this, "dates", dates);
-                                        setStringArrayPref(ShopActivity.this, "images", images);
-                                        setStringArrayPref(ShopActivity.this, "simages", simages);
+                                        titles.add("Press '+' Button");
+                                        dates.add("Contour Extractor");
+                                        images.add(BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
+                                        simages.add(BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
 
                                         Intent intent = getIntent();
-                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                        finish();
-                                        startActivity(intent);
-
-                                    } else if (titles.size()>1 && infiniteAdapter.getRealCurrentPosition()==titles.size()-1){
-                                        Log.d("LOG1", "CURRENT INDEX2 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
-                                        Log.d("LOG1", "title size : " + String.valueOf(titles.size()));
-                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
-                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
-                                        images.remove(infiniteAdapter.getRealCurrentPosition());
-                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
-                                        data.remove(infiniteAdapter.getRealCurrentPosition());
-
-                                        setStringArrayPref(ShopActivity.this, "titles", titles);
-                                        setStringArrayPref(ShopActivity.this, "dates", dates);
-                                        setStringArrayPref(ShopActivity.this, "images", images);
-                                        setStringArrayPref(ShopActivity.this, "simages", simages);
-
-                                        Intent intent = getIntent();
-                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                         finish();
                                         startActivity(intent);
                                     }
                                     else {
-                                        Log.d("LOG1", "CURRENT INDEX3 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
-                                        titles.remove(infiniteAdapter.getRealCurrentPosition());
-                                        dates.remove(infiniteAdapter.getRealCurrentPosition());
-                                        images.remove(infiniteAdapter.getRealCurrentPosition());
-                                        simages.remove(infiniteAdapter.getRealCurrentPosition());
-                                        data.remove(infiniteAdapter.getRealCurrentPosition());
 
-
-                                        setStringArrayPref(ShopActivity.this, "titles", titles);
-                                        setStringArrayPref(ShopActivity.this, "dates", dates);
-                                        setStringArrayPref(ShopActivity.this, "images", images);
-                                        setStringArrayPref(ShopActivity.this, "simages", simages);
-
-                                        Intent intent = getIntent();
-                                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                        finish();
-                                        startActivity(intent);
-//                                        sweetAlertDialog.dismiss();
+                                        infiniteAdapter.notifyItemRemoved(infiniteAdapter.getRealCurrentPosition());
+                                        infiniteAdapter.notifyDataSetChanged();
+                                        sweetAlertDialog.dismiss();
                                     }
+
+                                    titles.remove(infiniteAdapter.getRealCurrentPosition());
+                                    dates.remove(infiniteAdapter.getRealCurrentPosition());
+                                    images.remove(infiniteAdapter.getRealCurrentPosition());
+                                    simages.remove(infiniteAdapter.getRealCurrentPosition());
+                                    data.remove(infiniteAdapter.getRealCurrentPosition());
+
+                                    setStringArrayPref(ShopActivity.this, "titles", titles);
+                                    setStringArrayPref(ShopActivity.this, "dates", dates);
+                                    setStringArrayPref(ShopActivity.this, "images", images);
+                                    setStringArrayPref(ShopActivity.this, "simages", simages);
+
                                 }
                             })
                             .show();
@@ -400,14 +366,14 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                         mInterstitialAd.show();
                         mInterstitialAd.loadAd(new AdRequest.Builder().build());
                     } else {
-                        Log.d("TAG", "The interstitial wasn't loaded yet.");
+                        //Log.d("TAG", "The interstitial wasn't loaded yet.");
                         mInterstitialAd.loadAd(new AdRequest.Builder().build());
                     }
                 }
                 showUnsupportedSnackBar();
                 break;
             case R.id.menu:
-                Log.d("LOG1", "menu");
+                //Log.d("LOG1", "menu");
 
                 Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
                 addContentView(view, new LinearLayout.LayoutParams(display.getWidth()-10, display.getHeight()*2/5));
@@ -419,11 +385,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 findViewById(R.id.btn_smooth_scroll).setClickable(false);
                 break;
             case R.id.btn_smooth_scroll:
-                Log.d("LOG1", "scroll");
+                //Log.d("LOG1", "scroll");
                 DiscreteScrollViewOptions.smoothScrollToUserSelectedPosition(itemPicker, v);
                 break;
             case R.id.add:
-                Log.d("LOG1", "add");
+                //Log.d("LOG1", "add");
                 FabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
                 FabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
                 FabRClockWise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
@@ -461,7 +427,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                 startActivity(intentalbum);
                 break;
             case R.id.painting:
-                Log.d("LOG1", "Painting");
+                //Log.d("LOG1", "Painting");
                 if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
                     Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
                 }
@@ -469,11 +435,11 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
                     Intent topaint = new Intent(ShopActivity.this, Painting.class);
 //                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //                    StringToBitmap(simages.get(infiniteAdapter.getRealCurrentPosition())).compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                    Log.d("LOG1", "Painting  1");
+//                    //Log.d("LOG1", "Painting  1");
 //                    byte[] byteBitmap = stream.toByteArray();
 //                    topaint.putExtra("bitmap", byteBitmap);
 ////                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-//                    Log.d("LOG1", "Painting  2");
+//                    //Log.d("LOG1", "Painting  2");
 
 //                    topaint.setData(getImageUri(this,StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition()))));
 //
@@ -494,7 +460,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
         // 이 메소드는 구매 '성공'시에만 호출된다.
         if (productId.equals("ce_no_ad")) {
-            Log.d("LOG1", "NO AD3");
+            //Log.d("LOG1", "NO AD3");
             bp.isPurchased("ce_no_ad");
             // TODO: 구매 해 주셔서 감사합니다! 메세지 보내기
             ArrayList<String> noad = new ArrayList<String>();
@@ -504,7 +470,7 @@ public class ShopActivity extends AppCompatActivity implements DiscreteScrollVie
             // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume하지 않지만,
             // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
             // bp.consumePurchase("noad");
-            Log.d("LOG1", "NO AD4");
+            //Log.d("LOG1", "NO AD4");
             Intent intent = getIntent();
             intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION);
             finish();

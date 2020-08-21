@@ -71,7 +71,7 @@ public class MakeLine extends AppCompatActivity {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("threshold1");
                     stringBuilder.append(MakeLine.this.threshold1);
-                    Log.d("a", stringBuilder.toString());
+                    //Log.d("a", stringBuilder.toString());
                     MakeLine makeLine = MakeLine.this;
                     makeLine.imageprocess_and_showResult(makeLine.threshold1, MakeLine.this.threshold2);
                 }
@@ -126,14 +126,14 @@ public class MakeLine extends AppCompatActivity {
             stringBuilder.append("\nthreshold2");
             stringBuilder.append(i2);
             String str = "a";
-            Log.d(str, stringBuilder.toString());
+            //Log.d(str, stringBuilder.toString());
             imageprocessing(this.img_input.getNativeObjAddr(), this.img_output.getNativeObjAddr(), i, i2);
             this.bitmapOutput = Bitmap.createBitmap(this.img_output.cols(), this.img_output.rows(), Config.ARGB_8888);
             Utils.matToBitmap(this.img_output, this.bitmapOutput);
             StringBuilder stringBuilder2 = new StringBuilder();
             stringBuilder2.append("bitmap");
             stringBuilder2.append(BitmapToString(this.bitmapOutput));
-            Log.d(str, stringBuilder2.toString());
+            //Log.d(str, stringBuilder2.toString());
             this.bitmapOutput = replaceColor(this.bitmapOutput, -16777216, -1);
             this.imageVIewOuput.setImageBitmap(this.bitmapOutput);
         }
@@ -156,7 +156,7 @@ public class MakeLine extends AppCompatActivity {
                 Utils.bitmapToMat(rotatedBitmap.copy(Config.ARGB_8888, true), this.img_input);
                 this.check_start = 1;
             } catch (Exception e) {
-                Log.d("a", "errrrrrrr");
+                //Log.d("a", "errrrrrrr");
                 e.printStackTrace();
                 finish();
             }
@@ -186,7 +186,7 @@ public class MakeLine extends AppCompatActivity {
             }
             return 0;
         } catch (IOException e) {
-            Log.d("@@@", e.toString());
+            //Log.d("@@@", e.toString());
             return -1;
         }
     }

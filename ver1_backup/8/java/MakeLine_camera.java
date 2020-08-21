@@ -101,7 +101,7 @@ public class MakeLine_camera extends AppCompatActivity {
                 arrayList.add(MakeLine_camera.BitmapToString(MakeLine_camera.this.bitmapOutput));
                 MakeLine_camera.this.setStringArrayPref(view.getContext(), "pass_image", arrayList);
                 MakeLine_camera.this.startActivity(intent);
-                Log.d("cameraimage", "!!!!!!!!!!!!!!");
+                //Log.d("cameraimage", "!!!!!!!!!!!!!!");
                 MakeLine_camera.this.finish();
                 MakeLine_camera.this.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
             }
@@ -120,7 +120,7 @@ public class MakeLine_camera extends AppCompatActivity {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("threshold1");
                     stringBuilder.append(MakeLine_camera.this.threshold1);
-                    Log.d("a", stringBuilder.toString());
+                    //Log.d("a", stringBuilder.toString());
                     MakeLine_camera makeLine_camera = MakeLine_camera.this;
                     makeLine_camera.imageprocess_and_showResult(makeLine_camera.threshold1, MakeLine_camera.this.threshold2);
                 }
@@ -186,11 +186,11 @@ public class MakeLine_camera extends AppCompatActivity {
             stringBuilder.append("width ");
             stringBuilder.append(this.bitmapOutput.getWidth());
             String str = "cameraimage";
-            Log.d(str, stringBuilder.toString());
+            //Log.d(str, stringBuilder.toString());
             stringBuilder = new StringBuilder();
             stringBuilder.append("height ");
             stringBuilder.append(this.bitmapOutput.getHeight());
-            Log.d(str, stringBuilder.toString());
+            //Log.d(str, stringBuilder.toString());
             this.bitmapOutput = replaceColor(this.bitmapOutput, -16777216, -1);
             this.imageVIewOuput.setImageBitmap(this.bitmapOutput);
         }
@@ -230,7 +230,7 @@ public class MakeLine_camera extends AppCompatActivity {
             }
             return 0;
         } catch (IOException e) {
-            Log.d("@@@", e.toString());
+            //Log.d("@@@", e.toString());
             return -1;
         }
     }

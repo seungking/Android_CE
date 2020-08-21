@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         stringBuilder.append("file_name size : ");
         stringBuilder.append(this.file_name.size());
         String str2 = "A";
-        Log.d(str2, stringBuilder.toString());
+        //Log.d(str2, stringBuilder.toString());
         this.list = new ArrayList();
         String str3 = "list";
         this.list = getStringArrayPref(this, str3);
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         StringBuilder stringBuilder2 = new StringBuilder();
         stringBuilder2.append("list image size : ");
         stringBuilder2.append(this.list_image.size());
-        Log.d(str2, stringBuilder2.toString());
+        //Log.d(str2, stringBuilder2.toString());
         String str5 = "check_first";
         ArrayList stringArrayPref = getStringArrayPref(getApplicationContext(), str5);
         if (stringArrayPref.size() == 0) {

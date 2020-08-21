@@ -39,7 +39,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
 
     @Override
     protected void doStart() {
-        Log.d(LOGTAG, "doStart");
+        //Log.d(LOGTAG, "doStart");
         startBackgroundThread();
         super.doStart();
     }
@@ -47,7 +47,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
 
     @Override
     protected void doStop() {
-        Log.d(LOGTAG, "doStop");
+        //Log.d(LOGTAG, "doStop");
         super.doStop();
         stopBackgroundThread();
     }
@@ -69,7 +69,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
             float aspect = (float)width / height;
             for (Size psize : map.getOutputSizes(SurfaceTexture.class)) {
                 int w = psize.getWidth(), h = psize.getHeight();
-                Log.d(LOGTAG, "trying size: "+w+"x"+h);
+                //Log.d(LOGTAG, "trying size: "+w+"x"+h);
                 if ( width >= w && height >= h &&
                      bestWidth <= w && bestHeight <= h &&
                      Math.abs(aspect - (float)w/h) < 0.2 ) {
@@ -288,7 +288,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
                 return;
             }
             if (null != mCaptureSession) {
-                Log.d(LOGTAG, "closing existing previewSession");
+                //Log.d(LOGTAG, "closing existing previewSession");
                 mCaptureSession.close();
                 mCaptureSession = null;
             }

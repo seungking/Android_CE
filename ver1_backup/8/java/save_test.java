@@ -41,7 +41,7 @@ public class save_test extends AppCompatActivity {
         this.mAdView = (AdView) findViewById(R.id.adView);
         this.mAdView.loadAd(new Builder().addTestDevice("B3EEABB8EE11C2BE770B684D95219ECB").build());
         this.bitmapOutput = StringToBitmap((String) getStringArrayPref(getApplicationContext(), "pass_image").get(0));
-        Log.d("checkk", "1112221");
+        //Log.d("checkk", "1112221");
         this.imageVIewOuput = (ImageView) findViewById(R.id.imageView_save);
         this.imageVIewOuput.setImageBitmap(this.bitmapOutput);
         ((ImageButton) findViewById(R.id.button_back_save)).setOnClickListener(new OnClickListener() {

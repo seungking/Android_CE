@@ -87,7 +87,7 @@
 ////    private InterstitialAd mInterstitialAd;
 ////
 ////    public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
-////        Log.d("LOG1", "smapleactivity startwithuri");
+////        //Log.d("LOG1", "smapleactivity startwithuri");
 ////        Intent intent = new Intent(context, SampleActivity.class);
 ////        intent.setData(uri);
 ////        intent.putExtra("type",2);
@@ -102,7 +102,7 @@
 ////        intent.setData(Uri.parse(path));
 ////        intent.putExtra("type",3);
 ////        context.startActivity(intent);
-////        Log.d("LOG1", "startwithbitmap");
+////        //Log.d("LOG1", "startwithbitmap");
 ////    }
 ////
 ////    @Override
@@ -116,12 +116,12 @@
 ////        setupUI();
 ////
 ////
-////        Log.d("LOG1", "sampleactivity");
+////        //Log.d("LOG1", "sampleactivity");
 ////        Intent intent = getIntent();
 ////        check = intent.getIntExtra("type", -1);
-////        Log.d("LOG1", "check : " + String.valueOf(check));
+////        //Log.d("LOG1", "check : " + String.valueOf(check));
 ////        if(check==2 || check==3){
-////            Log.d("LOG1", "sample check 1 " + String.valueOf(check));
+////            //Log.d("LOG1", "sample check 1 " + String.valueOf(check));
 ////            Uri uri = getIntent().getData();
 ////            startCrop(uri);
 ////        }
@@ -131,19 +131,19 @@
 ////    @SuppressLint("MissingSuperCall")
 ////    @Override
 ////    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-////        Log.d("LOG1", "activity1");
-////        Log.d("LOG1","resultcode : " + String.valueOf(resultCode));
+////        //Log.d("LOG1", "activity1");
+////        //Log.d("LOG1","resultcode : " + String.valueOf(resultCode));
 ////        if (resultCode == RESULT_OK) {
-////            Log.d("LOG1", "activity2");
-////            Log.d("LOG1","requestcode : " + String.valueOf(requestCode));
+////            //Log.d("LOG1", "activity2");
+////            //Log.d("LOG1","requestcode : " + String.valueOf(requestCode));
 ////            if (requestCode == requestMode) {
-////                Log.d("LOG1", "activity3");
+////                //Log.d("LOG1", "activity3");
 ////                final Uri selectedUri = data.getData();
 ////                if (selectedUri != null) {
-////                    Log.d("LOG1", "activity4");
+////                    //Log.d("LOG1", "activity4");
 ////                    startCrop(selectedUri);
 ////                } else {
-//////                    Log.d("LOG1", "out of album");
+//////                    //Log.d("LOG1", "out of album");
 //////                    Toast.makeText(SampleActivity.this, "11111111", Toast.LENGTH_SHORT).show();
 ////                }
 ////            } else if (requestCode == UCrop.REQUEST_CROP) {
@@ -259,21 +259,21 @@
 ////    }
 ////
 ////    private void pickFromGallery() {
-////        Log.d("LOG1", "pick from gallery1");
+////        //Log.d("LOG1", "pick from gallery1");
 ////        Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
 ////                .setType("image/*")
 ////                .addCategory(Intent.CATEGORY_OPENABLE);
-////        Log.d("LOG1", "pick from gallery2");
+////        //Log.d("LOG1", "pick from gallery2");
 ////        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 ////            String[] mimeTypes = {"image/jpeg", "image/png"};
 ////            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 ////        }
-////        Log.d("LOG1", "pick from gallery3");
+////        //Log.d("LOG1", "pick from gallery3");
 ////        startActivityForResult(Intent.createChooser(intent, getString(R.string.LOADING)), requestMode);
 ////    }
 ////
 ////    private void startCrop(@NonNull Uri uri) {
-////        Log.d("LOG1", "startcrop1");
+////        //Log.d("LOG1", "startcrop1");
 ////        String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
 ////        switch (mRadioGroupCompressionSettings.getCheckedRadioButtonId()) {
 ////            case R.id.radio_png:
@@ -283,12 +283,12 @@
 ////                destinationFileName += ".jpg";
 ////                break;
 ////        }
-////        Log.d("LOG1", "startcrop2");
+////        //Log.d("LOG1", "startcrop2");
 ////        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
-////        Log.d("LOG1", "startcrop3");
+////        //Log.d("LOG1", "startcrop3");
 ////        uCrop = basisConfig(uCrop);
 ////        uCrop = advancedConfig(uCrop);
-////        Log.d("LOG1", "startcrop4");
+////        //Log.d("LOG1", "startcrop4");
 ////        if (requestMode == REQUEST_SELECT_PICTURE_FOR_FRAGMENT) {       //if build variant = fragment
 ////            setupFragment(uCrop);
 ////        } else {                                                        // else start uCrop Activity
@@ -376,7 +376,7 @@
 ////                if (mInterstitialAd.isLoaded()) {
 ////                    mInterstitialAd.show();
 ////                } else {
-////                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+////                    //Log.d("TAG", "The interstitial wasn't loaded yet.");
 ////                }
 ////                finish();
 ////            }
@@ -630,7 +630,7 @@
 //    static int check=0;
 //
 //    public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
-//        Log.d("LOG1", "smapleactivity startwithuri");
+//        //Log.d("LOG1", "smapleactivity startwithuri");
 //        Intent intent = new Intent(context, SampleActivity.class);
 //        intent.setData(uri);
 //        intent.putExtra("type",2);
@@ -645,7 +645,7 @@
 //        intent.setData(Uri.parse(path));
 //        intent.putExtra("type",3);
 //        context.startActivity(intent);
-//        Log.d("LOG1", "startwithbitmap");
+//        //Log.d("LOG1", "startwithbitmap");
 //    }
 //
 //    @Override
@@ -654,12 +654,12 @@
 //        setContentView(R.layout.activity_sample);
 //        setupUI();
 ////        pickFromGallery();
-//                Log.d("LOG1", "sampleactivity");
+//                //Log.d("LOG1", "sampleactivity");
 //        Intent intent = getIntent();
 //        check = intent.getIntExtra("type", -1);
-//        Log.d("LOG1", "check : " + String.valueOf(check));
+//        //Log.d("LOG1", "check : " + String.valueOf(check));
 //        if(check==2 || check==3){
-//            Log.d("LOG1", "sample check 1 " + String.valueOf(check));
+//            //Log.d("LOG1", "sample check 1 " + String.valueOf(check));
 //            Uri uri = getIntent().getData();
 //            startCrop(uri);
 //        }
@@ -670,30 +670,30 @@
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult( requestCode, resultCode, data );
-//        Log.d("LOG1", "activity1");
-//        Log.d("LOG1","resultcode : " + String.valueOf(resultCode));
+//        //Log.d("LOG1", "activity1");
+//        //Log.d("LOG1","resultcode : " + String.valueOf(resultCode));
 //        if (resultCode == RESULT_OK) {
-//            Log.d("LOG1", "activity2");
-//            Log.d("LOG1","requestcode : " + String.valueOf(requestCode));
+//            //Log.d("LOG1", "activity2");
+//            //Log.d("LOG1","requestcode : " + String.valueOf(requestCode));
 //            if (requestCode == requestMode) {
-//                Log.d("LOG1", "activity3");
+//                //Log.d("LOG1", "activity3");
 //                final Uri selectedUri = data.getData();
 //                if (selectedUri != null) {
-//                    Log.d("LOG1", "activity4");
+//                    //Log.d("LOG1", "activity4");
 //                    startCrop(selectedUri);
 //                } else {
-//                    Log.d("LOG1", "out of album");
+//                    //Log.d("LOG1", "out of album");
 ////                    Toast.makeText(SampleActivity.this, "11111111", Toast.LENGTH_SHORT).show();
 //                }
 //            } else if (requestCode == UCrop.REQUEST_CROP) {
 //                handleCropResult(data);
 //            }
 //        }
-//        Log.d("LOG1", "activity5");
+//        //Log.d("LOG1", "activity5");
 //        if (resultCode == UCrop.RESULT_ERROR) {
 //            handleCropError(data);
 //        }
-//        Log.d("LOG1", "activity6");
+//        //Log.d("LOG1", "activity6");
 //    }
 //
 //    private TextWatcher mAspectRatioTextWatcher = new TextWatcher() {
@@ -948,16 +948,16 @@
 //    }
 //
 //    private void handleCropResult(@NonNull Intent result) {
-//        Log.d("TAG", "handlecropresult");
+//        //Log.d("TAG", "handlecropresult");
 //        final Uri resultUri = UCrop.getOutput(result);
 //        if (resultUri != null) {
 //            if(check==2) MakeLine.startWithUri(SampleActivity.this, resultUri);
 //            else if(check==3){
-//                Log.d("TAG", "checl333.");
+//                //Log.d("TAG", "checl333.");
 ////                if (mInterstitialAd.isLoaded()) {
 ////                    mInterstitialAd.show();
 //                } else {
-//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                    //Log.d("TAG", "The interstitial wasn't loaded yet.");
 //                }
 //                finish();
 //            }
@@ -1207,7 +1207,7 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     private int mToolbarWidgetColor;
 
     public static void startWithUri(@NonNull Context context, @NonNull Uri uri) {
-        Log.d("LOG1", "smapleactivity startwithuri");
+        //Log.d("LOG1", "smapleactivity startwithuri");
         Intent intent = new Intent(context, SampleActivity.class);
         intent.setData(uri);
         intent.putExtra("type",2);
@@ -1221,11 +1221,11 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
         setContentView(R.layout.activity_sample);
         setupUI();
 
-        Log.d("LOG1", "sampleactivity");
+        //Log.d("LOG1", "sampleactivity");
         Intent intent = getIntent();
         int check = intent.getIntExtra("type", -1);
         if(check==2){
-            Log.d("LOG1", "sample check 1 " + String.valueOf(check));
+            //Log.d("LOG1", "sample check 1 " + String.valueOf(check));
             Uri uri = getIntent().getData();
             startCrop(uri);
         }
@@ -1235,18 +1235,18 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     @SuppressLint("MissingSuperCall")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("LOG1", "activity1" + String.valueOf(requestCode) + "   " + String.valueOf(resultCode));
+        //Log.d("LOG1", "activity1" + String.valueOf(requestCode) + "   " + String.valueOf(resultCode));
         if(resultCode==0)finish();
         if (resultCode == RESULT_OK) {
-            Log.d("LOG1", "activity2");
+            //Log.d("LOG1", "activity2");
             if (requestCode == requestMode) {
-                Log.d("LOG1", "activity3");
+                //Log.d("LOG1", "activity3");
                 final Uri selectedUri = data.getData();
                 if (selectedUri != null) {
-                    Log.d("LOG1", "activity4");
+                    //Log.d("LOG1", "activity4");
                     startCrop(selectedUri);
                 } else {
-                    Log.d("LOG1", "out of album");
+                    //Log.d("LOG1", "out of album");
                     Toast.makeText(SampleActivity.this, "11111111", Toast.LENGTH_SHORT).show();
                 }
             } else if (requestCode == UCrop.REQUEST_CROP) {
@@ -1362,21 +1362,21 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
     }
 
     private void pickFromGallery() {
-        Log.d("LOG1", "pick from gallery1");
+        //Log.d("LOG1", "pick from gallery1");
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
                 .setType("image/*")
                 .addCategory(Intent.CATEGORY_OPENABLE);
-        Log.d("LOG1", "pick from gallery2");
+        //Log.d("LOG1", "pick from gallery2");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             String[] mimeTypes = {"image/jpeg", "image/png"};
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         }
-        Log.d("LOG1", "pick from gallery3");
+        //Log.d("LOG1", "pick from gallery3");
         startActivityForResult(Intent.createChooser(intent, getString(R.string.LOADING)), requestMode);
     }
 
     private void startCrop(@NonNull Uri uri) {
-        Log.d("LOG1", "startcrop1");
+        //Log.d("LOG1", "startcrop1");
         String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
         switch (mRadioGroupCompressionSettings.getCheckedRadioButtonId()) {
             case R.id.radio_png:
@@ -1386,12 +1386,12 @@ public class SampleActivity extends BaseActivity implements UCropFragmentCallbac
                 destinationFileName += ".jpg";
                 break;
         }
-        Log.d("LOG1", "startcrop2");
+        //Log.d("LOG1", "startcrop2");
         UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
-        Log.d("LOG1", "startcrop3");
+        //Log.d("LOG1", "startcrop3");
         uCrop = basisConfig(uCrop);
         uCrop = advancedConfig(uCrop);
-        Log.d("LOG1", "startcrop4");
+        //Log.d("LOG1", "startcrop4");
         if (requestMode == REQUEST_SELECT_PICTURE_FOR_FRAGMENT) {       //if build variant = fragment
             setupFragment(uCrop);
         } else {                                                        // else start uCrop Activity

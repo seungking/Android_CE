@@ -44,7 +44,7 @@ public class MakeLine_color extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_make_line_color);
         getWindow().setFlags(1024, 1024);
-        Log.d("cameraimage", "started color");
+        //Log.d("cameraimage", "started color");
         this.bitmapOutput = StringToBitmap((String) getStringArrayPref(getApplicationContext(), "pass_image").get(0));
         this.imageVIewOuput = (ImageView) findViewById(R.id.imageViewOutput_color);
         this.imageVIewOuput.setImageBitmap(this.bitmapOutput);
