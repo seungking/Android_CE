@@ -1,142 +1,0 @@
-
-9
-9
-android*http://schemas.android.com/apk/res/android
-2
-app'http://schemas.android.com/apk/res-autoLinearLayout"T
-*http://schemas.android.com/apk/res/android
-background#E8E9EB"(Ô„2:PëÓ£ÿ"a
-*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"R
-*http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0*
-
-    	*Õ
-Ì3androidx.coordinatorlayout.widget.CoordinatorLayout"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ*
-
-
-        -*ª
-¡ImageButton"Y
-*http://schemas.android.com/apk/res/androidbackgroundTint	#00ffffff"(ëˆ„2:Hÿÿÿ"g
-*http://schemas.android.com/apk/res/androidid@+id/back_license"(Ğ„2
-§€¤øid/back_license"Y
-*http://schemas.android.com/apk/res/androidlayout_gravity	top|start"(³„2:8³€€"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"(õ„2:0şÿÿÿÿÿÿÿÿ"U
-*http://schemas.android.com/apk/res/androidlayout_marginStart5dp"(µ‡„2:h
-"S
-*http://schemas.android.com/apk/res/androidlayout_marginTop5dp"(ø„2:h
-"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"(ô„2:0şÿÿÿÿÿÿÿÿ"
-*http://schemas.android.com/apk/res/androidsrc@drawable/ic_close_black_24dp"(™‚„2&
-$’«œødrawable/ic_close_black_24dp*
-
-    0*
-
-    :*„
-û3androidx.coordinatorlayout.widget.CoordinatorLayout"Q
-*http://schemas.android.com/apk/res/androidlayout_height50dp"(õ„2:hd"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ*
-
-
-    %*
-    !:*±
-¨3androidx.coordinatorlayout.widget.CoordinatorLayout"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content""(õ„2:0şÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent""(ô„2:0ÿÿÿÿÿÿÿÿÿ*
-
-
-        $-*¸
-¯	ImageView"W
-*http://schemas.android.com/apk/res/androidlayout_gravity
-top|center"&(³„2:81"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"&(õ„2:0şÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"&(ô„2:0şÿÿÿÿÿÿÿÿ"ƒ
-*http://schemas.android.com/apk/res/androidsrc@drawable/ic_public_black_24dp"&(™‚„2'
-%§«œødrawable/ic_public_black_24dp&*
-
-
-        *:*ó
-êTextView"l
-*http://schemas.android.com/apk/res/android
-fontFamily@font/font_test",(¬‡„2
-‚€ øfont/font_test"W
-*http://schemas.android.com/apk/res/androidlayout_gravity
-center|top",(³„2:81"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content",(õ„2:0şÿÿÿÿÿÿÿÿ"T
-*http://schemas.android.com/apk/res/androidlayout_marginTop50dp",(ø„2:hd"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content",(ô„2:0şÿÿÿÿÿÿÿÿ"Y
-*http://schemas.android.com/apk/res/androidtext Copyright 2017 Yaroslav Shevchuk(Ï‚„"S
-*http://schemas.android.com/apk/res/android	textColor#2A2A35",(˜„2:PµÔ¨ù"L
-*http://schemas.android.com/apk/res/androidtextSize20dp",(•„2:h(,*
-
-
-        4&*­
-¤TextView"l
-*http://schemas.android.com/apk/res/android
-fontFamily@font/font_test"6(¬‡„2
-‚€ øfont/font_test"W
-*http://schemas.android.com/apk/res/androidlayout_gravity
-center|top"6(³„2:81"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"6(õ„2:0şÿÿÿÿÿÿÿÿ"T
-*http://schemas.android.com/apk/res/androidlayout_marginEnd30dp"6(¶‡„2:h<"V
-*http://schemas.android.com/apk/res/androidlayout_marginStart30dp"6(µ‡„2:h<"U
-*http://schemas.android.com/apk/res/androidlayout_marginTop95dp"6(ø„2:h¾"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"6(ô„2:0şÿÿÿÿÿÿÿÿ"ã
-*http://schemas.android.com/apk/res/androidtext©Licensed under the Apache License, Version 2.0 (the License);\n\nyou may not use this file except in compliance with the License. You may obtain a copy of the License at(Ï‚„"S
-*http://schemas.android.com/apk/res/android	textColor#5F5B4C"6(˜„2:PÌ¶ıú"L
-*http://schemas.android.com/apk/res/androidtextSize18dp"6(•„2:h$6*
-
-
-    @&"*
-    C:*Í	
-Ä	3androidx.coordinatorlayout.widget.CoordinatorLayout"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"D(õ„2:0şÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"D(ô„2:0ÿÿÿÿÿÿÿÿÿ*
-
-    F)*«
-¢TextView"l
-*http://schemas.android.com/apk/res/android
-fontFamily@font/font_test"H(¬‡„2
-‚€ øfont/font_test"W
-*http://schemas.android.com/apk/res/androidlayout_gravity
-center|top"H(³„2:81"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"H(õ„2:0şÿÿÿÿÿÿÿÿ"T
-*http://schemas.android.com/apk/res/androidlayout_marginEnd15dp"H(¶‡„2:h"V
-*http://schemas.android.com/apk/res/androidlayout_marginStart15dp"H(µ‡„2:h"T
-*http://schemas.android.com/apk/res/androidlayout_marginTop30dp"H(ø„2:h<"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"H(ô„2:0şÿÿÿÿÿÿÿÿ"c
-*http://schemas.android.com/apk/res/androidtext*http://www.apache.org/licenses/LICENSE-2.0(Ï‚„"S
-*http://schemas.android.com/apk/res/android	textColor#1A2D42"H(˜„2:PÂÚèø"L
-*http://schemas.android.com/apk/res/androidtextSize15dp"H(•„2:hH*
-
-
-R"D*
-
-    T6*ã
-Ú3androidx.coordinatorlayout.widget.CoordinatorLayout"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"V(õ„2:0şÿÿÿÿÿÿÿÿ"`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"V(ô„2:0ÿÿÿÿÿÿÿÿÿ*
-
-
-        X-*¸	
-¯	TextView"l
-*http://schemas.android.com/apk/res/android
-fontFamily@font/font_test"Z(¬‡„2
-‚€ øfont/font_test"W
-*http://schemas.android.com/apk/res/androidlayout_gravity
-center|top"Z(³„2:81"a
-*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"Z(õ„2:0şÿÿÿÿÿÿÿÿ"T
-*http://schemas.android.com/apk/res/androidlayout_marginEnd30dp"Z(¶‡„2:h<"V
-*http://schemas.android.com/apk/res/androidlayout_marginStart30dp"Z(µ‡„2:h<"T
-*http://schemas.android.com/apk/res/androidlayout_marginTop30dp"Z(ø„2:h<"`
-*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"Z(ô„2:0şÿÿÿÿÿÿÿÿ"ï
-*http://schemas.android.com/apk/res/androidtextµUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an (AS IS) BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\n See the License for the specific language governing permissions and limitations under the License.(Ï‚„"S
-*http://schemas.android.com/apk/res/android	textColor#5F5B4C"Z(˜„2:PÌ¶ıú"L
-*http://schemas.android.com/apk/res/androidtextSize18dp"Z(•„2:h$Z*
-
-
-    f&V*
-
-
-i:

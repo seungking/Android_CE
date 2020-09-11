@@ -7,27 +7,30 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        tools:replace="android:icon"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activities.ViewImage"></activity>
-        <activity android:name=".activities.Painting" />
-        <activity android:name=".activities.SampleActivity" />
-        <activity android:name=".activities.ResultActivity" />
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".MainActivity_home"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ViewImage" />
+        <activity android:name=".Painting" />
+        <activity android:name=".SampleActivity" />
+        <activity android:name=".ResultActivity" />
+        <activity android:name=".OnBoardActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".activities.MakeColor" /> <!-- <activity android:name=".MakeLine" /> -->
-        <activity android:name=".activities.ShopActivity">
+        <activity android:name=".MakeColor" /> <!-- <activity android:name=".MakeLine" /> -->
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MakeLine"
+            android:name=".MakeLine"
             android:label="@string/app_name" />
 
         <provider
@@ -46,12 +49,10 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-
-        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        </provider> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1992325656759505~6979611558"/>
+            android:value="ca-app-pub-1992325656759505~6979611558" />
 
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
@@ -64,7 +65,6 @@
             android:authorities="com.imageliner.mobileadsinitprovider"
             android:exported="false"
             android:initOrder="100" />
-
     </application>
 
 </manifest>

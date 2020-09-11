@@ -8,11 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.imageliner.activities.Painting;
+import com.imageliner.Painting;
 
 import java.util.ArrayList;
 
