@@ -4,7 +4,7 @@
 
 
     <item android:title="" android:id="@+id/item_home"
-        app:showAsAction="always" android:icon="@drawable/ic_more_horiz_black_24dp"/>
+        app:showAsAction="always" android:icon="@drawable/ic_baseline_amp_stories_24"/>
 
     <item android:title="" android:id="@+id/item_account"
         app:showAsAction="always" android:icon="@drawable/ic_baseline_settings_24"/>

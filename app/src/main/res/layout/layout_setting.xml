@@ -20,47 +20,43 @@ android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:background="@color/colorWhite"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:background="@drawable/corners"
+        android:layout_weight="2">
 
-        <com.cunoraz.continuouscrollable.ContinuousScrollableImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:direction="left"
-            app:duration="4000"
-            android:layout_marginTop="5dp"
-            android:id="@+id/play_window1"
-            app:scaleType="centerInside"
+            android:layout_height="100dp"
+            android:background="@color/color_main2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:imageSrc="@drawable/ic_done_black_24dp" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <TextView
-            android:id="@+id/account_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/g_bold"
-            android:text="Account_Name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/account_profile"
-            android:textColor="@color/colorGrey"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+<!--        <com.cunoraz.continuouscrollable.ContinuousScrollableImageView-->
+<!--            android:id="@+id/splash_logo"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:background="#FF9800"-->
+<!--            app:direction="left"-->
+<!--            app:duration="4000"-->
+<!--            app:imageSrc="@drawable/setting_back"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:scaleType="fitCenter" />-->
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/account_profile"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintTop_toBottomOf="@+id/account_name"
+            android:src="@drawable/logo_ce"
+            app:civ_circle_background_color="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -68,7 +64,7 @@ android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_weight="6"
         android:layout_margin="12dp"
         android:orientation="vertical">
 
@@ -78,7 +74,7 @@ android:layout_height="match_parent">
             android:id="@+id/cat_motionLimit"
             android:orientation="vertical"
             android:layout_margin="10dp"
-            android:background="@drawable/social_media_divider"
+            android:background="@drawable/corners_setting"
             android:gravity="center"
             android:clickable="true"
             app:layout_constraintTop_toTopOf="parent"

@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#ffffff"
         android:layout_weight="1">
 
         <ImageView
@@ -42,6 +43,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#eeeeee"
         android:layout_weight="6">
         <ImageView
             android:layout_width="match_parent"
@@ -49,15 +51,24 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
+            android:layout_margin="15dp"
             android:padding="15dp"
             android:id="@+id/imageViewOutput"/>
     </RelativeLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#ffffff"
+        android:layout_weight="3"
+        android:weightSum="3"
+        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="2.8"
+        android:layout_margin="15dp">
 
         <LinearLayout
             android:id="@+id/makeline_seekbar"
@@ -76,34 +87,37 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ClickableImageView"
-                    android:padding="8dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/corners_list"
                     android:id="@+id/candidate1" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ClickableImageView"
-                    android:padding="8dp"
+                    android:background="@drawable/corners_list"
+                    android:layout_margin="5dp"
                     android:id="@+id/candidate2" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ClickableImageView"
-                    android:padding="8dp"
+                    android:background="@drawable/corners_list"
+                    android:layout_margin="5dp"
                     android:id="@+id/candidate3" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ClickableImageView"
-                    android:padding="8dp"
+                    android:background="@drawable/corners_list"
+                    android:layout_margin="5dp"
                     android:id="@+id/candidate4" />
 
             </LinearLayout>
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,35 +126,6 @@
             android:visibility="invisible"
             android:id="@+id/makeline_color_layout">
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/makeline_color"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_weight="3"-->
-<!--                android:visibility="invisible">-->
-
-<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                    android:layout_width="80dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:tint="@android:color/white"-->
-<!--                    app:backgroundTint="#FF9800"-->
-<!--                    android:padding="10dp"-->
-<!--                    app:fabSize="normal"-->
-<!--                    android:id="@+id/changebackground"-->
-<!--                    app:rippleColor="@color/shopFabRipple" />-->
-
-<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                    android:layout_width="80dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:tint="@android:color/white"-->
-<!--                    app:backgroundTint="#FF9800"-->
-<!--                    android:padding="10dp"-->
-<!--                    app:fabSize="auto"-->
-<!--                    android:id="@+id/changecolor"-->
-<!--                    app:rippleColor="@color/shopFabRipple" />-->
-
-<!--            </LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -152,14 +137,18 @@
                 <info.hoang8f.widget.FButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/corners_list"
                     android:id="@+id/changebackground"
+                    android:fontFamily="@font/g_medium"
                     android:text="Background Color"/>
 
                 <info.hoang8f.widget.FButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/corners"
                     android:id="@+id/changecolor"
                     android:layout_marginStart="50dp"
+                    android:fontFamily="@font/g_medium"
                     android:text="Line Color"/>
 
             </LinearLayout>
@@ -168,4 +157,13 @@
 
     </RelativeLayout>
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-1992325656759505/7909549845" />
+
+    </LinearLayout>
 </LinearLayout>

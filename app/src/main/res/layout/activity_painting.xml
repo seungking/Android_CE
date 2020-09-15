@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eeeeee"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Painting">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"
@@ -18,7 +19,9 @@
             style="@style/ClickableImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="8dp"
             android:padding="8dp"
             android:src="@drawable/ic_close_black_24dp" />
@@ -28,8 +31,9 @@
             style="@style/ClickableImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -37,13 +41,14 @@
             android:padding="8dp"
             android:src="@drawable/ic_done_black_24dp" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.imageliner.models.DrawingView
         android:id="@+id/main_drawing_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.77"
+        android:layout_margin="15dp"
         android:padding="15dp"
         android:layout_gravity="center"
         android:foreground="@color/c1" />

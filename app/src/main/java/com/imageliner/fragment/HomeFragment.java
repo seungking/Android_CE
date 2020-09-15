@@ -1,6 +1,7 @@
 package com.imageliner.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.codingending.popuplayout.PopupLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -107,48 +111,56 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
 
 //        v.findViewById(R.id.item_name).setOnClickListener(this);
 
-        //사진
-        view.findViewById(R.id.photo).setOnClickListener(v->{
-            Intent intentphoto = new Intent(getContext(), MakeLine.class);
-            intentphoto.putExtra("type", 2);
-            startActivity(intentphoto);
-        });
+        //추가
+        view.findViewById(R.id.add).setOnClickListener(v->{
+            View parent=View.inflate(getContext(),R.layout.layout_bottom_menu,null);
+            final PopupLayout popupLayout=PopupLayout.init(getContext(),parent);
+            final View.OnClickListener clickListener=new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(),((Button)v).getText(),Toast.LENGTH_SHORT).show();
+                    popupLayout.dismiss();
+                }
+            };
+            parent.findViewById(R.id.menu_1).setOnClickListener(view->{
+                Intent intentphoto = new Intent(getContext(), MakeLine.class);
+                intentphoto.putExtra("type", 2);
+                startActivity(intentphoto);
+            });
+            parent.findViewById(R.id.menu_2).setOnClickListener(view->{
+                Intent intentalbum = new Intent(getContext(), SampleActivity.class);
+                intentalbum.putExtra("type",1);
+                startActivity(intentalbum);
+            });
+            popupLayout.show(PopupLayout.POSITION_BOTTOM);
 
-        //앨범
-        view.findViewById(R.id.album).setOnClickListener(v->{
-            Intent intentalbum = new Intent(getContext(), SampleActivity.class);
-            intentalbum.putExtra("type",1);
-            startActivity(intentalbum);
         });
 
         //그림
         view.findViewById(R.id.painting).setOnClickListener(v->{
-            if(titles.size()==1&&titles.get(0).equals("Press '+' Button"))
-                Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
-            else
+            if(data.size()>0)
                 Painting.startWithBitmap(getContext(), new functions().StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
         });
 
         //다운로드
         view.findViewById(R.id.download).setOnClickListener(v->{
-            SaveImage(new functions().StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
-            ArrayList<String> noad  = new ManagePref().getStringArrayPref(getContext(),"noad");
-            if (noad.size()==0) {
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                } else {
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            if(data.size()>0) {
+                SaveImage(new functions().StringToBitmap(images.get(infiniteAdapter.getRealCurrentPosition())));
+                ArrayList<String> noad = new ManagePref().getStringArrayPref(getContext(), "noad");
+                if (noad.size() == 0) {
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    } else {
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    }
                 }
             }
         });
 
         //삭제
         view.findViewById(R.id.item_delete).setOnClickListener(v->{
-            if(titles.size()==1&&titles.get(0).equals("Press '+' Button")){
-                Snackbar.make(itemPicker, "ADD NEW!", Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            if(data.size()>0) {
                 new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Are you sure?")
                         .setContentText("Won't be able to recover this file!")
@@ -166,24 +178,25 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 //Log.d("LOG1", "CURRENT INDEX1 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
 
-                                if (titles.size()==1) {
+//                                if (titles.size()==1) {
+//
+//                                    titles.add("Press '+' Button");
+//                                    dates.add("Contour Extractor");
+//                                    images.add(new functions().BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
+//                                    simages.add(new functions().BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
+//
+//                                    Intent intent = ((MainActivity_home)getActivity()).getIntent();
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                                    ((MainActivity_home)getActivity()).finish();
+//                                    startActivity(intent);
+//                                }
+//                                else {
 
-                                    titles.add("Press '+' Button");
-                                    dates.add("Contour Extractor");
-                                    images.add(new functions().BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
-                                    simages.add(new functions().BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
 
-                                    Intent intent = ((MainActivity_home)getActivity()).getIntent();
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                    ((MainActivity_home)getActivity()).finish();
-                                    startActivity(intent);
-                                }
-                                else {
-
-                                    infiniteAdapter.notifyItemRemoved(infiniteAdapter.getRealCurrentPosition());
-                                    infiniteAdapter.notifyDataSetChanged();
-                                    sweetAlertDialog.dismiss();
-                                }
+//                                }
+                                infiniteAdapter.notifyItemRemoved(infiniteAdapter.getRealCurrentPosition());
+                                infiniteAdapter.notifyDataSetChanged();
+                                sweetAlertDialog.dismiss();
 
                                 titles.remove(infiniteAdapter.getRealCurrentPosition());
                                 dates.remove(infiniteAdapter.getRealCurrentPosition());
@@ -230,8 +243,8 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
             check.add("started");
             titles.add("Welcome");
             dates.add("Make Your Image!");
-            images.add(new functions().BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom)));
-            simages.add(new functions().BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getWidth()/2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getHeight()/2, true)));
+            images.add(new functions().BitmapToString(BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce)));
+            simages.add(new functions().BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce), (int) BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce).getWidth()/2, (int) BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce).getHeight()/2, true)));
 
             managePref.setStringArrayPref(getContext(),"check",check);
             managePref.setStringArrayPref(getContext(),"titles",titles);
@@ -239,7 +252,7 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
             managePref.setStringArrayPref(getContext(),"images",images);
             managePref.setStringArrayPref(getContext(),"simages",simages);
 
-            data.add(new Item( "Welcome", "Make Your Image!", BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getWidth()/2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.welcom).getHeight()/2, true)));
+            data.add(new Item( "Welcome", "Make Your Image!", BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce), Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce), (int) BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce).getWidth()/2, (int) BitmapFactory.decodeResource(getResources(), R.drawable.logo_ce).getHeight()/2, true)));
         }
         else{
             for(int i=0; i<titles.size(); i++) {
@@ -260,7 +273,7 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
                 .setMinScale(0.8f)
                 .build());
 
-        onItemChanged(data.get(0));
+//        onItemChanged(data.get(0));
 
     }
 
@@ -277,8 +290,10 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int i) {
-        int positionInDataSet = infiniteAdapter.getRealPosition(i);
-        onItemChanged(data.get(positionInDataSet));
+        if(data.size()>0) {
+            int positionInDataSet = infiniteAdapter.getRealPosition(i);
+            onItemChanged(data.get(positionInDataSet));
+        }
     }
 
     public void SaveImage(Bitmap bitmap) {
@@ -315,5 +330,6 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
         getContext().sendBroadcast(new Intent(str2, Uri.parse(stringBuilder3.toString())));
         getContext().getApplicationContext().sendBroadcast(new Intent(str2, Uri.fromFile(file2)));
     }
+
 
 }

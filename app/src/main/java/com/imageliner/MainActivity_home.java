@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -18,9 +19,13 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.imageliner.fragment.HomeFragment;
 import com.imageliner.fragment.SettingFragment;
 import com.imageliner.manage.BackPressCloseHandler;
+
+import java.util.ArrayList;
 
 public class MainActivity_home extends AppCompatActivity {
 
@@ -51,6 +56,26 @@ public class MainActivity_home extends AppCompatActivity {
 
         init();
 
+    }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) TedPermission.with(getApplicationContext())
+                .setPermissionListener(this.permissionlistener))
+                .setRationaleMessage((CharSequence) ""))
+                .setDeniedMessage((CharSequence) "Denied."))
+                .setPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA")).check();
     }
 
     public void init(){

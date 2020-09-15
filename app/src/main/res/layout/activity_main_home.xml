@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 app:adSize="BANNER"
                 android:layout_gravity="bottom|center"
-                app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:adUnitId="ca-app-pub-1992325656759505/7909549845"
                 android:layout_marginBottom="70dp" />
 
             <com.google.android.material.bottomappbar.BottomAppBar

@@ -95,5 +95,5 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     implementation 'com.github.Cutta:ContinuousScrollableImageView:1.0'
     implementation 'com.github.searchy2:CustomButton:1.9.2'
-
+    implementation 'com.github.CodingEnding:PopupLayout:v1.0'
 }
