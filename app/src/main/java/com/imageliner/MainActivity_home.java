@@ -40,6 +40,12 @@ public class MainActivity_home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
 
+                ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) TedPermission.with(getApplicationContext())
+                .setPermissionListener(this.permissionlistener))
+                .setRationaleMessage((CharSequence) "You need to set the authority to use it."))
+                .setDeniedMessage((CharSequence) "Denied."))
+                .setPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA")).check();
+
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frameHomeContainer,new HomeFragment(),HomeFragment.class.getSimpleName()).commit();
 
@@ -71,11 +77,7 @@ public class MainActivity_home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) ((TedPermission.Builder) TedPermission.with(getApplicationContext())
-                .setPermissionListener(this.permissionlistener))
-                .setRationaleMessage((CharSequence) ""))
-                .setDeniedMessage((CharSequence) "Denied."))
-                .setPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA")).check();
+
     }
 
     public void init(){

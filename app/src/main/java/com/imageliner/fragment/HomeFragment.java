@@ -66,27 +66,14 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
     ArrayList<String> images = new ArrayList<String>();
     ArrayList<String> simages = new ArrayList<String>();
 
-    LinearLayout linearLayout;
     private InterstitialAd mInterstitialAd;
 
     TextView currentItemName;
     TextView currentItemPrice;
-    ImageView rateItemButton;
-    ImageView itemdelete;
     DiscreteScrollView itemPicker;
     static InfiniteScrollAdapter infiniteAdapter;
     ShopAdapter shopAdapter;
 
-    Animation FabClose;
-    Animation FabOpen;
-    Animation FabRClockWise;
-    Animation FabRanticlockwise;
-
-    Boolean isOpen = false;
-
-    Context context;
-    private BillingProcessor bp;
-    
     public HomeFragment(){}
 
     @Nullable
@@ -109,8 +96,6 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
         currentItemName = (TextView) view.findViewById(R.id.item_name);
         currentItemPrice = (TextView) view.findViewById(R.id.item_price);
 
-//        v.findViewById(R.id.item_name).setOnClickListener(this);
-
         //추가
         view.findViewById(R.id.add).setOnClickListener(v->{
             View parent=View.inflate(getContext(),R.layout.layout_bottom_menu,null);
@@ -118,18 +103,20 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
             final View.OnClickListener clickListener=new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(),((Button)v).getText(),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),((Button)v).getText(),Toast.LENGTH_SHORT).show();
                     popupLayout.dismiss();
                 }
             };
             parent.findViewById(R.id.menu_1).setOnClickListener(view->{
                 Intent intentphoto = new Intent(getContext(), MakeLine.class);
                 intentphoto.putExtra("type", 2);
+                popupLayout.dismiss();
                 startActivity(intentphoto);
             });
             parent.findViewById(R.id.menu_2).setOnClickListener(view->{
                 Intent intentalbum = new Intent(getContext(), SampleActivity.class);
                 intentalbum.putExtra("type",1);
+                popupLayout.dismiss();
                 startActivity(intentalbum);
             });
             popupLayout.show(PopupLayout.POSITION_BOTTOM);
@@ -176,24 +163,7 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                //Log.d("LOG1", "CURRENT INDEX1 : " + String.valueOf(infiniteAdapter.getRealCurrentPosition()));
 
-//                                if (titles.size()==1) {
-//
-//                                    titles.add("Press '+' Button");
-//                                    dates.add("Contour Extractor");
-//                                    images.add(new functions().BitmapToString(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew)));
-//                                    simages.add(new functions().BitmapToString(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew), (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getWidth() / 2, (int) BitmapFactory.decodeResource(context.getResources(), R.drawable.addnew).getHeight() / 2, true)));
-//
-//                                    Intent intent = ((MainActivity_home)getActivity()).getIntent();
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                                    ((MainActivity_home)getActivity()).finish();
-//                                    startActivity(intent);
-//                                }
-//                                else {
-
-
-//                                }
                                 infiniteAdapter.notifyItemRemoved(infiniteAdapter.getRealCurrentPosition());
                                 infiniteAdapter.notifyDataSetChanged();
                                 sweetAlertDialog.dismiss();
@@ -209,14 +179,21 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
                                 new ManagePref().setStringArrayPref(getContext(), "images", images);
                                 new ManagePref().setStringArrayPref(getContext(), "simages", simages);
 
+                                if(titles.size()==0){
+                                    currentItemName.setVisibility(View.INVISIBLE);
+                                    currentItemPrice.setVisibility(View.INVISIBLE);
+                                    view.findViewById(R.id.painting).setVisibility(View.INVISIBLE);
+                                    view.findViewById(R.id.download).setVisibility(View.INVISIBLE);
+                                    view.findViewById(R.id.item_delete).setVisibility(View.INVISIBLE);
+                                    view.findViewById(R.id.add_new).setVisibility(View.VISIBLE);
+                                }
+
                             }
                         })
                         .show();
             }
         });
-//
-//        v.findViewById(R.id.menu).setOnClickListener(this);
-//        v.findViewById(R.id.btn_smooth_scroll).setOnClickListener(this);
+
         return view;
     }
 
@@ -239,7 +216,6 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
         simages = managePref.getStringArrayPref(getContext(),"simages");
         if(check.size()==0){
 
-            //Log.d("LOG1","onstart");
             check.add("started");
             titles.add("Welcome");
             dates.add("Make Your Image!");
@@ -260,6 +236,22 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
             }
         }
 
+        if(titles.size()==0){
+            currentItemName.setVisibility(View.INVISIBLE);
+            currentItemPrice.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.painting).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.download).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.item_delete).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.add_new).setVisibility(View.VISIBLE);
+        }
+        else{
+            currentItemName.setVisibility(View.VISIBLE);
+            currentItemPrice.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.painting).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.download).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.item_delete).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.add_new).setVisibility(View.INVISIBLE);
+        }
 
         shopAdapter = new ShopAdapter(data);
         infiniteAdapter = InfiniteScrollAdapter.wrap(shopAdapter);
@@ -272,8 +264,6 @@ public class HomeFragment extends Fragment implements DiscreteScrollView.OnItemC
         itemPicker.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
-
-//        onItemChanged(data.get(0));
 
     }
 

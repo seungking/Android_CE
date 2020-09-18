@@ -25,24 +25,24 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     //설정 값들 선언
     private int images[] ={
-            R.drawable.ic_insert_photo_black_30dp,
-            R.drawable.ic_insert_photo_black_30dp,
-            R.drawable.ic_insert_photo_black_30dp,
-            R.drawable.ic_insert_photo_black_30dp
+            R.drawable.np1,
+            R.drawable.np2,
+            R.drawable.np3,
+            R.drawable.np4
     };
 
     private String titles[] ={
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email)
+            "Make a unique line",
+            "Pick the best one",
+            "Specify a color",
+            "Decorate as you please"
     };
 
     private String descs[] ={
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email),
-            String.valueOf(R.string.email)
+            "Add an image",
+            "Just make a choice",
+            "We have all the colors",
+            "Try decorating it with a pen"
     };
 
     @Override

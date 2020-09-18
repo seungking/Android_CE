@@ -71,76 +71,16 @@ android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/cat_motionLimit"
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            android:background="@drawable/corners_setting"
-            android:gravity="center"
-            android:clickable="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cat_appInfor"
-            app:layout_constraintBottom_toTopOf="@+id/cat_review">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_lock_black_24dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/g_medium"
-                android:text="동작 수정" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:id="@+id/cat_appInfor"
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/corners_setting"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cat_motionLimit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/cat_feedback">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_help_center_black_24dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/g_medium"
-                android:text="소리 ON"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
             android:id="@+id/cat_review"
             android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/corners_setting"
             android:gravity="center"
             android:clickable="true"
-            android:background="@drawable/corners_setting"
-            app:layout_constraintTop_toBottomOf="@+id/cat_motionLimit"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/cat_donation"
-            app:layout_constraintEnd_toStartOf="@id/cat_feedback">
+            app:layout_constraintEnd_toStartOf="@id/cat_feedback"
+            app:layout_constraintBottom_toTopOf="@+id/cat_howto">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -153,8 +93,7 @@ android:layout_height="match_parent">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/g_medium"
-                android:text="리뷰 작성"/>
-
+                android:text="Review" />
 
         </LinearLayout>
 
@@ -163,15 +102,14 @@ android:layout_height="match_parent">
             android:layout_height="0dp"
             android:id="@+id/cat_feedback"
             android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_margin="10dp"
             android:gravity="center"
             android:clickable="true"
             android:background="@drawable/corners_setting"
-            app:layout_constraintTop_toBottomOf="@+id/cat_appInfor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cat_review"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/cat_not"
-            app:layout_constraintStart_toEndOf="@+id/cat_review">
+            app:layout_constraintBottom_toTopOf="@+id/cat_donation">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -184,7 +122,38 @@ android:layout_height="match_parent">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/g_medium"
-                android:text="피드백 보내기"/>
+                android:text="Feedback"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cat_howto"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/corners_setting"
+            app:layout_constraintTop_toBottomOf="@+id/cat_review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_not1"
+            app:layout_constraintEnd_toStartOf="@id/cat_donation">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_baseline_info_24"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/g_medium"
+                android:text="How to use"/>
 
 
         </LinearLayout>
@@ -194,27 +163,58 @@ android:layout_height="match_parent">
             android:layout_height="0dp"
             android:id="@+id/cat_donation"
             android:orientation="vertical"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
             android:clickable="true"
             android:background="@drawable/corners_setting"
-            app:layout_constraintTop_toBottomOf="@+id/cat_review"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cat_not">
+            app:layout_constraintTop_toBottomOf="@+id/cat_feedback"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_not2"
+            app:layout_constraintStart_toEndOf="@+id/cat_howto">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_sync_alt_24"/>
+                android:src="@drawable/ic_baseline_monetization_on_24"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/g_medium"
-                android:text="개발자 커피값"/>
+                android:text="Donation"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cat_not1"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/corners_setting"
+            app:layout_constraintTop_toBottomOf="@+id/cat_howto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cat_not2">
+
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/ic_baseline_sync_alt_24"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/g_medium"-->
+<!--                android:text="개발자 커피값"/>-->
 
 
         </LinearLayout>
@@ -223,29 +223,29 @@ android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/cat_not"
+            android:id="@+id/cat_not2"
             android:orientation="vertical"
             android:layout_margin="10dp"
             android:gravity="center"
             android:clickable="true"
             android:background="@drawable/corners_setting"
-            app:layout_constraintTop_toBottomOf="@+id/cat_feedback"
+            app:layout_constraintTop_toBottomOf="@+id/cat_donation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cat_donation">
+            app:layout_constraintStart_toEndOf="@+id/cat_not1">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_delete_24"/>
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/ic_baseline_delete_24"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/g_medium"
-                android:text="개발자를 위한 기부함"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/g_medium"-->
+<!--                android:text="개발자를 위한 기부함"/>-->
 
 
         </LinearLayout>
